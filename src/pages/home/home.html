@@ -1,18 +1,18 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>Gestión de Cortes</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+  <h4 >Técnico de DC&K</h4>
+  <p>Datos informativos:</p>
+  <ion-label>Cedula: {{ user.cedula }}</ion-label>
+  <ion-label>Nombres: {{ user.nombres }}</ion-label>
+  <ion-label>Apellidos: {{ user.apellidos }}</ion-label>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <button ion-button secondary menuToggle>Mostrar Menú</button>
 </ion-content>
