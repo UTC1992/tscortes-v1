@@ -4,7 +4,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Toast } from '@ionic-native/toast';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -12,8 +12,6 @@ import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms'
   templateUrl: 'registro.html',
 })
 export class RegistroPage {
-
-  data = { cedula:"", nombres:"", apellidos:"" };
 
   registerForm: FormGroup;
 
@@ -23,7 +21,8 @@ export class RegistroPage {
     private sqlite: SQLite,
     private toast: Toast,
     public formBuilder: FormBuilder,
-    private alert: AlertController
+    private alert: AlertController,
+    private userService: UserProvider
   ) {
 
     //formulario para validacion
@@ -35,41 +34,16 @@ export class RegistroPage {
     });
   }
 
-  saveData() {
-    if (this.registerForm.valid){
-    this.sqlite.create({
-      name: 'empresacortes.db',
-      location: 'default'
-    }).then((db: SQLiteObject) => {
-      db.executeSql('INSERT INTO users ( cedula, nombres, apellidos) VALUES(?,?,?)',
-                  [this.registerForm.value.cedula,this.registerForm.value.nombres,this.registerForm.value.apellidos])
-        .then(res => {
-          console.log(res);
-
-          this.toast.show('Estas Registrado!', '4000', 'center').subscribe(
-            toast => {
-              this.navCtrl.popToRoot();
-            }
-          );
-
-        })
-        .catch(e => {
-          console.log(e);
-          this.toast.show("El Usuario ya existe!", '4000', 'center').subscribe(
-            toast => {
-              console.log(toast);
-            }
-          );
-        });
-      }).catch(e => {
-        console.log(e);
-        this.toast.show("Error!", '5000', 'center').subscribe(
-          toast => {
-            console.log(toast);
-          }
-        );
-      });
+  enviarDatos(){
+    let valor = this.userService.saveData(this.registerForm);
+    if(valor){
+      this.toast.show('Registro exitoso.', '5000', 'center').subscribe(
+        toast => {
+          this.navCtrl.popToRoot();
+        }
+      );
     }
   }
+
 
 }

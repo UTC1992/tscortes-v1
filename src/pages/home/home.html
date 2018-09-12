@@ -14,5 +14,17 @@
   <ion-label>Nombres: {{ user.nombres }}</ion-label>
   <ion-label>Apellidos: {{ user.apellidos }}</ion-label>
 
-  <button ion-button secondary menuToggle>Mostrar Menú</button>
+  <button ion-button (click)="mostrarPerfil()">Perfil</button>
+  <button ion-button secondary menuToggle color="secondary">Mostrar Menú</button>
 </ion-content>
+
+<!--
+  ionic cordova plugin add cordova-sqlite-storage
+npm install --save @ionic-native/sqlite
+ionic cordova plugin add cordova-plugin-x-toast
+npm install --save @ionic-native/toast
+
+mejorar el rendimiento al crear apk y ios
+ionic cordova build ios --prod
+ionic cordova build android --release --prod
+-->

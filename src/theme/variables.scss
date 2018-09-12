@@ -33,6 +33,7 @@ $app-direction: ltr;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+/*
 $colors: (
   primary:    #488aff,
   secondary:  #32db64,
@@ -40,7 +41,15 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222
 );
+*/
 
+$colors: (
+  primary:    #488aff,
+  secondary:  #32db64,
+  danger:     #f53d3d,
+  light:      #f4f4f4,
+  dark:       #222
+);
 
 // App iOS Variables
 // --------------------------------------------------
@@ -86,3 +95,9 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+
+$toast-ios-background:(#32db64);
+$toast-md-background:(#32db64);
+$toast-wp-background:(#32db64);
+$alert-md-message-text-color:red;
