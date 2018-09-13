@@ -57,13 +57,25 @@ export class PerfilPage {
 
   updatePerfil(){
     let valor = this.userDB.actualizar(this.registerForm, this.user['id_user']);
-    if(valor){
-        this.toast.show('Perfil actualizado correctamente.', '4000', 'center').subscribe(
+    if(valor == 1){
+        this.toast.show('Perfil actualizado correctamente.', '4000', 'center')
+        .subscribe();
+    } else {
+      if(valor == 2){
+        this.toast.show('Error al actualizar el perfil.', '4000', 'center')
+        .subscribe();
+      }
+      if(valor == 3){
+        this.toast.show('Registrese antes de actualizar sus datos.', '4000', 'center').subscribe(
           toast => {
-            this.navCtrl.popToRoot();
+            this.user = [];
+            this.navCtrl.push(RegistroPage);
           }
         );
+      }
+
     }
+
   }
 
 

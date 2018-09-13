@@ -9,6 +9,9 @@ import { UserProvider } from '../../providers/user/user';
 import { TareasProvider } from '../../providers/tareas/tareas';
 
 import { RegistroPage } from '../../pages/registro/registro';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+
+import 'rxjs/add/operator/debounceTime';
 
 @IonicPage()
 @Component({
@@ -19,7 +22,10 @@ export class NotificacionPage {
 
   dataJSON;
 
-  datos;
+  searchTerm: string = '';
+  items: any[] = [];
+  searchControl: FormControl;
+  searching: any = false;
 
   constructor(
     public navCtrl: NavController,
@@ -30,10 +36,19 @@ export class NotificacionPage {
     public userDB: UserProvider,
     public tareas: TareasProvider
   ) {
+
+    this.searchControl = new FormControl();
+
   }
 
   ionViewDidLoad() {
     this.getContarUsers();
+    //this.mostrarDatosJSON();
+    this.ingresarItemsParaFiltrar();
+    this.searchControl.valueChanges.debounceTime(500).subscribe(search  => {
+    this.searching = false;//mostrar cargando
+    this.ingresarItemsParaFiltrar();
+    });
   }
 
   getContarUsers(){
@@ -41,6 +56,15 @@ export class NotificacionPage {
       console.log("Respuesta de promise "+res);
       if(res == false){
         this.navCtrl.push(RegistroPage);
+        //obtener datos del URL
+        this.peticion.obtenerDatos()
+        .subscribe(
+          (data)=> {
+            this.dataJSON = data;
+            console.log(this.dataJSON[0].name);
+          },
+          (error)=> {console.log(error);}
+        );
       }else{
         this.peticion.obtenerDatos()
         .subscribe(
@@ -50,87 +74,68 @@ export class NotificacionPage {
           },
           (error)=> {console.log(error);}
         );
-
-        this.mostrarDatosJSON();
       }
     });
   }
 
   guardarTareas(){
-    this.tareas.saveDataJSON(this.dataJSON);
-  }
-
-  mostrarDatosJSON(){
-  this.tareas.getTareas().then( data => {
-    if(data != null){
-      this.datos = data;
-      console.log(data);
-    }
-  })
-  .catch(e =>{
-    console.log(e);
-  });
-
+    this.tareas.saveDataJSON(this.dataJSON).then(response =>{
+      //mostrar los datos en la lista al finalizar el guardado
+      this.ingresarItemsParaFiltrar();
+    });
 
   }
 
-  /*
-  saveData() {
-    console.log("Almacenando datos obtenidos de webService");
-    this.sqlite.create({
-      name: 'empresacortes.db',
-      location: 'default'
-    }).then((db: SQLiteObject) => {
-      for (let i = 0; i < this.usuarios.length; i++) {
-        db.executeSql('INSERT INTO ejemplo ( name, username, email) VALUES(?,?,?)',
-                  [this.usuarios[i].name,this.usuarios[i].username, this.usuarios[i].email])
-        .then(res => {
-          console.log(res);
-          this.toast.show('Registrado!', '4000', 'center').subscribe();
-        })
-        .catch(e => {
-          console.log(e);
-          this.toast.show("El Usuario ya existe!", '4000', 'center').subscribe(
-            toast => {
-              console.log(toast);
+  ingresarItemsParaFiltrar() {
+    this.tareas.getListaTareas().then(data =>{
+      if(data.length > 0){
+        console.log(data);
+        this.items = data;
+        //filtrara y buscar datos de la lista
+        this.items = this.items.filter((item) => {
+          return item['n9nomb'].toLowerCase().indexOf(
+            this.searchTerm.toLowerCase()) > -1;
+
+          });
+        console.log("DATOS OBTENIDOS DE PROMISE");
+        console.log(this.items);
+
+        /** PARA BUSCAR EN TODOS LOS ATRIBUTOS DEL JSON
+         * filterItems(searchTerm){
+            return this.items.filter((item) => {
+              return item.title.toLowerCase().
+              indexOf(searchTerm.toLowerCase()) > -1 ||
+                item.description.toLowerCase().
+                  indexOf(searchTerm.toLowerCase()) > -1;
+            });
             }
-          );
-        });
+        */
       }
 
-      }).catch(e => {
-        console.log(e);
-        this.toast.show("Error!", '5000', 'center').subscribe(
-          toast => {
-            console.log(toast);
-          }
-        );
-      });
-
-      this.mostrarDatosJSON();
-  }
-
-  mostrarDatosJSON(){
-    this.sqlite.create({
-      name: 'empresacortes.db',
-      location: 'default'
-    }).then((db: SQLiteObject) => {
-      db.executeSql('SELECT * FROM ejemplo ORDER BY id DESC', [])
-        .then(res => {
-          this.datos = [];
-          for (var i = 0; i < res.rows.length; i++) {
-            this.datos.push({
-                                id: res.rows.item(i).id,
-                                name: res.rows.item(i).name,
-                                username: res.rows.item(i).username,
-                                email: res.rows.item(i).email
-                              })
-          }
-
-        });
     });
+
   }
-*/
+
+  onSearchInput(){
+    this.searching = true;
+   }
+
 
 
 }
+
+/*
+  mostrarDatosJSON(){
+    this.tareas.getTareas().then( data => {
+      if(data != null){
+        this.datos = data;
+        console.log(data);
+
+      }
+    })
+    .catch(e =>{
+      console.log(e);
+    });
+
+  }
+  */

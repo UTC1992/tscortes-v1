@@ -3,25 +3,49 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>notificacion</ion-title>
+    <ion-title>Notificaciones</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
-  <button ion-button (click)="guardarTareas()">
-    ObtenerDatos y Guardarlos
-  </button>
+    <ion-grid>
+
+      <ion-row>
+        <ion-col col-auto>
+            <button ion-button block round small (click)="guardarTareas()">
+              Obtener y Guardar Tareas
+            </button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <p>Buscar medidores:</p>
+        </ion-col>
+      </ion-row>
+
+      <!--<ion-searchbar [(ngModel)]="searchTerm" placeholder="Buscar Medidor"
+        (ionInput)="ingresarItemsParaFiltrar()"></ion-searchbar>-->
+
+      <ion-row>
+        <ion-col>
+
+          <ion-searchbar [(ngModel)]="searchTerm" placeholder="Buscar Medidor"
+           [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
+          <ion-spinner *ngIf="searching" class="spinner-container"></ion-spinner>
+
+          <ion-scroll scrollY="true" style="height:250px;">
+            <ion-list inset>
+              <ion-item ion-item *ngFor="let item of items " (click)="mostrarTareaNot()" icon-start>
+                  <ion-icon name="list-box" item-start></ion-icon>{{ item.n9nomb }}
+              </ion-item>
+            </ion-list>
+          </ion-scroll>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
 
 
-  <!--DATOS SERVIDOR EXTERNO-->
-  <h2>Datos externos</h2>
-
-  <ion-list>
-    <button ion-item *ngFor="let dato of datos">
-        {{ dato.id_tare }}--{{ dato.n9nomb }}
-    </button>
-  </ion-list>
-  <!--DATOS SERVIDOR EXTERNO-->
 </ion-content>

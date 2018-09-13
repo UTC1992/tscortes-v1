@@ -32,13 +32,19 @@
     </ion-item>
     <ion-item>
       <ion-label floating>Apellidos:</ion-label>
-      <ion-input type="text"  formControlName="apellidos" value="{{ user.apellidos }}"></ion-input>
+      <ion-input type="text" formControlName="apellidos" value="{{ user.apellidos }}"></ion-input>
     </ion-item>
     <ion-item *ngIf="registerForm.get('apellidos').errors && registerForm.get('apellidos').dirty">
       <p color="danger" ion-text *ngIf="registerForm.get('apellidos').hasError('required')">Campo requerido</p>
       <p color="danger" ion-text *ngIf="registerForm.get('apellidos').hasError('maxlength')">Cantidad máxima de caracteres (60)</p>
     </ion-item>
-    <button ion-button type="submit" [disabled]="!registerForm.valid">Guardar</button>
+    <br>
+    <ion-row>
+      <ion-col text-center>
+        <button ion-button type="submit" [disabled]="!registerForm.valid">Guardar</button>
+      </ion-col>
+    </ion-row>
+
   </form>
   <!--formulario-->
 </ion-content>

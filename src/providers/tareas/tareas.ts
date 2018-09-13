@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+
+import 'rxjs/add/operator/debounceTime';
 
 @Injectable()
 export class TareasProvider {
 
   public database: SQLiteObject;
   tareas: any[] = [];
-  registerForm: FormGroup;
+
+  listaTareas;
 
   constructor(
     public http: HttpClient,
@@ -74,6 +76,39 @@ export class TareasProvider {
               resolve(this.tareas);
             } else {
               resolve(false);
+            }
+
+          }, (error) =>{
+            console.log("ERROR en consulta de TAREAS: " + error);
+
+            reject(false);
+          });
+        }
+      });
+    })
+  }
+
+  public getListaTareas(): Promise<string[]>{
+    return new Promise((resolve, reject)=>{
+      return this.openDatabase().then((res) => {
+        console.log("Respuesta de las promesas "+res);
+        if(res){
+          return this.database.executeSql('SELECT * FROM tareas ORDER BY id_tare ASC', [])
+          .then((data) => {
+            console.log("Consulta realizada a TAREAS");
+            this.listaTareas = [];
+            for (var i = 0; i < data.rows.length; i++) {
+              //this.listaTareas[i] = data.rows.item(i).n9nomb;
+              this.listaTareas.push({
+                                      id_tare: data.rows.item(i).id_tare,
+                                      n9nomb: data.rows.item(i).n9nomb
+                                    });
+            }
+
+            if(this.listaTareas.length > 0){
+              resolve(this.listaTareas);
+            } else {
+              resolve(this.listaTareas);
             }
 
           }, (error) =>{

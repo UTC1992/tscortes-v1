@@ -107,28 +107,34 @@ export class UserProvider {
 
   actualizar(data: any, id: number){
     console.log(data);
-    return new Promise((resolve, reject) => {
-      return this.openDatabase().then((res) =>{
-        if(res){
-          return this.database.executeSql(
-            'UPDATE users SET cedula=?, nombres=?, apellidos=? WHERE id_user=?'
-            ,[data.value.cedula,data.value.nombres,data.value.apellidos, id])
-          .then(response =>{
-            console.log("ACTUALIZAR PERFIL DE USUARIO");
-            console.log(response['rowsAffected']);
-            resolve(true);
-          })
-          .catch(e =>{
-            console.log(e);
-            reject(false);
-          })
-        }
-      })
-      .catch(e => {
-        console.log(e);
-        reject(false);
+    console.log(" ID usuario a actualizar ==>" + id);
+    if(id > 1){
+      return new Promise((resolve, reject) => {
+        return this.openDatabase().then((res) =>{
+          if(res){
+            return this.database.executeSql(
+              'UPDATE users SET cedula=?, nombres=?, apellidos=? WHERE id_user=?'
+              ,[data.value.cedula,data.value.nombres,data.value.apellidos, id])
+            .then(response =>{
+              console.log("ACTUALIZAR PERFIL DE USUARIO");
+              console.log(response['rowsAffected']);
+              resolve(1);
+            })
+            .catch(e =>{
+              console.log(e);
+              reject(2);
+            })
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          reject(2);
+        });
       });
-    });
+    }else{
+      return 3;
+    }
+
   }
 
 }
