@@ -31,6 +31,7 @@ import { UserProvider } from '../providers/user/user';
 import { TareasProvider } from '../providers/tareas/tareas';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
     DatabaseProvider,
     UserProvider,
     TareasProvider,
-    Camera
+    Camera,
+    File
 
   ]
 })
