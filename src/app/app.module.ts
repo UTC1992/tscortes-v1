@@ -23,11 +23,14 @@ import { NotificacionPage } from '../pages/notificacion/notificacion';
 import { CortePage } from '../pages/corte/corte';
 import { RecmanualPage } from '../pages/recmanual/recmanual';
 import { PerfilPage } from '../pages/perfil/perfil';
+import { ActividadPage } from '../pages/actividad/actividad';
 
 import { PeticionhttpProvider } from '../providers/peticionhttp/peticionhttp';
 import { DatabaseProvider } from '../providers/database/database';
 import { UserProvider } from '../providers/user/user';
 import { TareasProvider } from '../providers/tareas/tareas';
+
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,8 @@ import { TareasProvider } from '../providers/tareas/tareas';
     CortePage,
     ReconexionPage,
     RecmanualPage,
-    PerfilPage
+    PerfilPage,
+    ActividadPage
   ],
   imports: [
     BrowserModule,
@@ -57,7 +61,8 @@ import { TareasProvider } from '../providers/tareas/tareas';
     CortePage,
     ReconexionPage,
     RecmanualPage,
-    PerfilPage
+    PerfilPage,
+    ActividadPage
   ],
   providers: [
     StatusBar,
@@ -69,7 +74,8 @@ import { TareasProvider } from '../providers/tareas/tareas';
     PeticionhttpProvider,
     DatabaseProvider,
     UserProvider,
-    TareasProvider
+    TareasProvider,
+    Camera
 
   ]
 })

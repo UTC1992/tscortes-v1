@@ -1,0 +1,146 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Datos del Medidor</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="labelAux">Medidor: </ion-label>
+          <ion-label class="labelDatos">65731</ion-label>
+          <ion-label class="labelAux">Cuenta: </ion-label>
+          <ion-label class="labelDatos">89000</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="labelAux">Cliente: </ion-label>
+          <ion-label class="labelDatos">64912</ion-label>
+          <ion-label class="labelAux"></ion-label>
+          <ion-label class="labelDatos"></ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="labelAux">Sector: </ion-label>
+          <ion-label class="labelDatos">GUA</ion-label>
+          <ion-label class="labelAux">Ruta: </ion-label>
+          <ion-label class="labelDatos">110</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="labelAux">Meses de retraso: </ion-label>
+          <ion-label class="labelDatos">2</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="labelAux">Valor adeudado: </ion-label>
+          <ion-label class="labelDatos">21,94 $</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="labelAux">Fecha: </ion-label>
+          <ion-label class="labelDatos">2018-09-07</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+            <label class="labelAux">Nombre: </label>
+            <div text-wrap class="labelDatos">
+                GUALPA TOAPANTA SEGUNDO ALONSO
+            </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <label class="labelAux">Referencia: </label>
+          <div text-wrap class="labelDatos">
+            TRAS DEL COLISEO DEL SECTOR
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <label class="labelAux">Coordenadas: </label>
+          <p class="labelDatos">9908555,17 - 762682,68</p>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+  <form>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+            <ion-label class="labelAux" fixed>Lectura:</ion-label>
+            <ion-input type="text" value="" placeholder="Ingrese la lectura aquí"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="labelAux">Fotografía:</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+          <button ion-button type="button" small (click)="takePhoto()">
+              <ion-icon name="camera"></ion-icon>
+            </button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <p text-center>
+          <img [src]="myphoto" *ngIf="myphoto">
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="labelAux">Observación: </ion-label>
+          <br>
+          <ion-textarea placeholder="Inngrese la Observación aquí" rows="3"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <button ion-button type="submit" block>Guardar Datos</button>
+
+  </form>
+  </ion-grid>
+</ion-content>

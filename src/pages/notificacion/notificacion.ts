@@ -10,6 +10,7 @@ import { TareasProvider } from '../../providers/tareas/tareas';
 
 import { RegistroPage } from '../../pages/registro/registro';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { ActividadPage } from '../../pages/actividad/actividad';
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -120,7 +121,11 @@ export class NotificacionPage {
     this.searching = true;
    }
 
+   mostrarTareaNot(item: any){
+    console.log(item);
+    this.navCtrl.push(ActividadPage, {'datosActividad': item});
 
+   }
 
 }
 
