@@ -29,19 +29,25 @@ export class TareasProvider {
       .then((db : SQLiteObject) => {
         db.executeSql("CREATE TABLE IF NOT EXISTS tareas("
                     +" id_tare INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    +" id_user INTEGER,"
+                    +" id_temp INTEGER,"
                     +" n9cono TEXT,"
                     +" n9cocu TEXT,"
                     +" n9cose TEXT,"
                     +" n9coru TEXT,"
-                    +" n9plve TEXT,"
-                    +" n9vaca TEXT,"
                     +" n9meco TEXT,"
                     +" n9leco TEXT,"
+                    +" n9cocl TEXT,"
                     +" n9nomb TEXT,"
                     +" n9refe TEXT,"
-                    +" n9cobs TEXT,"
-                    +" observacion TEXT"
+                    +" cusecu TEXT,"
+                    +" cucoon TEXT,"
+                    +" foto TEXT,"
+                    +" observacion TEXT,"
+                    +" fecha TEXT,"
+                    +" hora TEXT,"
+                    +" estado TEXT,"
+                    +" cedula_emp TEXT,"
+                    +" id_tecn TEXT"
                     + ")",[])
         .then(() => console.log('Tabla TAREAS Creada'))
         .catch(e => console.log(e));
@@ -101,7 +107,25 @@ export class TareasProvider {
               //this.listaTareas[i] = data.rows.item(i).n9nomb;
               this.listaTareas.push({
                                       id_tare: data.rows.item(i).id_tare,
-                                      n9nomb: data.rows.item(i).n9nomb
+                                      id_temp: data.rows.item(i).id_temp,
+                                      n9cono: data.rows.item(i).n9cono,
+                                      n9cocu: data.rows.item(i).n9cocu,
+                                      n9cose: data.rows.item(i).n9cose,
+                                      n9coru: data.rows.item(i).n9coru,
+                                      n9meco: data.rows.item(i).n9meco,
+                                      n9leco: data.rows.item(i).n9leco,
+                                      n9cocl: data.rows.item(i).n9cocl,
+                                      n9nomb: data.rows.item(i).n9nomb,
+                                      n9refe: data.rows.item(i).n9refe,
+                                      cusecu: data.rows.item(i).cusecu,
+                                      cucoon: data.rows.item(i).cucoon,
+                                      foto: data.rows.item(i).foto,
+                                      observacion: data.rows.item(i).observacion,
+                                      fecha: data.rows.item(i).fecha,
+                                      hora: data.rows.item(i).hora,
+                                      estado: data.rows.item(i).estado,
+                                      cedula_emp: data.rows.item(i).cedula_emp,
+                                      id_tecn: data.rows.item(i).id_tecn
                                     });
             }
 
@@ -126,8 +150,20 @@ export class TareasProvider {
       console.log("Almacenando datos obtenidos de webService");
       return this.openDatabase().then((res) => {
         for (let i = 0; i < dataJSON.length; i++) {
-          this.database.executeSql('INSERT INTO tareas ( n9nomb ) VALUES(?)',
-                    [dataJSON[i].name])
+          this.database.executeSql("INSERT INTO tareas"
+                                  +" ( id_temp, n9cono, n9cocu, n9cose, n9coru, n9meco,"
+                                  +" n9leco, n9cocl, n9nomb, n9refe, cusecu, cucoon, foto, "
+                                  +" observacion, fecha, hora, estado, cedula_emp, id_tecn)"
+                                  +" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [
+                      dataJSON[i].id_ode, dataJSON[i].n9cono, dataJSON[i].n9cocu,
+                      dataJSON[i].n9cose, dataJSON[i].n9coru, dataJSON[i].n9meco,
+                      dataJSON[i].n9leco, dataJSON[i].n9cocl, dataJSON[i].n9nomb,
+                      dataJSON[i].n9refe, dataJSON[i].cusecu, dataJSON[i].cucoon,
+                      dataJSON[i].foto, dataJSON[i].observacion, dataJSON[i].fecha,
+                      dataJSON[i].hora, dataJSON[i].estado, dataJSON[i].cedula_emp,
+                      dataJSON[i].id_tecn
+                    ])
           .then(res => {
             console.log(res);
             resolve(true);
@@ -150,3 +186,21 @@ export class TareasProvider {
 
 
 }
+
+/**
+ * "CREATE TABLE IF NOT EXISTS tareas("
+                    +" id_tare INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    +" id_temp INTEGER,"
+                    +" n9cono TEXT,"
+                    +" n9cocu TEXT,"
+                    +" n9cose TEXT,"
+                    +" n9coru TEXT,"
+                    +" n9plve TEXT,"
+                    +" n9vaca TEXT,"
+                    +" n9meco TEXT,"
+                    +" n9leco TEXT,"
+                    +" n9nomb TEXT,"
+                    +" n9refe TEXT,"
+                    +" n9cobs TEXT,"
+                    +" observacion TEXT"
+ */

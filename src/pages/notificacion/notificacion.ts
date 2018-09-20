@@ -58,33 +58,22 @@ export class NotificacionPage {
       if(res == false){
         this.navCtrl.push(RegistroPage);
         //obtener datos del URL
-        this.peticion.obtenerDatos()
-        .subscribe(
-          (data)=> {
-            this.dataJSON = data;
-            console.log(this.dataJSON[0].name);
-          },
-          (error)=> {console.log(error);}
-        );
+
       }else{
-        this.peticion.obtenerDatos()
-        .subscribe(
-          (data)=> {
-            this.dataJSON = data;
-            console.log(this.dataJSON[0].name);
-          },
-          (error)=> {console.log(error);}
-        );
       }
     });
   }
 
   guardarTareas(){
-    this.tareas.saveDataJSON(this.dataJSON).then(response =>{
-      //mostrar los datos en la lista al finalizar el guardado
-      this.ingresarItemsParaFiltrar();
-    });
-
+    this.peticion.obtenerDatos()
+      .subscribe(
+        (data)=> {
+          this.tareas.saveDataJSON(this.dataJSON).then(response =>{
+            this.ingresarItemsParaFiltrar();
+          });
+        },
+        (error)=> {console.log(error);}
+      );
   }
 
   ingresarItemsParaFiltrar() {
@@ -94,7 +83,7 @@ export class NotificacionPage {
         this.items = data;
         //filtrara y buscar datos de la lista
         this.items = this.items.filter((item) => {
-          return item['n9nomb'].toLowerCase().indexOf(
+          return item['n9meco'].toLowerCase().indexOf(
             this.searchTerm.toLowerCase()) > -1;
 
           });
