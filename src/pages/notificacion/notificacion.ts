@@ -68,7 +68,8 @@ export class NotificacionPage {
     this.peticion.obtenerDatos()
       .subscribe(
         (data)=> {
-          this.tareas.saveDataJSON(this.dataJSON).then(response =>{
+          //data => contiene el archivo JSON obtenido desde el API web
+          this.tareas.saveDataJSON(data).then(response =>{
             this.ingresarItemsParaFiltrar();
           });
         },

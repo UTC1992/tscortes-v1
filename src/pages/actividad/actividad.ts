@@ -15,6 +15,9 @@ export class ActividadPage {
 
   myphoto: string;
 
+  fecha = new Date();
+  fechaActual = this.fecha.getDate()+"-"+(this.fecha.getMonth() +1)+"-"+this.fecha.getFullYear();
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,

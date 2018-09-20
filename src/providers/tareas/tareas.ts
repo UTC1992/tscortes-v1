@@ -34,6 +34,8 @@ export class TareasProvider {
                     +" n9cocu TEXT,"
                     +" n9cose TEXT,"
                     +" n9coru TEXT,"
+                    +" n9plve TEXT,"
+                    +" n9vaca TEXT,"
                     +" n9meco TEXT,"
                     +" n9leco TEXT,"
                     +" n9cocl TEXT,"
@@ -41,6 +43,7 @@ export class TareasProvider {
                     +" n9refe TEXT,"
                     +" cusecu TEXT,"
                     +" cucoon TEXT,"
+                    +" cucooe TEXT,"
                     +" foto TEXT,"
                     +" observacion TEXT,"
                     +" fecha TEXT,"
@@ -98,8 +101,11 @@ export class TareasProvider {
     return new Promise((resolve, reject)=>{
       return this.openDatabase().then((res) => {
         console.log("Respuesta de las promesas "+res);
+        let tipoActividad1 = '10';
+        let tipoActividad2 = '010';
         if(res){
-          return this.database.executeSql('SELECT * FROM tareas ORDER BY id_tare ASC', [])
+          return this.database.executeSql('SELECT * FROM tareas WHERE n9cono=? or n9cono=? ORDER BY id_tare ASC',
+          [tipoActividad1, tipoActividad2])
           .then((data) => {
             console.log("Consulta realizada a TAREAS");
             this.listaTareas = [];
@@ -112,6 +118,8 @@ export class TareasProvider {
                                       n9cocu: data.rows.item(i).n9cocu,
                                       n9cose: data.rows.item(i).n9cose,
                                       n9coru: data.rows.item(i).n9coru,
+                                      n9plve: null,
+                                      n9vaca: null,
                                       n9meco: data.rows.item(i).n9meco,
                                       n9leco: data.rows.item(i).n9leco,
                                       n9cocl: data.rows.item(i).n9cocl,
@@ -119,6 +127,7 @@ export class TareasProvider {
                                       n9refe: data.rows.item(i).n9refe,
                                       cusecu: data.rows.item(i).cusecu,
                                       cucoon: data.rows.item(i).cucoon,
+                                      cucooe: null,
                                       foto: data.rows.item(i).foto,
                                       observacion: data.rows.item(i).observacion,
                                       fecha: data.rows.item(i).fecha,
@@ -153,8 +162,9 @@ export class TareasProvider {
           this.database.executeSql("INSERT INTO tareas"
                                   +" ( id_temp, n9cono, n9cocu, n9cose, n9coru, n9meco,"
                                   +" n9leco, n9cocl, n9nomb, n9refe, cusecu, cucoon, foto, "
-                                  +" observacion, fecha, hora, estado, cedula_emp, id_tecn)"
-                                  +" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                                  +" observacion, fecha, hora, estado, cedula_emp, id_tecn,"
+                                  +" n9plve, n9vaca, cucooe) "
+                                  +" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     [
                       dataJSON[i].id_ode, dataJSON[i].n9cono, dataJSON[i].n9cocu,
                       dataJSON[i].n9cose, dataJSON[i].n9coru, dataJSON[i].n9meco,
@@ -162,7 +172,7 @@ export class TareasProvider {
                       dataJSON[i].n9refe, dataJSON[i].cusecu, dataJSON[i].cucoon,
                       dataJSON[i].foto, dataJSON[i].observacion, dataJSON[i].fecha,
                       dataJSON[i].hora, dataJSON[i].estado, dataJSON[i].cedula_emp,
-                      dataJSON[i].id_tecn
+                      dataJSON[i].id_tecn, null, null, null
                     ])
           .then(res => {
             console.log(res);
