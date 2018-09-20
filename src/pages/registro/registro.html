@@ -12,7 +12,7 @@
   <form [formGroup]="registerForm" (ngSubmit)="enviarDatos()">
     <ion-item>
       <ion-label floating>Cédula:</ion-label>
-      <ion-input type="text"  formControlName="cedula"></ion-input>
+      <ion-input type="number"  formControlName="cedula"></ion-input>
     </ion-item>
     <ion-item *ngIf="registerForm.get('cedula').errors && registerForm.get('cedula').dirty">
       <p color="danger" ion-text *ngIf="registerForm.get('cedula').hasError('required')">Campo requerido</p>

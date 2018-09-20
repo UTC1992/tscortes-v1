@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
+
+import { Toast } from '@ionic-native/toast';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { TareasProvider } from '../../providers/tareas/tareas';
 
 @IonicPage()
 @Component({
@@ -18,14 +22,30 @@ export class ActividadPage {
   fecha = new Date();
   fechaActual = this.fecha.getDate()+"-"+(this.fecha.getMonth() +1)+"-"+this.fecha.getFullYear();
 
+  tareaForm: FormGroup;
+  nombreFoto;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private camera: Camera,
-    public file: File
+    public file: File,
+    private toast: Toast,
+    public formBuilder: FormBuilder,
+    private alert: AlertController,
+    private tareaService: TareasProvider
   ) {
     this.dataActividad = this.navParams.get('datosActividad');
     console.log(this.dataActividad);
+
+    //formulario para validacion
+    this.tareaForm = this.formBuilder.group({
+      lectura: ['', [Validators.required]],
+      foto: [this.dataActividad['n9meco']+".jpeg", [Validators.required] ],
+      observacion: ['',[Validators.required]],
+
+    });
+
   }
 
   ionViewDidLoad() {
@@ -46,6 +66,8 @@ export class ActividadPage {
      // If it's base64 (DATA_URL):
      this.myphoto = 'data:image/jpeg;base64,' + imageData;
      console.log('data:image/jpeg;base64,' + imageData);
+
+
 
      //this.crearCarpeta();
     }, (err) => {
@@ -94,6 +116,10 @@ export class ActividadPage {
     //externalDataDirectory ==> crea un archivo en el directorio de la aplicacion en la carpeta FILE
     //externalRootDirectory ==> crea el archivo en la raiz del directorio local junto a DCIM entre ellos
 
+
+  }
+
+  actualizarTarea(){
 
   }
 

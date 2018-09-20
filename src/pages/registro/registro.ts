@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Toast } from '@ionic-native/toast';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UserProvider } from '../../providers/user/user';
@@ -18,7 +17,6 @@ export class RegistroPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private sqlite: SQLite,
     private toast: Toast,
     public formBuilder: FormBuilder,
     private alert: AlertController,

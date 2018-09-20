@@ -123,12 +123,15 @@
       </ion-col>
     </ion-row>
 
-  <form>
+  <form [formGroup]="tareaForm" (ngSubmit)="actualizarTarea()">
     <ion-row>
       <ion-col>
         <ion-item>
             <ion-label class="labelAux" fixed>Lectura:</ion-label>
-            <ion-input type="text" value="" placeholder="Ingrese la lectura aquí"></ion-input>
+            <ion-input type="number" formControlName="lectura" placeholder="Ingrese la lectura aquí"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="tareaForm.get('lectura').errors && tareaForm.get('lectura').dirty">
+          <p color="danger" ion-text *ngIf="tareaForm.get('lectura').hasError('required')">Campo requerido</p>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -136,21 +139,28 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label class="labelAux">Fotografía:</ion-label>
+          <ion-label class="labelAux" fixed>Fotografía:</ion-label>
+          <ion-input type="text" formControlName="foto" readonly="true"></ion-input>
         </ion-item>
-      </ion-col>
-      <ion-col>
-          <button ion-button type="button" small (click)="takePhoto()">
-              <ion-icon name="camera"></ion-icon>
-            </button>
+        <ion-item *ngIf="tareaForm.get('foto').errors && tareaForm.get('foto').dirty">
+          <p color="danger" ion-text *ngIf="tareaForm.get('foto').hasError('required')">Campo requerido</p>
+        </ion-item>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col>
-        <p text-center>
-          <img [src]="myphoto" *ngIf="myphoto">
-        </p>
+        <ion-item>
+          <button ion-button type="button" small (click)="takePhoto()">
+              <ion-icon name="camera"></ion-icon>
+            </button>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <img [src]="myphoto"  *ngIf="myphoto">
+        </ion-item>
+
       </ion-col>
     </ion-row>
 
@@ -159,12 +169,12 @@
         <ion-item>
           <ion-label class="labelAux">Observación: </ion-label>
           <br>
-          <ion-textarea placeholder="Inngrese la Observación aquí" rows="3"></ion-textarea>
+          <ion-textarea formControlName="observacion" placeholder="Inngrese la Observación aquí" rows="3"></ion-textarea>
         </ion-item>
       </ion-col>
     </ion-row>
 
-    <button ion-button type="button" (click)="crearCarpeta()" block>Guardar Datos</button>
+    <button ion-button type="submit" [disabled]="!tareaForm.valid||!myphoto" block>Guardar Datos</button>
 
   </form>
   </ion-grid>
