@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -45,6 +46,7 @@ export class TareasProvider {
                     +" cucoon TEXT,"
                     +" cucooe TEXT,"
                     +" foto TEXT,"
+                    +" rutaimg TEXT,"
                     +" observacion TEXT,"
                     +" fecha TEXT,"
                     +" hora TEXT,"
@@ -64,37 +66,6 @@ export class TareasProvider {
       });
     });
 
-  }
-
-  public getTareas(){
-    return new Promise((resolve, reject)=>{
-      return this.openDatabase().then((res) => {
-        console.log("Respuesta de las promesas "+res);
-        if(res){
-          return this.database.executeSql('SELECT * FROM tareas ORDER BY id_tare ASC', [])
-          .then((data) => {
-            console.log("Consulta realizada a TAREAS");
-            this.tareas = [];
-            for (var i = 0; i < data.rows.length; i++) {
-              this.tareas.push({
-                                id_tare: data.rows.item(i).id_tare,
-                                n9nomb: data.rows.item(i).n9nomb
-                              })
-            }
-            if(this.tareas.length > 0){
-              resolve(this.tareas);
-            } else {
-              resolve(false);
-            }
-
-          }, (error) =>{
-            console.log("ERROR en consulta de TAREAS: " + error);
-
-            reject(false);
-          });
-        }
-      });
-    })
   }
 
   public getListaTareas(): Promise<string[]>{
@@ -129,6 +100,7 @@ export class TareasProvider {
                                       cucoon: data.rows.item(i).cucoon,
                                       cucooe: null,
                                       foto: data.rows.item(i).foto,
+                                      rutaimg: data.rows.item(i).rutaimg,
                                       observacion: data.rows.item(i).observacion,
                                       fecha: data.rows.item(i).fecha,
                                       hora: data.rows.item(i).hora,
@@ -190,8 +162,35 @@ export class TareasProvider {
         });
     });
 
+  }
 
-      //this.mostrarDatosJSON();
+  update(data: FormGroup, id: number, rutaimg: any){
+    return new Promise((resolve, reject) => {
+      if (data.valid){
+        console.log(data.value.lectura);
+        console.log(" ID tarea a actualizar ==>" + id);
+        return this.openDatabase().then(res =>{
+          if(res){
+            return this.database.executeSql(
+              'UPDATE tareas SET n9leco=?, foto=?, observacion=?, estado=?, rutaimg=? WHERE id_tare=?'
+              ,[data.value.lectura,data.value.foto,data.value.observacion, 2, rutaimg, id])
+            .then(response =>{
+              console.log("ACTUALIZAR TAREA");
+              console.log(response['rowsAffected']);
+              resolve(true);
+            })
+            .catch(e =>{
+              console.log(e);
+              reject(false);
+            })
+          }
+        }).catch(e => {
+          console.log(e);
+          reject(false);
+        });
+      }
+    });
+
   }
 
 

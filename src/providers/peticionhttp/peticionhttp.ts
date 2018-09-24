@@ -8,7 +8,7 @@ import { map, filter } from 'rxjs/operators';
 @Injectable()
 export class PeticionhttpProvider {
 
-  baseURLApi = 'http://192.168.1.9/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api'
+  baseURLApi = 'http://192.168.1.6/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api'
 
   constructor(public http: HttpClient) {
     console.log('Hello PeticionhttpProvider Provider');

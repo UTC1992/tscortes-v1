@@ -7,6 +7,7 @@ import { File } from '@ionic-native/file';
 import { Toast } from '@ionic-native/toast';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { TareasProvider } from '../../providers/tareas/tareas';
+import { NotificacionPage } from '../../pages/notificacion/notificacion';
 
 @IonicPage()
 @Component({
@@ -37,12 +38,12 @@ export class ActividadPage {
   ) {
     this.dataActividad = this.navParams.get('datosActividad');
     console.log(this.dataActividad);
-
+    this.myphoto = this.dataActividad['rutaimg'];
     //formulario para validacion
     this.tareaForm = this.formBuilder.group({
-      lectura: ['', [Validators.required]],
+      lectura: [this.dataActividad['n9leco'], [Validators.required]],
       foto: [this.dataActividad['n9meco']+".jpeg", [Validators.required] ],
-      observacion: ['',[Validators.required]],
+      observacion: [this.dataActividad['observacion'],[Validators.required]],
 
     });
 
@@ -95,7 +96,7 @@ export class ActividadPage {
     return blob;
   }
 
-  crearCarpeta(){
+  guardarFoto(){
     console.log('Guardando fotos');
     console.log(this.myphoto);
     var fecha = new Date();
@@ -103,15 +104,24 @@ export class ActividadPage {
     var mes = fecha.getMonth() +1;
     var anio = fecha.getFullYear();
 
+    //creando directorio
     var nombreCarpeta = "Fotos-"+dia+"-"+mes+"-"+anio;
-    var nombreFoto = dia+"-"+mes+"-"+anio+".jpeg";
+    var nombreFoto = this.dataActividad['n9meco']+".jpeg";
     let result = this.file.createDir(this.file.externalRootDirectory, nombreCarpeta, true);
     //let result = this.file.createFile(this.file.externalRootDirectory+"Fotos/","hola.txt",true);
 
+    //guardando imagen en directorio creado
     result.then(data => {
       var dataAux = this.myphoto.split(',')[1];
       let blob = this.b64toBlob(dataAux, 'image/jpeg');
-      this.file.writeFile(data.toURL(), nombreFoto, blob ,{replace: true});
+      this.file.writeFile(data.toURL(), nombreFoto, blob ,{replace: true})
+      .then(res => {
+        console.log("Foto guardada exitosamente");
+        this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
+        this.navCtrl.setRoot(NotificacionPage);
+
+      });
+
     });
     //externalDataDirectory ==> crea un archivo en el directorio de la aplicacion en la carpeta FILE
     //externalRootDirectory ==> crea el archivo en la raiz del directorio local junto a DCIM entre ellos
@@ -120,7 +130,15 @@ export class ActividadPage {
   }
 
   actualizarTarea(){
+    let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],this.myphoto)
+    .then((res) => {
+      let respuesta = this.guardarFoto();
+    });
 
+  }
+
+  descartarFoto(){
+    this.myphoto = "";
   }
 
 }
