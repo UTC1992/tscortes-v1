@@ -9,5 +9,8 @@ import { ActividadPage } from './actividad';
   imports: [
     IonicPageModule.forChild(ActividadPage),
   ],
+  exports: [
+    ActividadPage,
+  ]
 })
 export class ActividadPageModule {}

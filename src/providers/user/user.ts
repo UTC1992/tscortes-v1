@@ -105,10 +105,10 @@ export class UserProvider {
 
   }
 
-  actualizar(data: any, id: number){
+  actualizar(data: FormGroup, id: number){
     console.log(data);
     console.log(" ID usuario a actualizar ==>" + id);
-    if(id > 1){
+    if(id > 0){
       return new Promise((resolve, reject) => {
         return this.openDatabase().then((res) =>{
           if(res){
@@ -118,21 +118,19 @@ export class UserProvider {
             .then(response =>{
               console.log("ACTUALIZAR PERFIL DE USUARIO");
               console.log(response['rowsAffected']);
-              resolve(1);
+              resolve(true);
             })
             .catch(e =>{
               console.log(e);
-              reject(2);
+              reject(false);
             })
           }
         })
         .catch(e => {
           console.log(e);
-          reject(2);
+          reject(false);
         });
       });
-    }else{
-      return 3;
     }
 
   }

@@ -9,5 +9,8 @@ import { ReconexionPage } from './reconexion';
   imports: [
     IonicPageModule.forChild(ReconexionPage),
   ],
+  exports: [
+    ReconexionPage,
+  ]
 })
 export class ReconexionPageModule {}

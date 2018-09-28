@@ -9,5 +9,8 @@ import { CortePage } from './corte';
   imports: [
     IonicPageModule.forChild(CortePage),
   ],
+  exports: [
+    CortePage,
+  ]
 })
 export class CortePageModule {}

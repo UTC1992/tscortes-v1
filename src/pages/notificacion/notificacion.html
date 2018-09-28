@@ -12,8 +12,8 @@
     <ion-grid>
 
       <ion-row>
-        <ion-col col-auto>
-            <button ion-button block round small (click)="guardarTareas()">
+        <ion-col>
+            <button ion-button block round (click)="guardarTareas()">
               Obtener y Guardar Tareas
             </button>
         </ion-col>
@@ -38,10 +38,21 @@
           <ion-scroll scrollY="true" style="height:250px;">
             <ion-list inset>
               <ion-item ion-item *ngFor="let item of items " (click)="mostrarTareaNot(item)" icon-start>
-                  <ion-icon name="list-box" item-start></ion-icon>{{ item.id_tare }} - {{ item.n9meco }}
+                <ion-avatar item-start>
+                  <img src="assets/imgs/medidorluz.jpg">
+                </ion-avatar>
+                {{ item.id_tare }} - {{ item.n9meco }}
               </ion-item>
             </ion-list>
           </ion-scroll>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+            <button class="envio" ion-button block round (click)="enviarDatos()">
+              Enviar datos
+            </button>
         </ion-col>
       </ion-row>
 

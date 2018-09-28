@@ -5,7 +5,6 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Toast } from '@ionic-native/toast';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UserProvider } from '../../providers/user/user';
-import { RegistroPage } from '../../pages/registro/registro';
 
 @IonicPage()
 @Component({
@@ -47,7 +46,7 @@ export class PerfilPage {
       console.log("Respuesta de promise en PERFIL "+res);
       if(res == false){
         this.user = [];
-        this.navCtrl.push(RegistroPage);
+        this.navCtrl.push('RegistroPage');
       }else{
         console.log(res);
         this.user = res[0];
@@ -56,25 +55,17 @@ export class PerfilPage {
   }
 
   updatePerfil(){
-    let valor = this.userDB.actualizar(this.registerForm, this.user['id_user']);
-    if(valor == 1){
+    let valor = this.userDB.actualizar(this.registerForm, this.user['id_user']).then((res) =>{
+      if(valor){
         this.toast.show('Perfil actualizado correctamente.', '4000', 'center')
         .subscribe();
-    } else {
-      if(valor == 2){
+      }
+      if(!valor){
         this.toast.show('Error al actualizar el perfil.', '4000', 'center')
         .subscribe();
       }
-      if(valor == 3){
-        this.toast.show('Registrese antes de actualizar sus datos.', '4000', 'center').subscribe(
-          toast => {
-            this.user = [];
-            this.navCtrl.push(RegistroPage);
-          }
-        );
-      }
+    });
 
-    }
 
   }
 

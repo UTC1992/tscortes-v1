@@ -7,7 +7,6 @@ import { File } from '@ionic-native/file';
 import { Toast } from '@ionic-native/toast';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { TareasProvider } from '../../providers/tareas/tareas';
-import { NotificacionPage } from '../../pages/notificacion/notificacion';
 
 @IonicPage()
 @Component({
@@ -118,7 +117,7 @@ export class ActividadPage {
       .then(res => {
         console.log("Foto guardada exitosamente");
         this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
-        this.navCtrl.setRoot(NotificacionPage);
+        this.navCtrl.setRoot('NotificacionPage');
 
       });
 
@@ -130,7 +129,7 @@ export class ActividadPage {
   }
 
   actualizarTarea(){
-    let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],this.myphoto)
+    let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],"")
     .then((res) => {
       let respuesta = this.guardarFoto();
     });

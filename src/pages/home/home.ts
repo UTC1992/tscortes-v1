@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, ToastController } from 'ionic-angular';
+import {  NavController,
+          AlertController,
+          ToastController,
+        IonicPage } from 'ionic-angular';
 
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Injectable } from '@angular/core';
@@ -7,9 +10,9 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Toast } from '@ionic-native/toast';
 import 'rxjs/add/operator/toPromise';
 
-import { RegistroPage } from '../../pages/registro/registro';
 import { UserProvider } from '../../providers/user/user';
-import { PerfilPage } from '../../pages/perfil/perfil';
+
+@IonicPage()
 
 @Component({
   selector: 'page-home',
@@ -44,7 +47,7 @@ export class HomePage {
     this.userDB.getUsers().then((res) => {
       console.log("Respuesta de promise "+res);
       if(res == false){
-        this.navCtrl.push(RegistroPage);
+        this.navCtrl.push('RegistroPage');
       }else{
         console.log(res);
         this.user = res[0];
@@ -64,7 +67,7 @@ export class HomePage {
   }
 
   mostrarPerfil(){
-    this.navCtrl.push(PerfilPage);
+    this.navCtrl.push('PerfilPage');
   }
 
 /*

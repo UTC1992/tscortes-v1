@@ -3,7 +3,8 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import {  IonicApp,
           IonicErrorHandler,
           IonicModule,
-        AlertController } from 'ionic-angular';
+        AlertController,
+      IonicPage } from 'ionic-angular';
 
 import { SQLite } from '@ionic-native/sqlite';
 import { Toast } from '@ionic-native/toast';
@@ -16,14 +17,6 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { RegistroPage } from '../pages/registro/registro';
-import { ReconexionPage } from '../pages/reconexion/reconexion';
-import { NotificacionPage } from '../pages/notificacion/notificacion';
-import { CortePage } from '../pages/corte/corte';
-import { RecmanualPage } from '../pages/recmanual/recmanual';
-import { PerfilPage } from '../pages/perfil/perfil';
-import { ActividadPage } from '../pages/actividad/actividad';
 
 import { PeticionhttpProvider } from '../providers/peticionhttp/peticionhttp';
 import { DatabaseProvider } from '../providers/database/database';
@@ -33,17 +26,10 @@ import { TareasProvider } from '../providers/tareas/tareas';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 
+@IonicPage()
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    RegistroPage,
-    NotificacionPage,
-    CortePage,
-    ReconexionPage,
-    RecmanualPage,
-    PerfilPage,
-    ActividadPage
   ],
   imports: [
     BrowserModule,
@@ -56,14 +42,6 @@ import { File } from '@ionic-native/file';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    RegistroPage,
-    NotificacionPage,
-    CortePage,
-    ReconexionPage,
-    RecmanualPage,
-    PerfilPage,
-    ActividadPage
   ],
   providers: [
     StatusBar,

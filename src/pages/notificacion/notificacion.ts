@@ -8,9 +8,7 @@ import { PeticionhttpProvider } from '../../providers/peticionhttp/peticionhttp'
 import { UserProvider } from '../../providers/user/user';
 import { TareasProvider } from '../../providers/tareas/tareas';
 
-import { RegistroPage } from '../../pages/registro/registro';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ActividadPage } from '../../pages/actividad/actividad';
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -56,7 +54,7 @@ export class NotificacionPage {
     this.userDB.getUsers().then((res) => {
       console.log("Respuesta de promise "+res);
       if(res == false){
-        this.navCtrl.push(RegistroPage);
+        this.navCtrl.push('RegistroPage');
         //obtener datos del URL
 
       }else{
@@ -113,11 +111,17 @@ export class NotificacionPage {
 
    mostrarTareaNot(item: any){
     console.log(item);
-    this.navCtrl.push(ActividadPage, {'datosActividad': item});
+    this.navCtrl.push('ActividadPage', {'datosActividad': item});
 
    }
 
+   enviarDatos(){
+    this.tareas.enviarDatosHttp();
+   }
+
 }
+
+
 
 /*
   mostrarDatosJSON(){
