@@ -14,8 +14,8 @@ export class PeticionhttpProvider {
     console.log('Hello PeticionhttpProvider Provider');
   }
 
-  obtenerDatos(){
-    return this.http.get(this.baseURLApi+'/mobile/get-data/0503254849');
+  obtenerDatos(cedula: any){
+    return this.http.get(this.baseURLApi+'/mobile/get-data/'+cedula);
   }
 
 }

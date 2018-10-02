@@ -196,9 +196,32 @@ export class TareasProvider {
   }
 
   enviarDatosHttp(){
-    let tareasArray: TareaModel[] = Array<TareaModel>();
-    this.getListaTareas().then(data => {
-      console.log(data[0]['n9nomb']);
+    return new Promise((resolve, reject) =>{
+    return this.getListaTareas().then(data => {
+
+      let headers = new HttpHeaders({
+        "Accept": 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      });
+
+      return this.http.post("http://192.168.1.6/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile/update-activities", JSON.stringify(data), {headers: headers})
+        .subscribe(res => {
+          console.log("Respuesta del servidor es ==> ");
+          console.log(res);
+          resolve(res);
+        }, error => {
+          console.log(error);
+          reject(false);
+        });
+
+    });
+
+    });
+      }
+
+}
+
+/*
       for (var i = 0; i < data.length; i++) {
         //this.listaTareas[i] = data.rows.item(i).n9nomb;
 
@@ -230,23 +253,6 @@ export class TareasProvider {
 
 
       }
-
+    */
     //console.log(JSON.stringify(tareasArray));
-
-    let headers = new HttpHeaders({
-      "Accept": 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
-
-    this.http.post("http://192.168.1.6/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile/tareas", JSON.stringify(tareasArray), {headers: headers})
-      .subscribe(res => {
-        console.log(res);
-       }, error => {
-        console.log(error);
-      });
-
-    });
-  }
-
-}
 

@@ -63,9 +63,11 @@ export class NotificacionPage {
   }
 
   guardarTareas(){
-    this.peticion.obtenerDatos()
+    this.userDB.getUsers().then((res) => {
+      this.peticion.obtenerDatos(res[0]['cedula'])
       .subscribe(
         (data)=> {
+          console.log(data);
           //data => contiene el archivo JSON obtenido desde el API web
           this.tareas.saveDataJSON(data).then(response =>{
             this.ingresarItemsParaFiltrar();
@@ -73,6 +75,8 @@ export class NotificacionPage {
         },
         (error)=> {console.log(error);}
       );
+    });
+
   }
 
   ingresarItemsParaFiltrar() {
@@ -116,7 +120,13 @@ export class NotificacionPage {
    }
 
    enviarDatos(){
-    this.tareas.enviarDatosHttp();
+    this.tareas.enviarDatosHttp().then(res =>{
+      if(res){
+        this.toast.show('Actualización ==> ' + res, '5000', 'center').subscribe();
+      } else {
+        this.toast.show('Actualización ==> ' + res, '5000', 'center').subscribe();
+      }
+    });
    }
 
 }
