@@ -117,7 +117,7 @@
         <ion-item>
           <label class="labelAux">Coordenadas: </label>
           <div text-wrap class="labelDatos">
-            {{ dataActividad.cucoon }} - {{ dataActividad.cucooe }}
+            {{ dataActividad.latitud }} || {{ dataActividad.longitud }}
           </div>
         </ion-item>
       </ion-col>
@@ -179,9 +179,6 @@
           <ion-label class="labelAux">Observación: </ion-label>
           <br>
           <ion-textarea formControlName="observacion" placeholder="Inngrese la Observación aquí" rows="3"></ion-textarea>
-        </ion-item>
-        <ion-item *ngIf="tareaForm.get('observacion').errors && tareaForm.get('observacion').dirty">
-          <p color="danger" ion-text *ngIf="tareaForm.get('observacion').hasError('required')">Campo requerido</p>
         </ion-item>
       </ion-col>
     </ion-row>

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,
+   AlertController,
+   LoadingController } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
@@ -25,6 +27,8 @@ export class ActividadPage {
   tareaForm: FormGroup;
   nombreFoto;
 
+  loading;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -33,7 +37,8 @@ export class ActividadPage {
     private toast: Toast,
     public formBuilder: FormBuilder,
     private alert: AlertController,
-    private tareaService: TareasProvider
+    private tareaService: TareasProvider,
+    public loadingCtrl: LoadingController
   ) {
     this.dataActividad = this.navParams.get('datosActividad');
     console.log(this.dataActividad);
@@ -42,9 +47,10 @@ export class ActividadPage {
     this.tareaForm = this.formBuilder.group({
       lectura: [this.dataActividad['n9leco'], [Validators.required]],
       foto: [this.dataActividad['n9meco']+".jpeg", [Validators.required] ],
-      observacion: [this.dataActividad['observacion'],[Validators.required]],
-
+      observacion: []
     });
+
+    // observacion: [this.dataActividad['observacion'],[Validators.required]],
 
   }
 
@@ -96,6 +102,8 @@ export class ActividadPage {
   }
 
   guardarFoto(){
+
+
     console.log('Guardando fotos');
     console.log(this.myphoto);
     var fecha = new Date();
@@ -115,8 +123,9 @@ export class ActividadPage {
       let blob = this.b64toBlob(dataAux, 'image/jpeg');
       this.file.writeFile(data.toURL(), nombreFoto, blob ,{replace: true})
       .then(res => {
+        this.loading.dismiss();
         console.log("Foto guardada exitosamente");
-        this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
+        //this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
         this.navCtrl.setRoot('NotificacionPage');
 
       });
@@ -129,6 +138,12 @@ export class ActividadPage {
   }
 
   actualizarTarea(){
+
+    this.loading = this.loadingCtrl.create({
+      content: 'Guardando datos...'
+    });
+    this.loading.present();
+
     let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],"")
     .then((res) => {
       let respuesta = this.guardarFoto();

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import {  IonicPage, NavController,
+          NavParams, AlertController,
+          LoadingController } from 'ionic-angular';
 
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Toast } from '@ionic-native/toast';
 
 import { PeticionhttpProvider } from '../../providers/peticionhttp/peticionhttp';
@@ -26,17 +27,30 @@ export class NotificacionPage {
   searchControl: FormControl;
   searching: any = false;
 
+  estadoTecnicoGet: boolean;
+  estadoTecnicoPost: boolean;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public peticion: PeticionhttpProvider,
-    private sqlite: SQLite,
     private toast: Toast,
     public userDB: UserProvider,
-    public tareas: TareasProvider
+    public tareas: TareasProvider,
+    public loadingCtrl: LoadingController
   ) {
 
     this.searchControl = new FormControl();
+    this.estadoTecnicoPost = true;
+
+
+  }
+
+  presentLoadingDefault() {
+
+
+
+
 
   }
 
@@ -52,6 +66,17 @@ export class NotificacionPage {
 
   getContarUsers(){
     this.userDB.getUsers().then((res) => {
+
+      //console.log(res[0]['estado']);
+      if(res[0]['estado'] == "Pasivo" || res[0]['estado'] == null){
+        //console.log('tecnico pasivo o null');
+        this.estadoTecnicoGet = true;
+      }
+      if(res[0]['estado'] == "Activo"){
+        //console.log('tecnico activo');
+        this.estadoTecnicoGet = false;
+      }
+
       console.log("Respuesta de promise "+res);
       if(res == false){
         this.navCtrl.push('RegistroPage');
@@ -63,14 +88,36 @@ export class NotificacionPage {
   }
 
   guardarTareas(){
+    //mostrar
+    let loading = this.loadingCtrl.create({
+      content: 'Espere por favor...'
+    });
+    loading.present();
+
     this.userDB.getUsers().then((res) => {
       this.peticion.obtenerDatos(res[0]['cedula'])
       .subscribe(
         (data)=> {
           console.log(data);
+
+
+
           //data => contiene el archivo JSON obtenido desde el API web
           this.tareas.saveDataJSON(data).then(response =>{
-            this.ingresarItemsParaFiltrar();
+
+            setTimeout(() => {
+              loading.dismiss();
+            }, 0);
+
+            this.userDB.updateEstado('Activo', res[0]['id_user']).then(resAux =>{
+              if(resAux){
+                this.estadoTecnicoGet=false;
+                this.toast.show('Técnico Activo', '5000', 'center').subscribe();
+                this.ingresarItemsParaFiltrar();
+              }
+            }).catch(e => {
+              this.toast.show('Error => '+ e, '5000', 'center').subscribe();
+            });
           });
         },
         (error)=> {console.log(error);}
@@ -120,12 +167,23 @@ export class NotificacionPage {
    }
 
    enviarDatos(){
+    let loading = this.loadingCtrl.create({
+      content: 'Espere por favor...',
+    });
+    loading.present();
+
+    this.estadoTecnicoPost = false;
     this.tareas.enviarDatosHttp().then(res =>{
+
       if(res){
-        this.toast.show('Actualización ==> ' + res, '5000', 'center').subscribe();
+        loading.dismiss();
+        this.estadoTecnicoPost = true;
+        this.toast.show('Éxito al eviar los datos', '5000', 'center').subscribe();
       } else {
-        this.toast.show('Actualización ==> ' + res, '5000', 'center').subscribe();
+        this.toast.show('Nó se enviaron los datos', '5000', 'center').subscribe();
       }
+    }).catch(e => {
+      this.toast.show(e,'5000', 'center').subscribe();
     });
    }
 
@@ -134,6 +192,19 @@ export class NotificacionPage {
 
 
 /*
+
+
+
+      //actualizar el estado para evitar un nuevo envio
+      this.userDB.getUsers().then((res) => {
+        this.userDB.updateEstado('Pasivo', res[0]['id_user']).then(resAux =>{
+          this.ingresarItemsParaFiltrar();
+          if(resAux){
+            this.toast.show('Técnico Pasivo', '5000', 'center').subscribe();
+          }
+        });
+      });
+
   mostrarDatosJSON(){
     this.tareas.getTareas().then( data => {
       if(data != null){

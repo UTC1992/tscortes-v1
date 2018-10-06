@@ -29,7 +29,8 @@ export class UserProvider {
                     +" id_user INTEGER PRIMARY KEY AUTOINCREMENT,"
                     +" cedula TEXT,"
                     +" nombres TEXT,"
-                    +" apellidos TEXT"
+                    +" apellidos TEXT,"
+                    +" estado TEXT"
                     + ");"
                     , [])
         .then(() => console.log('Tabla Users Creada'))
@@ -60,7 +61,8 @@ export class UserProvider {
                                   id_user: data.rows.item(i).id_user,
                                   cedula: data.rows.item(i).cedula,
                                   nombres: data.rows.item(i).nombres,
-                                  apellidos: data.rows.item(i).apellidos
+                                  apellidos: data.rows.item(i).apellidos,
+                                  estado: data.rows.item(i).estado
                                 })
             }
             if(this.users.length > 0){
@@ -133,6 +135,32 @@ export class UserProvider {
       });
     }
 
+  }
+
+  updateEstado(estado: any, id: number){
+    if(id > 0){
+      return new Promise((resolve, reject) => {
+        return this.openDatabase().then((res) =>{
+          if(res){
+            return this.database.executeSql(
+              'UPDATE users SET estado=? WHERE id_user=?'
+              ,[estado,id])
+            .then(response =>{
+              console.log("ESTADO ACTUALIZADO");
+              resolve(true);
+            })
+            .catch(e =>{
+              console.log(e);
+              reject(false);
+            })
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          reject(false);
+        });
+      });
+    }
   }
 
 }

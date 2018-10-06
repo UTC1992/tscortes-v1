@@ -46,6 +46,8 @@ export class TareasProvider {
                     +" cusecu TEXT,"
                     +" cucoon TEXT,"
                     +" cucooe TEXT,"
+                    +" latitud TEXT,"
+                    +" longitud TEXT,"
                     +" foto TEXT,"
                     +" rutaimg TEXT,"
                     +" observacion TEXT,"
@@ -100,6 +102,8 @@ export class TareasProvider {
                                       cusecu: data.rows.item(i).cusecu,
                                       cucoon: data.rows.item(i).cucoon,
                                       cucooe: data.rows.item(i).cucooe,
+                                      latitud: data.rows.item(i).latitud,
+                                      longitud: data.rows.item(i).longitud,
                                       foto: data.rows.item(i).foto,
                                       rutaimg: data.rows.item(i).rutaimg,
                                       observacion: data.rows.item(i).observacion,
@@ -136,8 +140,8 @@ export class TareasProvider {
                                   +" ( id_act, n9cono, n9cocu, n9cose, n9coru, n9meco,"
                                   +" n9leco, n9cocl, n9nomb, n9refe, cusecu, cucoon, foto, "
                                   +" observacion, fecha, hora, estado, cedula_emp, id_tecn,"
-                                  +" n9plve, n9vaca, cucooe) "
-                                  +" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                                  +" n9plve, n9vaca, cucooe, latitud, longitud) "
+                                  +" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     [
                       dataJSON[i].id_act, dataJSON[i].n9cono, dataJSON[i].n9cocu,
                       dataJSON[i].n9cose, dataJSON[i].n9coru, dataJSON[i].n9meco,
@@ -146,7 +150,8 @@ export class TareasProvider {
                       dataJSON[i].foto, dataJSON[i].observacion, dataJSON[i].fecha,
                       dataJSON[i].hora, dataJSON[i].estado, dataJSON[i].cedula_emp,
                       dataJSON[i].id_tecn,
-                      dataJSON[i].n9plve, dataJSON[i].n9vaca, dataJSON[i].cucooe
+                      dataJSON[i].n9plve, dataJSON[i].n9vaca, dataJSON[i].cucooe,
+                      dataJSON[i].latitud, dataJSON[i].longitud
                     ])
           .then(res => {
             console.log(res);
@@ -203,6 +208,8 @@ export class TareasProvider {
         "Accept": 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded'
       });
+
+      //console.log(JSON.stringify(data));
 
       return this.http.post("http://192.168.1.6/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile/update-activities", JSON.stringify(data), {headers: headers})
         .subscribe(res => {

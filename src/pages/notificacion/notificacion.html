@@ -13,7 +13,7 @@
 
       <ion-row>
         <ion-col>
-            <button ion-button block round (click)="guardarTareas()">
+            <button [disabled]='!estadoTecnicoGet' ion-button block round (click)="guardarTareas()">
               Obtener y Guardar Tareas
             </button>
         </ion-col>
@@ -50,7 +50,7 @@
 
       <ion-row>
         <ion-col>
-            <button class="envio" ion-button block round (click)="enviarDatos()">
+            <button [disabled]='!estadoTecnicoPost' class="envio" ion-button block round (click)="enviarDatos()">
               Enviar datos
             </button>
         </ion-col>
