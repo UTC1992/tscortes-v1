@@ -224,8 +224,45 @@ export class TareasProvider {
     });
 
     });
-      }
+  }
 
+  public getCoordenadas(): Promise<string[]>{
+    return new Promise((resolve, reject)=>{
+      return this.openDatabase().then((res) => {
+        console.log("Respuesta de las promesas "+res);
+        let tipoActividad1 = '10';
+        let tipoActividad2 = '010';
+        if(res){
+          return this.database.executeSql('SELECT * FROM tareas WHERE n9cono=? or n9cono=? ORDER BY id_tare ASC',
+          [tipoActividad1, tipoActividad2])
+          .then((data) => {
+            console.log("Consulta realizada a TAREAS");
+            this.listaTareas = [];
+            for (var i = 0; i < data.rows.length; i++) {
+              //this.listaTareas[i] = data.rows.item(i).n9nomb;
+              this.listaTareas.push({
+                                      n9meco: data.rows.item(i).n9meco,
+                                      latitud: data.rows.item(i).latitud,
+                                      longitud: data.rows.item(i).longitud,
+
+                                    });
+            }
+
+            if(this.listaTareas.length > 0){
+              resolve(this.listaTareas);
+            } else {
+              resolve(this.listaTareas);
+            }
+
+          }, (error) =>{
+            console.log("ERROR en consulta de TAREAS: " + error);
+
+            reject(false);
+          });
+        }
+      });
+    })
+  }
 }
 
 /*

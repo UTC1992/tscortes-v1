@@ -11,6 +11,8 @@ import { TareasProvider } from '../../providers/tareas/tareas';
 
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
+import { File } from '@ionic-native/file';
+
 import 'rxjs/add/operator/debounceTime';
 
 @IonicPage()
@@ -30,6 +32,12 @@ export class NotificacionPage {
   estadoTecnicoGet: boolean;
   estadoTecnicoPost: boolean;
 
+  //creacion de archivo GPX
+  fileName: string;
+  fileContenido: string;
+  dirName: string;
+  dirPath;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -37,7 +45,8 @@ export class NotificacionPage {
     private toast: Toast,
     public userDB: UserProvider,
     public tareas: TareasProvider,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public file: File
   ) {
 
     this.searchControl = new FormControl();
@@ -47,10 +56,6 @@ export class NotificacionPage {
   }
 
   presentLoadingDefault() {
-
-
-
-
 
   }
 
@@ -99,22 +104,21 @@ export class NotificacionPage {
       .subscribe(
         (data)=> {
           console.log(data);
-
-
-
           //data => contiene el archivo JSON obtenido desde el API web
           this.tareas.saveDataJSON(data).then(response =>{
-
-            setTimeout(() => {
-              loading.dismiss();
-            }, 0);
-
             this.userDB.updateEstado('Activo', res[0]['id_user']).then(resAux =>{
               if(resAux){
                 this.estadoTecnicoGet=false;
                 this.toast.show('Técnico Activo', '5000', 'center').subscribe();
                 this.ingresarItemsParaFiltrar();
               }
+
+
+              setTimeout(() => {
+                loading.dismiss();
+              }, 5000);
+
+
             }).catch(e => {
               this.toast.show('Error => '+ e, '5000', 'center').subscribe();
             });
@@ -185,6 +189,56 @@ export class NotificacionPage {
     }).catch(e => {
       this.toast.show(e,'5000', 'center').subscribe();
     });
+   }
+
+   generarGPX(){
+    this.fileName='coordenadas.gpx';
+    this.dirName='coordenadasGPX';
+
+    let result = this.file.createDir(this.file.externalRootDirectory, this.dirName, true);
+    result.then(data => {
+      this.dirPath = data.toURL();
+
+      this.tareas.getCoordenadas().then(data =>{
+        let headerGPX = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
+                      +" <gpx 	version='1.1'"
+                      +" creator='OsmAnd' xmlns='http://www.topografix.com/GPX/1/1'"
+                      +" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'"
+                      +" xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>";
+      let bodyGPX = "";
+        if(data.length > 0){
+          console.log(data[0]);
+          for (let i = 0; i < 100; i++) {
+
+            bodyGPX = bodyGPX + "<wpt lat='"+data[i]['latitud']+"' lon='"+data[i]['longitud']+"'>"
+                        +" <name>"+data[i]['n9meco']+"</name>"
+                        +" <extensions>"
+                        +" <color>#2196f3</color>"
+                        +" </extensions>"
+                        +" </wpt>";
+
+          }
+        }
+
+        let footGPX="</gpx>";
+
+      let gpxFile = headerGPX+bodyGPX+footGPX;
+
+      console.log(gpxFile);
+
+      this.file.writeFile(this.dirPath, this.fileName, gpxFile, {replace:true});
+
+      });
+
+
+    });
+
+
+
+
+
+
+
    }
 
 }

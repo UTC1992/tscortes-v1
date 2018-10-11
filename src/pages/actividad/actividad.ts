@@ -102,8 +102,6 @@ export class ActividadPage {
   }
 
   guardarFoto(){
-
-
     console.log('Guardando fotos');
     console.log(this.myphoto);
     var fecha = new Date();
@@ -140,7 +138,8 @@ export class ActividadPage {
   actualizarTarea(){
 
     this.loading = this.loadingCtrl.create({
-      content: 'Guardando datos...'
+      content: 'Guardando datos...',
+      duration: 5000
     });
     this.loading.present();
 
