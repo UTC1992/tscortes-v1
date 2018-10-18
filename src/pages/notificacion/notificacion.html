@@ -23,8 +23,11 @@
       </ion-row>
 
       <ion-row>
-        <ion-col>
-
+        <ion-col class="info">
+          <label>Info: </label>
+          <label>{{ actHechas }} Hechas</label>
+          <label>-</label>
+          <label>{{ actFaltantes }} Faltantes</label>
         </ion-col>
       </ion-row>
 
@@ -37,9 +40,10 @@
            [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
           <ion-spinner *ngIf="searching" class="spinner-container"></ion-spinner>
 
-          <ion-scroll scrollY="true" style="height:250px;">
+          <ion-scroll scrollY="true" style="height:230px;">
             <ion-list inset>
-              <ion-item ion-item *ngFor="let item of items " class="medidorItem" (click)="mostrarTareaNot(item)" icon-start>
+              <ion-item ion-item *ngFor="let item of items "
+               class="medidorItem" (click)="mostrarTareaNot(item)" icon-start>
                 <ion-avatar item-start>
                   <img src="assets/imgs/medidorluz.jpg">
                 </ion-avatar>
@@ -52,7 +56,7 @@
 
       <ion-row>
         <ion-col>
-            <button [disabled]='!estadoTecnicoPost' class="envio" ion-button block round (click)="enviarDatos()">
+            <button [disabled]='!estadoTecnicoEnvio' class="envio" ion-button block round (click)="enviarDatos()">
               Enviar datos
             </button>
         </ion-col>

@@ -30,13 +30,17 @@ export class NotificacionPage {
   searching: any = false;
 
   estadoTecnicoGet: boolean;
-  estadoTecnicoPost: boolean;
+  estadoTecnicoEnvio: boolean;
 
   //creacion de archivo GPX
   fileName: string;
   fileContenido: string;
   dirName: string;
   dirPath;
+
+  //info de actividades hechas y faltantes
+  actFaltantes: number;
+  actHechas: number;
 
   constructor(
     public navCtrl: NavController,
@@ -46,11 +50,11 @@ export class NotificacionPage {
     public userDB: UserProvider,
     public tareas: TareasProvider,
     public loadingCtrl: LoadingController,
-    public file: File
+    public file: File,
   ) {
 
     this.searchControl = new FormControl();
-    this.estadoTecnicoPost = true;
+    this.estadoTecnicoEnvio = true;
 
 
   }
@@ -108,17 +112,15 @@ export class NotificacionPage {
           this.tareas.saveDataJSON(data).then(response =>{
             this.userDB.updateEstado('Activo', res[0]['id_user']).then(resAux =>{
               if(resAux){
-                this.estadoTecnicoGet=false;
-                this.toast.show('Técnico Activo', '5000', 'center').subscribe();
-                this.ingresarItemsParaFiltrar();
+                setTimeout(() => {
+                  loading.dismiss().then(r =>{
+                    this.estadoTecnicoGet=false;
+                    this.toast.show('Técnico activo', '5000', 'center').subscribe();
+                    this.ingresarItemsParaFiltrar();
+                  });
+                }, 5000);
+
               }
-
-
-              setTimeout(() => {
-                loading.dismiss();
-              }, 5000);
-
-
             }).catch(e => {
               this.toast.show('Error => '+ e, '5000', 'center').subscribe();
             });
@@ -135,6 +137,7 @@ export class NotificacionPage {
       if(data.length > 0){
         console.log(data);
         this.items = data;
+
         //filtrara y buscar datos de la lista
         this.items = this.items.filter((item) => {
           return item['n9meco'].toLowerCase().indexOf(
@@ -155,7 +158,18 @@ export class NotificacionPage {
             }
         */
       }
+      this.infoActividadesHechasFaltantes();
+    });
 
+  }
+
+  infoActividadesHechasFaltantes(){
+    this.tareas.getListaTareas().then(data1 =>{
+      this.tareas.contarActividadesHechasYFaltantes().then(data2 =>{
+        //faltantes
+        this.actFaltantes = data1.length;
+        this.actHechas = data2 - this.actFaltantes;
+      });
     });
 
   }
@@ -165,40 +179,63 @@ export class NotificacionPage {
    }
 
    mostrarTareaNot(item: any){
-    console.log(item);
-    this.navCtrl.push('ActividadPage', {'datosActividad': item});
+    //console.log(item);
+    let loading = this.loadingCtrl.create({
+      content: 'Obtener datos...'
+    });
+    loading.present();
+    setTimeout(() => {
+      loading.dismiss();
+      this.navCtrl.push('ActividadPage', {'datosActividad': item});
+    }, 2000);
+
 
    }
 
    enviarDatos(){
+     //desactivar boton
+    this.estadoTecnicoEnvio = false;
     let loading = this.loadingCtrl.create({
-      content: 'Espere por favor...',
+      content: 'Enviando datos...'
     });
     loading.present();
 
-    this.estadoTecnicoPost = false;
     this.tareas.enviarDatosHttp().then(res =>{
-
       if(res){
-        loading.dismiss();
-        this.estadoTecnicoPost = true;
-        this.toast.show('Éxito al eviar los datos', '5000', 'center').subscribe();
+        setTimeout(() => {
+          loading.dismiss().then(r =>{
+            this.estadoTecnicoEnvio = true;
+            this.toast.show('Éxito al eviar los datos', '5000', 'center').subscribe();
+          });
+        }, 5000);
+
       } else {
-        this.toast.show('Nó se enviaron los datos', '5000', 'center').subscribe();
+        setTimeout(() => {
+          loading.dismiss().then(r =>{
+            this.estadoTecnicoEnvio = true;
+            this.toast.show('Nó se enviaron los datos', '5000', 'center').subscribe();
+          });
+        }, 5000);
       }
     }).catch(e => {
-      this.toast.show(e,'5000', 'center').subscribe();
+      this.toast.show('Error al enviar los datos','5000', 'center').subscribe();
     });
+
    }
 
    generarGPX(){
+     //cargando
+    let loading = this.loadingCtrl.create({
+      content: 'Creando ruta...'
+    });
+    loading.present();
+
     this.fileName='coordenadas.gpx';
     this.dirName='coordenadasGPX';
 
     let result = this.file.createDir(this.file.externalRootDirectory, this.dirName, true);
     result.then(data => {
       this.dirPath = data.toURL();
-
       this.tareas.getCoordenadas().then(data =>{
         let headerGPX = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
                       +" <gpx 	version='1.1'"
@@ -208,7 +245,7 @@ export class NotificacionPage {
       let bodyGPX = "";
         if(data.length > 0){
           console.log(data[0]);
-          for (let i = 0; i < 100; i++) {
+          for (let i = 0; i < data.length; i++) {
 
             bodyGPX = bodyGPX + "<wpt lat='"+data[i]['latitud']+"' lon='"+data[i]['longitud']+"'>"
                         +" <name>"+data[i]['n9meco']+"</name>"
@@ -220,24 +257,22 @@ export class NotificacionPage {
           }
         }
 
-        let footGPX="</gpx>";
+      let footGPX="</gpx>";
 
       let gpxFile = headerGPX+bodyGPX+footGPX;
-
-      console.log(gpxFile);
-
-      this.file.writeFile(this.dirPath, this.fileName, gpxFile, {replace:true});
+      //console.log(gpxFile);
+      this.file.writeFile(this.dirPath, this.fileName, gpxFile, {replace:true}).then(r =>{
+        setTimeout(() => {
+          loading.dismiss().then(res =>{
+            this.toast.show('Ruta creada con éxito', '5000', 'center').subscribe();
+          });
+        }, 5000);
+      });
 
       });
 
 
     });
-
-
-
-
-
-
 
    }
 
@@ -246,8 +281,6 @@ export class NotificacionPage {
 
 
 /*
-
-
 
       //actualizar el estado para evitar un nuevo envio
       this.userDB.getUsers().then((res) => {

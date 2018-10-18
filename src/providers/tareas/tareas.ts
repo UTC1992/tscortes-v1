@@ -85,34 +85,99 @@ export class TareasProvider {
             this.listaTareas = [];
             for (var i = 0; i < data.rows.length; i++) {
               //this.listaTareas[i] = data.rows.item(i).n9nomb;
-              this.listaTareas.push({
-                                      id_tare: data.rows.item(i).id_tare,
-                                      id_act: data.rows.item(i).id_act,
-                                      n9cono: data.rows.item(i).n9cono,
-                                      n9cocu: data.rows.item(i).n9cocu,
-                                      n9cose: data.rows.item(i).n9cose,
-                                      n9coru: data.rows.item(i).n9coru,
-                                      n9plve: data.rows.item(i).n9plve,
-                                      n9vaca: data.rows.item(i).n9vaca,
-                                      n9meco: data.rows.item(i).n9meco,
-                                      n9leco: data.rows.item(i).n9leco,
-                                      n9cocl: data.rows.item(i).n9cocl,
-                                      n9nomb: data.rows.item(i).n9nomb,
-                                      n9refe: data.rows.item(i).n9refe,
-                                      cusecu: data.rows.item(i).cusecu,
-                                      cucoon: data.rows.item(i).cucoon,
-                                      cucooe: data.rows.item(i).cucooe,
-                                      latitud: data.rows.item(i).latitud,
-                                      longitud: data.rows.item(i).longitud,
-                                      foto: data.rows.item(i).foto,
-                                      rutaimg: data.rows.item(i).rutaimg,
-                                      observacion: data.rows.item(i).observacion,
-                                      fecha: data.rows.item(i).fecha,
-                                      hora: data.rows.item(i).hora,
-                                      estado: data.rows.item(i).estado,
-                                      cedula_emp: data.rows.item(i).cedula_emp,
-                                      id_tecn: data.rows.item(i).id_tecn
-                                    });
+              if(data.rows.item(i).n9leco == 0 || data.rows.item(i).n9leco == ''
+              || data.rows.item(i).n9leco == null ){
+                this.listaTareas.push({
+                  id_tare: data.rows.item(i).id_tare,
+                  id_act: data.rows.item(i).id_act,
+                  n9cono: data.rows.item(i).n9cono,
+                  n9cocu: data.rows.item(i).n9cocu,
+                  n9cose: data.rows.item(i).n9cose,
+                  n9coru: data.rows.item(i).n9coru,
+                  n9plve: data.rows.item(i).n9plve,
+                  n9vaca: data.rows.item(i).n9vaca,
+                  n9meco: data.rows.item(i).n9meco,
+                  n9leco: data.rows.item(i).n9leco,
+                  n9cocl: data.rows.item(i).n9cocl,
+                  n9nomb: data.rows.item(i).n9nomb,
+                  n9refe: data.rows.item(i).n9refe,
+                  cusecu: data.rows.item(i).cusecu,
+                  cucoon: data.rows.item(i).cucoon,
+                  cucooe: data.rows.item(i).cucooe,
+                  latitud: data.rows.item(i).latitud,
+                  longitud: data.rows.item(i).longitud,
+                  foto: data.rows.item(i).foto,
+                  rutaimg: data.rows.item(i).rutaimg,
+                  observacion: data.rows.item(i).observacion,
+                  fecha: data.rows.item(i).fecha,
+                  hora: data.rows.item(i).hora,
+                  estado: data.rows.item(i).estado,
+                  cedula_emp: data.rows.item(i).cedula_emp,
+                  id_tecn: data.rows.item(i).id_tecn
+                });
+              }
+
+            }
+            //console.log(this.listaTareas);
+            if(this.listaTareas.length > 0){
+              resolve(this.listaTareas);
+            } else {
+              resolve(this.listaTareas);
+            }
+
+          }, (error) =>{
+            console.log("ERROR en consulta de TAREAS: " + error);
+
+            reject(false);
+          });
+        }
+      });
+    })
+  }
+
+  public getListaTareasParaEnviar(): Promise<string[]>{
+    return new Promise((resolve, reject)=>{
+      return this.openDatabase().then((res) => {
+        console.log("Respuesta de las promesas "+res);
+        let tipoActividad1 = '10';
+        let tipoActividad2 = '010';
+        if(res){
+          return this.database.executeSql('SELECT * FROM tareas WHERE n9cono=? or n9cono=? ORDER BY id_tare ASC',
+          [tipoActividad1, tipoActividad2])
+          .then((data) => {
+            console.log("Consulta realizada a TAREAS");
+            this.listaTareas = [];
+            for (var i = 0; i < data.rows.length; i++) {
+              //this.listaTareas[i] = data.rows.item(i).n9nomb;
+                this.listaTareas.push({
+                  id_tare: data.rows.item(i).id_tare,
+                  id_act: data.rows.item(i).id_act,
+                  n9cono: data.rows.item(i).n9cono,
+                  n9cocu: data.rows.item(i).n9cocu,
+                  n9cose: data.rows.item(i).n9cose,
+                  n9coru: data.rows.item(i).n9coru,
+                  n9plve: data.rows.item(i).n9plve,
+                  n9vaca: data.rows.item(i).n9vaca,
+                  n9meco: data.rows.item(i).n9meco,
+                  n9leco: data.rows.item(i).n9leco,
+                  n9cocl: data.rows.item(i).n9cocl,
+                  n9nomb: data.rows.item(i).n9nomb,
+                  n9refe: data.rows.item(i).n9refe,
+                  cusecu: data.rows.item(i).cusecu,
+                  cucoon: data.rows.item(i).cucoon,
+                  cucooe: data.rows.item(i).cucooe,
+                  latitud: data.rows.item(i).latitud,
+                  longitud: data.rows.item(i).longitud,
+                  foto: data.rows.item(i).foto,
+                  rutaimg: data.rows.item(i).rutaimg,
+                  observacion: data.rows.item(i).observacion,
+                  fecha: data.rows.item(i).fecha,
+                  hora: data.rows.item(i).hora,
+                  estado: data.rows.item(i).estado,
+                  cedula_emp: data.rows.item(i).cedula_emp,
+                  id_tecn: data.rows.item(i).id_tecn
+                });
+
             }
 
             if(this.listaTareas.length > 0){
@@ -129,6 +194,21 @@ export class TareasProvider {
         }
       });
     })
+  }
+
+  contarActividadesHechasYFaltantes(): Promise<number>{
+    return new Promise((resolve, reject) =>{
+      return this.openDatabase().then((res) => {
+        return this.database.executeSql("SELECT COUNT(*) as 'actTotal' FROM tareas",
+        []).then((data) =>{
+          console.log("Total de tareas obtenidas");
+          console.log(data.rows.item(0).actTotal);
+          resolve(data.rows.item(0).actTotal);
+        }).catch(error =>{
+          reject(false);
+        });
+      });
+    });
   }
 
   saveDataJSON(dataJSON) {
@@ -202,7 +282,7 @@ export class TareasProvider {
 
   enviarDatosHttp(){
     return new Promise((resolve, reject) =>{
-    return this.getListaTareas().then(data => {
+    return this.getListaTareasParaEnviar().then(data => {
 
       let headers = new HttpHeaders({
         "Accept": 'application/json',
@@ -211,7 +291,7 @@ export class TareasProvider {
 
       //console.log(JSON.stringify(data));
 
-      return this.http.post("http://192.168.1.6/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile/update-activities", JSON.stringify(data), {headers: headers})
+      return this.http.post("http://192.168.1.4/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile/update-activities", JSON.stringify(data), {headers: headers})
         .subscribe(res => {
           console.log("Respuesta del servidor es ==> ");
           console.log(res);

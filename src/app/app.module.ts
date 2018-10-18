@@ -55,7 +55,7 @@ import { File } from '@ionic-native/file';
     UserProvider,
     TareasProvider,
     Camera,
-    File
+    File,
 
   ]
 })
