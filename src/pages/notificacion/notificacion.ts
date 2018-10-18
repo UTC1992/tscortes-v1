@@ -184,12 +184,8 @@ export class NotificacionPage {
       content: 'Obtener datos...'
     });
     loading.present();
-    setTimeout(() => {
-      loading.dismiss();
-      this.navCtrl.push('ActividadPage', {'datosActividad': item});
-    }, 2000);
-
-
+    loading.dismiss();
+    this.navCtrl.push('ActividadPage', {'datosActividad': item});
    }
 
    enviarDatos(){
@@ -207,7 +203,7 @@ export class NotificacionPage {
             this.estadoTecnicoEnvio = true;
             this.toast.show('Éxito al eviar los datos', '5000', 'center').subscribe();
           });
-        }, 5000);
+        }, 0);
 
       } else {
         setTimeout(() => {
@@ -215,7 +211,7 @@ export class NotificacionPage {
             this.estadoTecnicoEnvio = true;
             this.toast.show('Nó se enviaron los datos', '5000', 'center').subscribe();
           });
-        }, 5000);
+        }, 0);
       }
     }).catch(e => {
       this.toast.show('Error al enviar los datos','5000', 'center').subscribe();
@@ -266,7 +262,7 @@ export class NotificacionPage {
           loading.dismiss().then(res =>{
             this.toast.show('Ruta creada con éxito', '5000', 'center').subscribe();
           });
-        }, 5000);
+        }, 0);
       });
 
       });

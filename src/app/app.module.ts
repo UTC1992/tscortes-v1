@@ -25,6 +25,7 @@ import { TareasProvider } from '../providers/tareas/tareas';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
+import { RecmanualProvider } from '../providers/recmanual/recmanual';
 
 @IonicPage()
 @NgModule({
@@ -56,6 +57,7 @@ import { File } from '@ionic-native/file';
     TareasProvider,
     Camera,
     File,
+    RecmanualProvider,
 
   ]
 })
