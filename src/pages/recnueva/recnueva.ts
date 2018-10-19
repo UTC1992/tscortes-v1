@@ -129,6 +129,7 @@ export class RecnuevaPage {
   }
 
   guardarRecManual(){
+    this.registerForm.value.observacion = this.valorObservacion;
     this.loading = this.loadingCtrl.create({
       content: 'Guardando datos...'
     });

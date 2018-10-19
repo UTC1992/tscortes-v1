@@ -9,6 +9,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 
 import { RecmanualProvider } from '../../providers/recmanual/recmanual';
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -43,11 +44,13 @@ export class RecmanualeditPage {
     public file: File,
     public loadingCtrl: LoadingController,
     public recmanualDB: RecmanualProvider,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public userDB: UserProvider
+
   ) {
 
     this.dataRecManual = this.navParams.get('datosRecManual');
-    console.log(this.dataRecManual);
+    console.log(this.dataRecManual['observacion']);
     this.valorObservacion = this.dataRecManual['observacion'];
 
     //formulario para validacion
@@ -139,14 +142,15 @@ export class RecmanualeditPage {
   }
 
   guardarRecManual(){
+    this.registerForm.value.observacion = this.valorObservacion;
     this.loading = this.loadingCtrl.create({
       content: 'Guardando datos...'
     });
     this.loading.present();
 
-    let valor = this.recmanualDB.insert(this.registerForm)
+    this.recmanualDB.update(this.registerForm,this.dataRecManual['id_recm'])
     .then((res) => {
-      let respuesta = this.guardarFoto();
+      this.guardarFoto();
     });
   }
 
