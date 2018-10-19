@@ -1,3 +1,52 @@
-page-recmanualedit {
+.md,
+.ios,
+.wp {
+  .custom-alert-danger {
+    > div{// if you don't use .md, .ios, .mp initially, you'd have to use !important here.
+
+    }
+  }
+  .alert-button-group{
+  }
+  .alert-button{
+  }
+
+  .alert-radio-label{
+    white-space: normal;
+  }
 
 }
+
+page-recmanualedit {
+  .labelAux{
+    color: black;
+    font-weight: bold;
+    font-size: 12pt;
+  }
+
+  .labelDatos{
+    font-size: 12pt;
+    color: black;
+  }
+
+  .label-md{
+    color: black;
+  }
+
+  .observacionText{
+    text-align: justify;
+  }
+
+  .btnObservacion{
+    background: chocolate;
+
+  }
+
+  .icon{
+    margin-right: 5px;
+  }
+
+
+
+}
+

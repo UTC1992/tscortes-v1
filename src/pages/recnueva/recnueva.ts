@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController,
-        NavParams,
+        NavParams, AlertController,
         LoadingController  } from 'ionic-angular';
 
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
@@ -26,6 +26,9 @@ export class RecnuevaPage {
 
   loading;
 
+  //observaciones
+  valorObservacion;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -33,7 +36,8 @@ export class RecnuevaPage {
     private camera: Camera,
     public file: File,
     public loadingCtrl: LoadingController,
-    public recmanualDB: RecmanualProvider
+    public recmanualDB: RecmanualProvider,
+    public alertCtrl: AlertController
   ){
 
     //formulario para validacion
@@ -41,7 +45,7 @@ export class RecnuevaPage {
       medidor: ['', [Validators.required] ],
       lectura: ['', [Validators.required] ],
       foto: ['', ],
-      observacion: ['', ],
+      observacion: [this.valorObservacion, ],
       fecha: [this.fechaActual+"", ],
 
     });
@@ -139,6 +143,45 @@ export class RecnuevaPage {
 
   descartarFoto(){
     this.myphoto = "";
+  }
+
+  opcionesObservacion(){
+    let alert = this.alertCtrl.create({
+      cssClass: 'custom-alert-danger'
+    });
+    alert.setTitle('Elija una opción:');
+
+    alert.addInput({
+      type: 'radio',
+      label: 'El domicilio se encuentra desabitado hola mundo hola mundo hola mundo hola mundo hola mundo hola mundo',
+      value: 'El domicilio se encuentra desabitado hola mundo hola mundo hola mundo hola mundo hola mundo hola mundo',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Perro Bravo',
+      value: 'Perro Bravo',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Perro Bravo',
+      value: 'Perro Bravo',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Perro Bravo',
+      value: 'Perro Bravo',
+      checked: false
+    });
+
+    alert.addButton('Cerrar');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        console.log(data);
+        this.valorObservacion = data;
+      }
+    });
+    alert.present();
   }
 
 }

@@ -87,7 +87,7 @@ export class RecmanualPage {
     });
     loading.present();
     loading.dismiss();
-    this.navCtrl.push('RecnuevaPage', {'datosActividad': item});
+    this.navCtrl.push('RecmanualeditPage', {'datosRecManual': item});
   }
 
 }

@@ -10,6 +10,8 @@ import { Toast } from '@ionic-native/toast';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { TareasProvider } from '../../providers/tareas/tareas';
 
+import { DomSanitizer } from '@angular/platform-browser';
+
 @IonicPage()
 @Component({
   selector: 'page-actividad',
@@ -38,7 +40,8 @@ export class ActividadPage {
     public formBuilder: FormBuilder,
     private alert: AlertController,
     private tareaService: TareasProvider,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private DomSanitizer: DomSanitizer
   ) {
     this.dataActividad = this.navParams.get('datosActividad');
     console.log(this.dataActividad);
@@ -121,6 +124,7 @@ export class ActividadPage {
       let blob = this.b64toBlob(dataAux, 'image/jpeg');
       this.file.writeFile(data.toURL(), nombreFoto, blob ,{replace: true})
       .then(res => {
+        console.log("RUTA DE IMAGEN ==> "+ data.toURL());
         this.loading.dismiss();
         console.log("Foto guardada exitosamente");
         //this.toast.show('Actualización correcta.', '5000', 'center').subscribe();

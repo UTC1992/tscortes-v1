@@ -115,7 +115,7 @@ export class RecmanualProvider {
       return this.openDatabase().then((res) => {
         console.log("Respuesta de las promesas "+res);
         if(res){
-          return this.database.executeSql('SELECT * FROM recmanual ORDER BY id_recm ASC',
+          return this.database.executeSql("SELECT * FROM recmanual ORDER BY id_recm ASC",
           [])
           .then((data) => {
             console.log("Consulta realizada a RECMANUAL");

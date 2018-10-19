@@ -9,5 +9,8 @@ import { RecmanualeditPage } from './recmanualedit';
   imports: [
     IonicPageModule.forChild(RecmanualeditPage),
   ],
+  exports: [
+    RecmanualeditPage,
+  ]
 })
 export class RecmanualeditPageModule {}
