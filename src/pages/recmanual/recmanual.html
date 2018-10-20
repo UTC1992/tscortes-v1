@@ -26,13 +26,21 @@
 
         <ion-scroll scrollY="true" style="height:280px;">
           <ion-list inset>
-            <ion-item ion-item *ngFor="let item of items "
-             class="medidorItem" (click)="mostrarRecManual(item)" icon-start>
-              <ion-avatar item-start>
-                <img src="assets/imgs/medidorluz.jpg">
-              </ion-avatar>
-              {{ item.id_recm }} - {{ item.medidor }}
-            </ion-item>
+              <ion-item-sliding *ngFor="let item of items ">
+                  <ion-item ion-item
+                    class="medidorItem" (click)="mostrarRecManual(item)" icon-start>
+                    <ion-avatar item-start>
+                      <img src="assets/imgs/medidorluz.jpg">
+                    </ion-avatar>
+                   {{ item.id_recm }} - {{ item.medidor }}
+                  </ion-item>
+                <ion-item-options side="right">
+                  <button ion-button (click)="eliminar(item)" color="danger">
+                    <ion-icon name="trash"></ion-icon>
+                    Eliminar
+                  </button>
+                </ion-item-options>
+              </ion-item-sliding>
           </ion-list>
         </ion-scroll>
       </ion-col>

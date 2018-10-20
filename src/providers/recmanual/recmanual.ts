@@ -175,4 +175,28 @@ export class RecmanualProvider {
     });
   }
 
+  delete(id: number){
+    return new Promise((resolve, reject) => {
+        return this.openDatabase().then(res =>{
+          if(res){
+            return this.database.executeSql(
+              "DELETE FROM recmanual WHERE id_recm=?"
+              ,[ id ])
+            .then(response =>{
+              console.log("ELIMINAR RECMANUAL");
+              console.log(response['rowsAffected']);
+              resolve(true);
+            })
+            .catch(e =>{
+              console.log(e);
+              reject(false);
+            })
+          }
+        }).catch(e => {
+          console.log(e);
+          reject(false);
+        });
+    });
+  }
+
 }

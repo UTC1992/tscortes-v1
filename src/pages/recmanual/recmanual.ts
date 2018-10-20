@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController,
+  NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { UserProvider } from '../../providers/user/user';
 import { RecmanualProvider } from '../../providers/recmanual/recmanual';
 
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+
+import { Toast } from '@ionic-native/toast';
 
 @IonicPage()
 @Component({
@@ -25,6 +28,8 @@ export class RecmanualPage {
               public userDB: UserProvider,
               public recmanualDB: RecmanualProvider,
               public loadingCtrl: LoadingController,
+              public alertCtrl: AlertController,
+              public toast: Toast
   ) {
     this.searchControl = new FormControl();
 
@@ -90,4 +95,34 @@ export class RecmanualPage {
     this.navCtrl.push('RecmanualeditPage', {'datosRecManual': item});
   }
 
+  eliminar(item: any){
+    let confirm = this.alertCtrl.create({
+      title: 'Desea eliminar la reconexión?',
+      message: 'Si oprime "Aceptar" la reconexión se borrara permanentemente desea hacerlo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            console.log('Cancelar');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            console.log('Eliminar');
+            this.recmanualDB.delete(item['id_recm']).then(r =>{
+              if(r){
+                this.toast.show('Datos eliminados','5000', 'center').subscribe();
+                this.ingresarItemsParaFiltrar();
+              } else {
+                this.toast.show('No eliminados','5000', 'center').subscribe();
+              }
+            });
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+  }
 }
