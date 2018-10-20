@@ -91,7 +91,7 @@
         </ion-col>
       </ion-row>
 
-    <button ion-button type="submit" [disabled]="!registerForm.valid||!myphoto">Guardar</button>
+    <button ion-button block type="submit" [disabled]="!registerForm.valid||!myphoto||!valorObservacion">Guardar</button>
     </form>
     <!--formulario-->
   </ion-grid>

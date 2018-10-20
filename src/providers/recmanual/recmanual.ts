@@ -31,7 +31,8 @@ export class RecmanualProvider {
                     +" lectura TEXT,"
                     +" foto TEXT,"
                     +" observacion TEXT,"
-                    +" fecha TEXT"
+                    +" fecha TEXT,"
+                    +" rutaimg TEXT"
                     + ")",[])
         .then(() => console.log('Tabla RECMANUAL Creada'))
         .catch(e => console.log(e));
@@ -47,19 +48,19 @@ export class RecmanualProvider {
 
   }
 
-  insert(data: FormGroup){
+  insert(data: FormGroup, rutaimg: any, observacion: any){
     return new Promise((resolve, reject) => {
       if (data.valid){
         console.log(data.value);
         return this.openDatabase().then((res) =>{
           if(res){
             this.database.executeSql("INSERT INTO recmanual"
-                                            +" (medidor, lectura, foto, observacion, fecha)"
-                                            +" VALUES(?,?,?,?,?)",
+                                            +" (medidor, lectura, foto, observacion, fecha, rutaimg)"
+                                            +" VALUES(?,?,?,?,?,?)",
                                             [
                                             data.value.medidor,data.value.lectura,
-                                            data.value.foto, data.value.observacion,
-                                            data.value.fecha
+                                            data.value.foto, observacion,
+                                            data.value.fecha, rutaimg
                                             ])
             .then(response =>{
               console.log("INSERCION DE RECMANUAL");
@@ -80,17 +81,17 @@ export class RecmanualProvider {
 
   }
 
-  update(data: FormGroup, id: number){
+  update(data: FormGroup, id: number, rutaimg: any, observacion: any){
     return new Promise((resolve, reject) => {
       if (data.valid){
         console.log(data.value);
         return this.openDatabase().then(res =>{
           if(res){
             return this.database.executeSql(
-              "UPDATE recmanual SET medidor=?, lectura=?, foto=?, observacion=?, fecha=? WHERE id_recm=?"
+              "UPDATE recmanual SET medidor=?, lectura=?, foto=?, observacion=?, fecha=?, rutaimg=? WHERE id_recm=?"
               ,[data.value.medidor,data.value.lectura,
-                data.value.foto, data.value.observacion,
-                data.value.fecha, id ])
+                data.value.foto, observacion,
+                data.value.fecha, rutaimg, id ])
             .then(response =>{
               console.log("ACTUALZIACION DE RECMANUAL");
               console.log(response['rowsAffected']);
@@ -127,7 +128,8 @@ export class RecmanualProvider {
                   lectura: data.rows.item(i).lectura,
                   foto: data.rows.item(i).foto,
                   observacion: data.rows.item(i).observacion,
-                  fecha: data.rows.item(i).fecha
+                  fecha: data.rows.item(i).fecha,
+                  rutaimg: data.rows.item(i).rutaimg
                 });
 
 

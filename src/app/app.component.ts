@@ -22,7 +22,7 @@ export class MyApp {
       { title: 'Notificaciones', component: 'NotificacionPage' },
       { title: 'Cortes', component: 'CortePage' },
       { title: 'Reconecciones', component: 'ReconexionPage' },
-      { title: 'Rec. Manuales', component: 'RecmanualPage' },
+      { title: 'Reconexiones manuales', component: 'RecmanualPage' },
       { title: 'Perfil', component: 'PerfilPage' }
     ];
 

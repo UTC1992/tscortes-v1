@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController,
         NavParams, AlertController,
-        LoadingController  } from 'ionic-angular';
+        LoadingController, ToastController } from 'ionic-angular';
 
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 
@@ -9,6 +9,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 
 import { RecmanualProvider } from '../../providers/recmanual/recmanual';
+
+import { Toast } from '@ionic-native/toast';
 
 @IonicPage()
 @Component({
@@ -37,14 +39,16 @@ export class RecnuevaPage {
     public file: File,
     public loadingCtrl: LoadingController,
     public recmanualDB: RecmanualProvider,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public toast: Toast,
+    public toastCtrl: ToastController
   ){
 
     //formulario para validacion
     this.registerForm = this.formBuilder.group({
       medidor: ['', [Validators.required] ],
       lectura: ['', [Validators.required] ],
-      foto: ['', ],
+      foto: [this.fotoNombre, ],
       observacion: [this.valorObservacion, ],
       fecha: [this.fechaActual+"", ],
 
@@ -105,6 +109,8 @@ export class RecnuevaPage {
     console.log('Guardando fotos');
     console.log(this.myphoto);
 
+    //nombre de foto
+    this.fotoNombre = this.registerForm.value.medidor+".jpeg";
     //creando directorio
     var nombreCarpeta = "Fotos-"+this.fechaActual+"RECMA";
     var nombreFoto = this.registerForm.value.medidor+".jpeg";
@@ -117,10 +123,20 @@ export class RecnuevaPage {
       let blob = this.b64toBlob(dataAux, 'image/jpeg');
       this.file.writeFile(data.toURL(), nombreFoto, blob ,{replace: true})
       .then(res => {
-        this.loading.dismiss();
         console.log("Foto guardada exitosamente");
         //this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
-        this.navCtrl.setRoot('RecmanualPage');
+        console.log(this.valorObservacion);
+          let valor = this.recmanualDB.insert(this.registerForm, data.toURL(), this.valorObservacion)
+          .then((resUpdate) => {
+
+            if(resUpdate){
+              this.loading.dismiss();
+              this.navCtrl.setRoot('RecmanualPage');
+              this.showToast('Datos guardados correctamente');
+            } else {
+              this.showToast('Error al guardar los datos');
+            }
+          });
 
       });
 
@@ -129,16 +145,13 @@ export class RecnuevaPage {
   }
 
   guardarRecManual(){
-    this.registerForm.value.observacion = this.valorObservacion;
+
     this.loading = this.loadingCtrl.create({
       content: 'Guardando datos...'
     });
     this.loading.present();
 
-    let valor = this.recmanualDB.insert(this.registerForm)
-    .then((res) => {
-      let respuesta = this.guardarFoto();
-    });
+    this.guardarFoto();
 
   }
 
@@ -183,6 +196,20 @@ export class RecnuevaPage {
       }
     });
     alert.present();
+  }
+
+  showToast(mensaje: any) {
+    let toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 5000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
   }
 
 }

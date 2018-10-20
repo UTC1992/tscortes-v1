@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController,
-          NavParams,
+          NavParams, ToastController,
           LoadingController, AlertController  } from 'ionic-angular';
 
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
@@ -10,6 +10,8 @@ import { File } from '@ionic-native/file';
 
 import { RecmanualProvider } from '../../providers/recmanual/recmanual';
 import { UserProvider } from '../../providers/user/user';
+
+import { Toast } from '@ionic-native/toast';
 
 @IonicPage()
 @Component({
@@ -45,12 +47,15 @@ export class RecmanualeditPage {
     public loadingCtrl: LoadingController,
     public recmanualDB: RecmanualProvider,
     public alertCtrl: AlertController,
-    public userDB: UserProvider
+    public userDB: UserProvider,
+    public toast: Toast,
+    public toastCtrl: ToastController
 
   ) {
 
     this.dataRecManual = this.navParams.get('datosRecManual');
     console.log(this.dataRecManual['observacion']);
+    console.log(this.dataRecManual['rutaimg']);
     this.valorObservacion = this.dataRecManual['observacion'];
 
     //formulario para validacion
@@ -58,14 +63,23 @@ export class RecmanualeditPage {
       medidor: [this.dataRecManual['medidor'], [Validators.required] ],
       lectura: [this.dataRecManual['lectura'], [Validators.required] ],
       foto: [this.dataRecManual['foto'], ],
-      observacion: [this.valorObservacion, ],
+      observacion: [this.valorObservacion+"", ],
       fecha: [this.dataRecManual['fecha'], ],
 
     });
+
+    this.getFoto();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RecmanualeditPage');
+  }
+
+  getFoto(){
+    this.file.readAsDataURL(this.dataRecManual['rutaimg'],this.dataRecManual['foto']).then(fotoBase64 => {
+      //console.log(fotoBase64);
+      this.myphoto = fotoBase64;
+    });
   }
 
   takePhoto(){
@@ -118,9 +132,10 @@ export class RecmanualeditPage {
     console.log('Guardando fotos');
     console.log(this.myphoto);
 
+    this.fotoNombre = this.registerForm.value.medidor+".jpeg";
     //creando directorio
-    var nombreCarpeta = "Fotos-"+this.fechaActual+"RECMA";
-    var nombreFoto = this.registerForm.value.medidor+".jpeg";
+    var nombreCarpeta = "Fotos-"+this.dataRecManual['fecha']+"RECMA";
+    var nombreFoto = this.fotoNombre;
     let result = this.file.createDir(this.file.externalRootDirectory, nombreCarpeta, true);
     //let result = this.file.createFile(this.file.externalRootDirectory+"Fotos/","hola.txt",true);
 
@@ -130,10 +145,20 @@ export class RecmanualeditPage {
       let blob = this.b64toBlob(dataAux, 'image/jpeg');
       this.file.writeFile(data.toURL(), nombreFoto, blob ,{replace: true})
       .then(res => {
-        this.loading.dismiss();
         console.log("Foto guardada exitosamente");
         //this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
-        this.navCtrl.setRoot('RecmanualPage');
+
+        this.recmanualDB.update(this.registerForm,this.dataRecManual['id_recm'],data.toURL(), this.valorObservacion)
+        .then((resUpdate) => {
+          if(resUpdate){
+            this.loading.dismiss();
+            this.navCtrl.setRoot('RecmanualPage');
+            this.showToast('Datos actualizados correctamente');
+          } else {
+            this.showToast('Error al actualizar los datos');
+          }
+
+        });
 
       });
 
@@ -141,17 +166,13 @@ export class RecmanualeditPage {
 
   }
 
-  guardarRecManual(){
-    this.registerForm.value.observacion = this.valorObservacion;
+  actualizarRecManual(){
     this.loading = this.loadingCtrl.create({
       content: 'Guardando datos...'
     });
     this.loading.present();
+    this.guardarFoto();
 
-    this.recmanualDB.update(this.registerForm,this.dataRecManual['id_recm'])
-    .then((res) => {
-      this.guardarFoto();
-    });
   }
 
   descartarFoto(){
@@ -196,4 +217,20 @@ export class RecmanualeditPage {
     });
     alert.present();
   }
+
+  showToast(mensaje: any) {
+    let toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 5000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+
 }

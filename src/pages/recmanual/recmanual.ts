@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController,
+import { IonicPage, NavController, ToastController,
   NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { UserProvider } from '../../providers/user/user';
@@ -29,7 +29,8 @@ export class RecmanualPage {
               public recmanualDB: RecmanualProvider,
               public loadingCtrl: LoadingController,
               public alertCtrl: AlertController,
-              public toast: Toast
+              public toast: Toast,
+              public toastCtrl: ToastController
   ) {
     this.searchControl = new FormControl();
 
@@ -112,10 +113,10 @@ export class RecmanualPage {
             console.log('Eliminar');
             this.recmanualDB.delete(item['id_recm']).then(r =>{
               if(r){
-                this.toast.show('Datos eliminados','5000', 'center').subscribe();
+                this.showToast('Datos eliminados correctamente');
                 this.ingresarItemsParaFiltrar();
               } else {
-                this.toast.show('No eliminados','5000', 'center').subscribe();
+                this.showToast('Error al eliminar los datos');
               }
             });
           }
@@ -125,4 +126,19 @@ export class RecmanualPage {
     confirm.present();
 
   }
+
+  showToast(mensaje: any) {
+    let toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 5000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
 }

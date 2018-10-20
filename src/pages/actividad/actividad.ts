@@ -76,8 +76,6 @@ export class ActividadPage {
      this.myphoto = 'data:image/jpeg;base64,' + imageData;
      console.log('data:image/jpeg;base64,' + imageData);
 
-
-
      //this.crearCarpeta();
     }, (err) => {
      // Handle error
@@ -125,10 +123,20 @@ export class ActividadPage {
       this.file.writeFile(data.toURL(), nombreFoto, blob ,{replace: true})
       .then(res => {
         console.log("RUTA DE IMAGEN ==> "+ data.toURL());
-        this.loading.dismiss();
+
         console.log("Foto guardada exitosamente");
         //this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
-        this.navCtrl.setRoot('NotificacionPage');
+        let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],data.toURL())
+        .then((resUpdate) => {
+          if(resUpdate){
+            this.loading.dismiss();
+            this.navCtrl.setRoot('NotificacionPage');
+            this.toast.show('Datos actualizados','5000', 'center').subscribe();
+          } else {
+            this.toast.show('Error al actualizar los datos','5000', 'center').subscribe();
+          }
+
+        });
 
       });
 
@@ -142,15 +150,12 @@ export class ActividadPage {
   actualizarTarea(){
 
     this.loading = this.loadingCtrl.create({
-      content: 'Guardando datos...',
-      duration: 5000
+      content: 'Guardando datos...'
     });
     this.loading.present();
 
-    let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],"")
-    .then((res) => {
-      let respuesta = this.guardarFoto();
-    });
+    this.guardarFoto();
+
 
   }
 
