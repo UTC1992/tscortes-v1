@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {  IonicPage, NavController,
-          NavParams, AlertController,
+          NavParams, AlertController, ToastController,
           LoadingController } from 'ionic-angular';
 
 import { Toast } from '@ionic-native/toast';
@@ -21,6 +21,9 @@ import 'rxjs/add/operator/debounceTime';
   templateUrl: 'notificacion.html',
 })
 export class NotificacionPage {
+
+  tipoActividad1 = '10';
+  tipoActividad2 = '010';
 
   dataJSON;
 
@@ -46,7 +49,7 @@ export class NotificacionPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public peticion: PeticionhttpProvider,
-    private toast: Toast,
+    private toastCtrl: ToastController,
     public userDB: UserProvider,
     public tareas: TareasProvider,
     public loadingCtrl: LoadingController,
@@ -56,10 +59,6 @@ export class NotificacionPage {
     this.searchControl = new FormControl();
     this.estadoTecnicoEnvio = true;
 
-
-  }
-
-  presentLoadingDefault() {
 
   }
 
@@ -115,14 +114,14 @@ export class NotificacionPage {
                 setTimeout(() => {
                   loading.dismiss().then(r =>{
                     this.estadoTecnicoGet=false;
-                    this.toast.show('Técnico activo', '5000', 'center').subscribe();
+                    this.showToast('Técnico activo');
                     this.ingresarItemsParaFiltrar();
                   });
                 }, 5000);
 
               }
             }).catch(e => {
-              this.toast.show('Error => '+ e, '5000', 'center').subscribe();
+              this.showToast('Error => '+ e);
             });
           });
         },
@@ -133,7 +132,7 @@ export class NotificacionPage {
   }
 
   ingresarItemsParaFiltrar() {
-    this.tareas.getListaTareas().then(data =>{
+    this.tareas.getListaTareas(this.tipoActividad1, this.tipoActividad2).then(data =>{
       if(data.length > 0){
         console.log(data);
         this.items = data;
@@ -164,8 +163,8 @@ export class NotificacionPage {
   }
 
   infoActividadesHechasFaltantes(){
-    this.tareas.getListaTareas().then(data1 =>{
-      this.tareas.contarActividadesHechasYFaltantes().then(data2 =>{
+    this.tareas.getListaTareas(this.tipoActividad1, this.tipoActividad2).then(data1 =>{
+      this.tareas.contarActividadesHechasYFaltantes(this.tipoActividad1, this.tipoActividad2).then(data2 =>{
         //faltantes
         this.actFaltantes = data1.length;
         this.actHechas = data2 - this.actFaltantes;
@@ -201,7 +200,7 @@ export class NotificacionPage {
         setTimeout(() => {
           loading.dismiss().then(r =>{
             this.estadoTecnicoEnvio = true;
-            this.toast.show('Éxito al eviar los datos', '5000', 'center').subscribe();
+            this.showToast('Éxito al eviar los datos');
           });
         }, 0);
 
@@ -209,12 +208,15 @@ export class NotificacionPage {
         setTimeout(() => {
           loading.dismiss().then(r =>{
             this.estadoTecnicoEnvio = true;
-            this.toast.show('Nó se enviaron los datos', '5000', 'center').subscribe();
+            this.showToast('Nó se enviaron los datos');
           });
         }, 0);
       }
     }).catch(e => {
-      this.toast.show('Error al enviar los datos','5000', 'center').subscribe();
+      loading.dismiss();
+      this.estadoTecnicoEnvio = true;
+      this.showToast('Error al enviar los datos');
+
     });
 
    }
@@ -232,7 +234,7 @@ export class NotificacionPage {
     let result = this.file.createDir(this.file.externalRootDirectory, this.dirName, true);
     result.then(data => {
       this.dirPath = data.toURL();
-      this.tareas.getCoordenadas().then(data =>{
+      this.tareas.getCoordenadas(this.tipoActividad1, this.tipoActividad2).then(data =>{
         let headerGPX = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
                       +" <gpx 	version='1.1'"
                       +" creator='OsmAnd' xmlns='http://www.topografix.com/GPX/1/1'"
@@ -260,7 +262,7 @@ export class NotificacionPage {
       this.file.writeFile(this.dirPath, this.fileName, gpxFile, {replace:true}).then(r =>{
         setTimeout(() => {
           loading.dismiss().then(res =>{
-            this.toast.show('Ruta creada con éxito', '5000', 'center').subscribe();
+            this.showToast('Ruta creada con éxito, revisar la carpeta coordenadaGPX');
           });
         }, 0);
       });
@@ -271,6 +273,20 @@ export class NotificacionPage {
     });
 
    }
+
+   showToast(mensaje: any) {
+    let toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 5000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
 
 }
 

@@ -176,9 +176,13 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-label class="labelAux">Observación: </ion-label>
-          <br>
-          <ion-textarea formControlName="observacion" placeholder="Ingrese la Observación aquí" rows="3"></ion-textarea>
+          <label class="labelAux">Observación: </label>
+          <label ion-button class="btnObservacion" (click)="opcionesObservacion()">
+            <ion-icon name="eye"></ion-icon>Elegir
+          </label >
+          <div text-wrap>
+            {{ valorObservacion }}
+          </div>
         </ion-item>
       </ion-col>
     </ion-row>

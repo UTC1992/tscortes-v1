@@ -71,12 +71,12 @@ export class TareasProvider {
 
   }
 
-  public getListaTareas(): Promise<string[]>{
+  //se optienen actividades 010, 030, 040, dependiendo de los parametros
+  //enviados
+  public getListaTareas(tipoActividad1: any, tipoActividad2: any): Promise<string[]>{
     return new Promise((resolve, reject)=>{
       return this.openDatabase().then((res) => {
         console.log("Respuesta de las promesas "+res);
-        let tipoActividad1 = '10';
-        let tipoActividad2 = '010';
         if(res){
           return this.database.executeSql('SELECT * FROM tareas WHERE n9cono=? or n9cono=? ORDER BY id_tare ASC',
           [tipoActividad1, tipoActividad2])
@@ -85,7 +85,7 @@ export class TareasProvider {
             this.listaTareas = [];
             for (var i = 0; i < data.rows.length; i++) {
               //this.listaTareas[i] = data.rows.item(i).n9nomb;
-              if(data.rows.item(i).n9leco == 0 || data.rows.item(i).n9leco == ''
+            if(data.rows.item(i).n9leco == 0 || data.rows.item(i).n9leco == ''
               || data.rows.item(i).n9leco == null ){
                 this.listaTareas.push({
                   id_tare: data.rows.item(i).id_tare,
@@ -117,7 +117,7 @@ export class TareasProvider {
                 });
               }
 
-            }
+           }
             //console.log(this.listaTareas);
             if(this.listaTareas.length > 0){
               resolve(this.listaTareas);
@@ -196,11 +196,13 @@ export class TareasProvider {
     })
   }
 
-  contarActividadesHechasYFaltantes(): Promise<number>{
+  //se optienen la hechas y faltantes 010, 030, 040, dependiendo de los parametros
+  //enviados
+  contarActividadesHechasYFaltantes(tipoActividad1: any, tipoActividad2: any): Promise<number>{
     return new Promise((resolve, reject) =>{
       return this.openDatabase().then((res) => {
-        return this.database.executeSql("SELECT COUNT(*) as 'actTotal' FROM tareas",
-        []).then((data) =>{
+        return this.database.executeSql("SELECT COUNT(*) as 'actTotal' FROM tareas WHERE n9cono=? or n9cono=?",
+        [tipoActividad1, tipoActividad2]).then((data) =>{
           console.log("Total de tareas obtenidas");
           console.log(data.rows.item(0).actTotal);
           resolve(data.rows.item(0).actTotal);
@@ -251,7 +253,7 @@ export class TareasProvider {
 
   }
 
-  update(data: FormGroup, id: number, rutaimg: any){
+  update(data: FormGroup, id: number, rutaimg: any, observacion: any){
     return new Promise((resolve, reject) => {
       if (data.valid){
         console.log(data.value.lectura);
@@ -260,7 +262,7 @@ export class TareasProvider {
           if(res){
             return this.database.executeSql(
               'UPDATE tareas SET n9leco=?, foto=?, observacion=?, estado=?, rutaimg=? WHERE id_tare=?'
-              ,[data.value.lectura,data.value.foto,data.value.observacion, 2, rutaimg, id])
+              ,[data.value.lectura,data.value.foto,observacion, 2, rutaimg, id])
             .then(response =>{
               console.log("ACTUALIZAR TAREA");
               console.log(response['rowsAffected']);
@@ -306,12 +308,10 @@ export class TareasProvider {
     });
   }
 
-  public getCoordenadas(): Promise<string[]>{
+  public getCoordenadas(tipoActividad1: any, tipoActividad2: any): Promise<string[]>{
     return new Promise((resolve, reject)=>{
       return this.openDatabase().then((res) => {
         console.log("Respuesta de las promesas "+res);
-        let tipoActividad1 = '10';
-        let tipoActividad2 = '010';
         if(res){
           return this.database.executeSql('SELECT * FROM tareas WHERE n9cono=? or n9cono=? ORDER BY id_tare ASC',
           [tipoActividad1, tipoActividad2])

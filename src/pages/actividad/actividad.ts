@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,
-   AlertController,
+   AlertController, ToastController,
    LoadingController } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -10,7 +10,6 @@ import { Toast } from '@ionic-native/toast';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { TareasProvider } from '../../providers/tareas/tareas';
 
-import { DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage()
 @Component({
@@ -31,35 +30,47 @@ export class ActividadPage {
 
   loading;
 
+  //observacion variables
+  valorObservacion;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private camera: Camera,
     public file: File,
-    private toast: Toast,
+    private toastCtrl: ToastController,
     public formBuilder: FormBuilder,
-    private alert: AlertController,
+    private alertCtrl: AlertController,
     private tareaService: TareasProvider,
-    public loadingCtrl: LoadingController,
-    private DomSanitizer: DomSanitizer
+    public loadingCtrl: LoadingController
   ) {
     this.dataActividad = this.navParams.get('datosActividad');
     console.log(this.dataActividad);
+    this.valorObservacion = this.dataActividad['observacion'];
     this.myphoto = this.dataActividad['rutaimg'];
     //formulario para validacion
     this.tareaForm = this.formBuilder.group({
       lectura: [this.dataActividad['n9leco'], [Validators.required]],
       foto: [this.dataActividad['n9meco']+".jpeg", [Validators.required] ],
-      observacion: []
+      observacion: [this.valorObservacion+"",]
     });
 
     // observacion: [this.dataActividad['observacion'],[Validators.required]],
-
+    this.getFoto();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ActividadPage');
     //this.crearCarpeta();
+  }
+
+  getFoto(){
+    if(this.dataActividad['rutaimg'] != null){
+      this.file.readAsDataURL(this.dataActividad['rutaimg'],this.dataActividad['foto']).then(fotoBase64 => {
+        //console.log(fotoBase64);
+        this.myphoto = fotoBase64;
+      });
+    }
   }
 
   takePhoto(){
@@ -126,14 +137,14 @@ export class ActividadPage {
 
         console.log("Foto guardada exitosamente");
         //this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
-        let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],data.toURL())
+        let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],data.toURL(), this.valorObservacion)
         .then((resUpdate) => {
           if(resUpdate){
             this.loading.dismiss();
             this.navCtrl.setRoot('NotificacionPage');
-            this.toast.show('Datos actualizados','5000', 'center').subscribe();
+            this.showToast('Datos actualizados correctamente');
           } else {
-            this.toast.show('Error al actualizar los datos','5000', 'center').subscribe();
+            this.showToast('Error al actualizar los datos');
           }
 
         });
@@ -161,6 +172,59 @@ export class ActividadPage {
 
   descartarFoto(){
     this.myphoto = "";
+  }
+
+  opcionesObservacion(){
+    let alert = this.alertCtrl.create({
+      cssClass: 'custom-alert-danger'
+    });
+    alert.setTitle('Elija una opción:');
+
+    alert.addInput({
+      type: 'radio',
+      label: 'El domicilio se encuentra desabitado hola mundo hola mundo hola mundo hola mundo hola mundo hola mundo',
+      value: 'El domicilio se encuentra desabitado hola mundo hola mundo hola mundo hola mundo hola mundo hola mundo',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Perro Bravo',
+      value: 'Perro Bravo',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Perro Bravo',
+      value: 'Perro Bravo',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Perro Bravo',
+      value: 'Perro Bravo',
+      checked: false
+    });
+
+    alert.addButton('Cerrar');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        console.log(data);
+        this.valorObservacion = data;
+      }
+    });
+    alert.present();
+  }
+
+  showToast(mensaje: any) {
+    let toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 5000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
   }
 
 }
