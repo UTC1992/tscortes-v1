@@ -121,8 +121,10 @@ export class RecmanualProvider {
           .then((data) => {
             console.log("Consulta realizada a RECMANUAL");
             this.listaRecM = [];
+            let index = 1;
             for (var i = 0; i < data.rows.length; i++) {
                 this.listaRecM.push({
+                  index: index++,
                   id_recm: data.rows.item(i).id_recm,
                   medidor: data.rows.item(i).medidor,
                   lectura: data.rows.item(i).lectura,
@@ -151,7 +153,7 @@ export class RecmanualProvider {
     })
   }
 
-  enviarDatosHttp(){
+  enviarDatosHttp(cedula: any){
     return new Promise((resolve, reject) =>{
     return this.getListaRecM().then(data => {
 
@@ -161,8 +163,14 @@ export class RecmanualProvider {
       });
 
       //console.log(JSON.stringify(data));
+      let body = [
+        {datos: data},
+        {cedula: cedula}
+      ];
 
-      return this.http.post("http://192.168.1.4/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile/insert-data", JSON.stringify(data), {headers: headers})
+      console.log(JSON.stringify(body) );
+
+      return this.http.post("http://192.168.1.4/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile/insert-data", body, {headers: headers})
         .subscribe(res => {
           console.log("Respuesta del servidor es ==> ");
           console.log(res);
@@ -200,5 +208,37 @@ export class RecmanualProvider {
         });
     });
   }
+
+  contarRecManual(): Promise<number>{
+    return new Promise((resolve, reject) =>{
+      return this.openDatabase().then((res) => {
+        return this.database.executeSql("SELECT COUNT(*) as 'actTotal' FROM recmanual",
+        []).then((data) =>{
+          console.log("Total de recmanual obtenidas");
+          console.log(data.rows.item(0).actTotal);
+          resolve(data.rows.item(0).actTotal);
+        }).catch(error =>{
+          reject(false);
+        });
+      });
+    });
+  }
+
+  clearTables(){
+    return new Promise((resolve, reject) =>{
+      return this.openDatabase().then(res =>{
+        this.database.executeSql('DELETE FROM recmanual'
+                                ,[])
+        .then(r => {
+          console.log(r);
+          resolve(true);
+        }).catch(error => {
+          console.log(error);
+          reject(false);
+        });
+      });
+    });
+  }
+
 
 }

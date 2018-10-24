@@ -22,6 +22,10 @@ export class RecmanualPage {
   searchControl: FormControl;
   searching: any = false;
 
+  //boton envio
+  estadoTecnicoEnvio: boolean = true;
+  cedula;
+
   constructor(
               public navCtrl: NavController,
               public navParams: NavParams,
@@ -48,7 +52,7 @@ export class RecmanualPage {
 
   getContarUsers(){
     this.userDB.getUsers().then((res) => {
-
+      this.cedula = res[0]['cedula'];
       console.log("Respuesta de promise "+res);
       if(res == false){
         this.navCtrl.push('RegistroPage');
@@ -139,6 +143,43 @@ export class RecmanualPage {
     });
 
     toast.present();
+  }
+
+  enviarDatos(){
+    //desactivar boton
+  this.estadoTecnicoEnvio = false;
+  let loading = this.loadingCtrl.create({
+    content: 'Enviando datos...'
+  });
+  loading.present();
+
+  console.log(this.cedula);
+
+  this.recmanualDB.enviarDatosHttp(this.cedula).then(res =>{
+    console.log('respuesta del envio de datos ==> ' + res);
+    if(res){
+      setTimeout(() => {
+        loading.dismiss().then(r =>{
+          this.estadoTecnicoEnvio = true;
+          this.showToast('Éxito al eviar los datos');
+        });
+      }, 0);
+
+    } else {
+      setTimeout(() => {
+        loading.dismiss().then(r =>{
+          this.estadoTecnicoEnvio = true;
+          this.showToast('Nó se enviaron los datos');
+        });
+      }, 0);
+    }
+  }).catch(e => {
+    loading.dismiss();
+    this.estadoTecnicoEnvio = true;
+    this.showToast('Error al enviar los datos');
+
+  });
+
   }
 
 }

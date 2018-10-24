@@ -1,18 +1,80 @@
-<!--
-  Generated template for the BorrardatosPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>borrardatos</ion-title>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Limpiar datos</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h5>Información:</h5>
+        <div text-wrap>Debe eliminar los datos de la aplicación para empezar con el trabajo</div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button block (click)='eliminarNot()'>
+          Limpiar Notificaciones
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button block (click)='eliminarCor()'>
+          Limpiar Cortes
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button block (click)='eliminarRec()'>
+          Limpiar Reconecciones
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button block (click)='eliminarRecManual()'>
+          Limpiar Reconecciones Manuales
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        NOT
+      </ion-col>
+      <ion-col>
+        COR
+      </ion-col>
+      <ion-col>
+        REC
+      </ion-col>
+      <ion-col>
+        REC manual
+      </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col>
+          {{ notTotal }}
+        </ion-col>
+        <ion-col>
+          {{ corTotal }}
+        </ion-col>
+        <ion-col>
+          {{ recTotal }}
+        </ion-col>
+        <ion-col>
+          {{ recmaTotal }}
+        </ion-col>
+      </ion-row>
+  </ion-grid>
 </ion-content>

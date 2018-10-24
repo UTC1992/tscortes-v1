@@ -22,8 +22,10 @@ export class MyApp {
       { title: 'Notificaciones', component: 'NotificacionPage' },
       { title: 'Cortes', component: 'CortePage' },
       { title: 'Reconecciones', component: 'ReconexionPage' },
-      { title: 'Reconexiones manuales', component: 'RecmanualPage' },
+      { title: 'Reconecciones manuales', component: 'RecmanualPage' },
+      { title: 'Limpiar datos', component: 'BorrardatosPage' },
       { title: 'Perfil', component: 'PerfilPage' }
+
     ];
 
   }

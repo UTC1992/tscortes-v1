@@ -3,8 +3,6 @@ import {  IonicPage, NavController,
           NavParams, AlertController, ToastController,
           LoadingController } from 'ionic-angular';
 
-import { Toast } from '@ionic-native/toast';
-
 import { PeticionhttpProvider } from '../../providers/peticionhttp/peticionhttp';
 import { UserProvider } from '../../providers/user/user';
 import { TareasProvider } from '../../providers/tareas/tareas';
@@ -76,7 +74,7 @@ export class NotificacionPage {
     this.userDB.getUsers().then((res) => {
 
       //console.log(res[0]['estado']);
-      if(res[0]['estado'] == "Pasivo" || res[0]['estado'] == null){
+      if(res[0]['estado'] == "Inactivo" || res[0]['estado'] == null){
         //console.log('tecnico pasivo o null');
         this.estadoTecnicoGet = true;
       }
@@ -114,18 +112,29 @@ export class NotificacionPage {
                 setTimeout(() => {
                   loading.dismiss().then(r =>{
                     this.estadoTecnicoGet=false;
-                    this.showToast('Técnico activo');
+                    this.showToast('Datos obtenidos y Técnico activo');
                     this.ingresarItemsParaFiltrar();
                   });
                 }, 5000);
-
+              } else {
+                loading.dismiss().then(r =>{
+                  this.estadoTecnicoGet=true;
+                  this.showToast('Datos no obtenidos');
+                });
               }
             }).catch(e => {
+              loading.dismiss();
+              this.estadoTecnicoGet=true;
               this.showToast('Error => '+ e);
             });
           });
         },
-        (error)=> {console.log(error);}
+        (error)=> {
+          console.log(error);
+          loading.dismiss();
+          this.estadoTecnicoGet=true;
+          this.showToast('No se pudo obtener los datos');
+        }
       );
     });
 
@@ -175,106 +184,106 @@ export class NotificacionPage {
 
   onSearchInput(){
     this.searching = true;
-   }
+  }
 
-   mostrarTareaNot(item: any){
-    //console.log(item);
-    let loading = this.loadingCtrl.create({
-      content: 'Obtener datos...'
-    });
-    loading.present();
+  mostrarTareaNot(item: any){
+  //console.log(item);
+  let loading = this.loadingCtrl.create({
+    content: 'Obtener datos...'
+  });
+  loading.present();
+  loading.dismiss();
+  this.navCtrl.push('ActividadPage', {'datosActividad': item});
+  }
+
+  enviarDatos(){
+    //desactivar boton
+  this.estadoTecnicoEnvio = false;
+  let loading = this.loadingCtrl.create({
+    content: 'Enviando datos...'
+  });
+  loading.present();
+
+  this.tareas.enviarDatosHttp(this.tipoActividad1, this.tipoActividad2).then(res =>{
+    if(res){
+      setTimeout(() => {
+        loading.dismiss().then(r =>{
+          this.estadoTecnicoEnvio = true;
+          this.showToast('Éxito al eviar los datos');
+        });
+      }, 0);
+
+    } else {
+      setTimeout(() => {
+        loading.dismiss().then(r =>{
+          this.estadoTecnicoEnvio = true;
+          this.showToast('Nó se enviaron los datos');
+        });
+      }, 0);
+    }
+  }).catch(e => {
     loading.dismiss();
-    this.navCtrl.push('ActividadPage', {'datosActividad': item});
-   }
+    this.estadoTecnicoEnvio = true;
+    this.showToast('Error al enviar los datos');
 
-   enviarDatos(){
-     //desactivar boton
-    this.estadoTecnicoEnvio = false;
-    let loading = this.loadingCtrl.create({
-      content: 'Enviando datos...'
-    });
-    loading.present();
+  });
 
-    this.tareas.enviarDatosHttp().then(res =>{
-      if(res){
-        setTimeout(() => {
-          loading.dismiss().then(r =>{
-            this.estadoTecnicoEnvio = true;
-            this.showToast('Éxito al eviar los datos');
-          });
-        }, 0);
+  }
 
-      } else {
-        setTimeout(() => {
-          loading.dismiss().then(r =>{
-            this.estadoTecnicoEnvio = true;
-            this.showToast('Nó se enviaron los datos');
-          });
-        }, 0);
-      }
-    }).catch(e => {
-      loading.dismiss();
-      this.estadoTecnicoEnvio = true;
-      this.showToast('Error al enviar los datos');
+  generarGPX(){
+    //cargando
+  let loading = this.loadingCtrl.create({
+    content: 'Creando ruta...'
+  });
+  loading.present();
 
-    });
+  this.fileName='coordenadas.gpx';
+  this.dirName='coordenadasGPX';
 
-   }
+  let result = this.file.createDir(this.file.externalRootDirectory, this.dirName, true);
+  result.then(data => {
+    this.dirPath = data.toURL();
+    this.tareas.getCoordenadas(this.tipoActividad1, this.tipoActividad2).then(data =>{
+      let headerGPX = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
+                    +" <gpx 	version='1.1'"
+                    +" creator='OsmAnd' xmlns='http://www.topografix.com/GPX/1/1'"
+                    +" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'"
+                    +" xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>";
+    let bodyGPX = "";
+      if(data.length > 0){
+        console.log(data[0]);
+        for (let i = 0; i < data.length; i++) {
 
-   generarGPX(){
-     //cargando
-    let loading = this.loadingCtrl.create({
-      content: 'Creando ruta...'
-    });
-    loading.present();
+          bodyGPX = bodyGPX + "<wpt lat='"+data[i]['latitud']+"' lon='"+data[i]['longitud']+"'>"
+                      +" <name>"+data[i]['n9meco']+"</name>"
+                      +" <extensions>"
+                      +" <color>#2196f3</color>"
+                      +" </extensions>"
+                      +" </wpt>";
 
-    this.fileName='coordenadas.gpx';
-    this.dirName='coordenadasGPX';
-
-    let result = this.file.createDir(this.file.externalRootDirectory, this.dirName, true);
-    result.then(data => {
-      this.dirPath = data.toURL();
-      this.tareas.getCoordenadas(this.tipoActividad1, this.tipoActividad2).then(data =>{
-        let headerGPX = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
-                      +" <gpx 	version='1.1'"
-                      +" creator='OsmAnd' xmlns='http://www.topografix.com/GPX/1/1'"
-                      +" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'"
-                      +" xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>";
-      let bodyGPX = "";
-        if(data.length > 0){
-          console.log(data[0]);
-          for (let i = 0; i < data.length; i++) {
-
-            bodyGPX = bodyGPX + "<wpt lat='"+data[i]['latitud']+"' lon='"+data[i]['longitud']+"'>"
-                        +" <name>"+data[i]['n9meco']+"</name>"
-                        +" <extensions>"
-                        +" <color>#2196f3</color>"
-                        +" </extensions>"
-                        +" </wpt>";
-
-          }
         }
+      }
 
-      let footGPX="</gpx>";
+    let footGPX="</gpx>";
 
-      let gpxFile = headerGPX+bodyGPX+footGPX;
-      //console.log(gpxFile);
-      this.file.writeFile(this.dirPath, this.fileName, gpxFile, {replace:true}).then(r =>{
-        setTimeout(() => {
-          loading.dismiss().then(res =>{
-            this.showToast('Ruta creada con éxito, revisar la carpeta coordenadaGPX');
-          });
-        }, 0);
-      });
-
-      });
-
+    let gpxFile = headerGPX+bodyGPX+footGPX;
+    //console.log(gpxFile);
+    this.file.writeFile(this.dirPath, this.fileName, gpxFile, {replace:true}).then(r =>{
+      setTimeout(() => {
+        loading.dismiss().then(res =>{
+          this.showToast('Ruta creada con éxito, revisar la carpeta coordenadaGPX');
+        });
+      }, 0);
+    });
 
     });
 
-   }
 
-   showToast(mensaje: any) {
+  });
+
+  }
+
+  showToast(mensaje: any) {
     let toast = this.toastCtrl.create({
       message: mensaje,
       duration: 5000,

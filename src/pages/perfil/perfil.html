@@ -11,10 +11,17 @@
 
 
 <ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h5>Información personal:</h5>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <!--formulario-->
   <form [formGroup]="registerForm" (ngSubmit)="updatePerfil()">
     <ion-item>
-      <ion-label floating>Cédula:</ion-label>
+      <ion-label class="labelAux" fixed>Cédula:</ion-label>
       <ion-input type="number"  formControlName="cedula" value="{{ user.cedula }}"></ion-input>
     </ion-item>
     <ion-item *ngIf="registerForm.get('cedula').errors && registerForm.get('cedula').dirty">
@@ -23,7 +30,7 @@
       <p color="danger" ion-text *ngIf="registerForm.get('cedula').hasError('maxlength')">Cantidad máxima de caracteres (10)</p>
     </ion-item>
     <ion-item>
-      <ion-label floating>Nombres:</ion-label>
+      <ion-label class="labelAux" fixed>Nombres:</ion-label>
       <ion-input type="text"  formControlName="nombres" value="{{ user.nombres }}"></ion-input>
     </ion-item>
     <ion-item *ngIf="registerForm.get('nombres').errors && registerForm.get('nombres').dirty">
@@ -31,7 +38,7 @@
       <p color="danger" ion-text *ngIf="registerForm.get('nombres').hasError('maxlength')">Cantidad máxima de caracteres (45)</p>
     </ion-item>
     <ion-item>
-      <ion-label floating>Apellidos:</ion-label>
+      <ion-label class="labelAux" fixed>Apellidos:</ion-label>
       <ion-input type="text" formControlName="apellidos" value="{{ user.apellidos }}"></ion-input>
     </ion-item>
     <ion-item *ngIf="registerForm.get('apellidos').errors && registerForm.get('apellidos').dirty">
@@ -41,7 +48,7 @@
     <br>
     <ion-row>
       <ion-col text-center>
-        <button ion-button type="submit" [disabled]="!registerForm.valid">Guardar</button>
+        <button ion-button block type="submit" [disabled]="!registerForm.valid">Guardar</button>
       </ion-col>
     </ion-row>
 

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController,
+        NavParams, AlertController,
+        ToastController } from 'ionic-angular';
 
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { Toast } from '@ionic-native/toast';
@@ -20,11 +22,11 @@ export class PerfilPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private sqlite: SQLite,
     private toast: Toast,
     public formBuilder: FormBuilder,
     private alert: AlertController,
-    private userDB: UserProvider
+    private userDB: UserProvider,
+    public toastCtrl: ToastController
   ) {
 
     //formulario para validacion
@@ -57,18 +59,26 @@ export class PerfilPage {
   updatePerfil(){
     let valor = this.userDB.actualizar(this.registerForm, this.user['id_user']).then((res) =>{
       if(valor){
-        this.toast.show('Perfil actualizado correctamente.', '4000', 'center')
-        .subscribe();
+        this.showToast('Perfil actualizado correctamente');
       }
       if(!valor){
-        this.toast.show('Error al actualizar el perfil.', '4000', 'center')
-        .subscribe();
+        this.showToast('Error al actualizar el perfil');
       }
     });
-
-
   }
 
+  showToast(mensaje: any) {
+    let toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 5000,
+      position: 'bottom'
+    });
 
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
 
 }

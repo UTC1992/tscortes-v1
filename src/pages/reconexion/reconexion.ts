@@ -22,8 +22,8 @@ import 'rxjs/add/operator/debounceTime';
 })
 export class ReconexionPage {
 
-  tipoActividad1 = '10';
-  tipoActividad2 = '010';
+  tipoActividad1 = '40';
+  tipoActividad2 = '040';
 
   dataJSON;
 
@@ -76,7 +76,7 @@ export class ReconexionPage {
     this.userDB.getUsers().then((res) => {
 
       //console.log(res[0]['estado']);
-      if(res[0]['estado'] == "Pasivo" || res[0]['estado'] == null){
+      if(res[0]['estado'] == "Inactivo" || res[0]['estado'] == null){
         //console.log('tecnico pasivo o null');
         this.estadoTecnicoGet = true;
       }
@@ -119,13 +119,25 @@ export class ReconexionPage {
                   });
                 }, 5000);
 
+              }  else {
+                loading.dismiss().then(r =>{
+                  this.estadoTecnicoGet=true;
+                  this.showToast('Datos no obtenidos');
+                });
               }
             }).catch(e => {
+              loading.dismiss();
+              this.estadoTecnicoGet=true;
               this.showToast('Error => '+ e);
             });
           });
         },
-        (error)=> {console.log(error);}
+        (error)=> {
+          loading.dismiss();
+          this.estadoTecnicoGet=true;
+          console.log(error);
+          this.showToast('No se pudo obtener los datos');
+        }
       );
     });
 
@@ -195,7 +207,7 @@ export class ReconexionPage {
     });
     loading.present();
 
-    this.tareas.enviarDatosHttp().then(res =>{
+    this.tareas.enviarDatosHttp(this.tipoActividad1, this.tipoActividad2).then(res =>{
       if(res){
         setTimeout(() => {
           loading.dismiss().then(r =>{

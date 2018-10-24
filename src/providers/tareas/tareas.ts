@@ -83,11 +83,13 @@ export class TareasProvider {
           .then((data) => {
             console.log("Consulta realizada a TAREAS");
             this.listaTareas = [];
+            let index = 1;
             for (var i = 0; i < data.rows.length; i++) {
               //this.listaTareas[i] = data.rows.item(i).n9nomb;
             if(data.rows.item(i).n9leco == 0 || data.rows.item(i).n9leco == ''
               || data.rows.item(i).n9leco == null ){
                 this.listaTareas.push({
+                  index: index++,
                   id_tare: data.rows.item(i).id_tare,
                   id_act: data.rows.item(i).id_act,
                   n9cono: data.rows.item(i).n9cono,
@@ -135,12 +137,10 @@ export class TareasProvider {
     })
   }
 
-  public getListaTareasParaEnviar(): Promise<string[]>{
+  public getListaTareasParaEnviar(tipoActividad1: any, tipoActividad2: any): Promise<string[]>{
     return new Promise((resolve, reject)=>{
       return this.openDatabase().then((res) => {
         console.log("Respuesta de las promesas "+res);
-        let tipoActividad1 = '10';
-        let tipoActividad2 = '010';
         if(res){
           return this.database.executeSql('SELECT * FROM tareas WHERE n9cono=? or n9cono=? ORDER BY id_tare ASC',
           [tipoActividad1, tipoActividad2])
@@ -282,9 +282,9 @@ export class TareasProvider {
 
   }
 
-  enviarDatosHttp(){
+  enviarDatosHttp(tipoActividad1: any, tipoActividad2: any){
     return new Promise((resolve, reject) =>{
-    return this.getListaTareasParaEnviar().then(data => {
+    return this.getListaTareasParaEnviar(tipoActividad1, tipoActividad2).then(data => {
 
       let headers = new HttpHeaders({
         "Accept": 'application/json',
@@ -343,6 +343,23 @@ export class TareasProvider {
       });
     })
   }
+
+  clearTables(codigoAct: any){
+    return new Promise((resolve, reject) =>{
+      return this.openDatabase().then(res =>{
+        this.database.executeSql('DELETE FROM tareas WHERE n9cono=?'
+                                ,[codigoAct])
+        .then(r => {
+          console.log(r);
+          resolve(true);
+        }).catch(error => {
+          console.log(error);
+          reject(false);
+        });
+      });
+    });
+  }
+
 }
 
 /*

@@ -4,7 +4,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Reconexión manual</ion-title>
+    <ion-title>Reconecciones manuales</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -32,7 +32,7 @@
                     <ion-avatar item-start>
                       <img src="assets/imgs/medidorluz.jpg">
                     </ion-avatar>
-                   {{ item.id_recm }} - {{ item.medidor }}
+                   {{ item.index }} - {{ item.medidor }}
                   </ion-item>
                 <ion-item-options side="right">
                   <button ion-button (click)="eliminar(item)" color="danger">
