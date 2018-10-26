@@ -11,6 +11,8 @@ export class RecmanualProvider {
 
   listaRecM;
 
+  url = 'http://192.168.1.4/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile';
+
   constructor(
     public http: HttpClient,
     public sqlite: SQLite
@@ -162,15 +164,14 @@ export class RecmanualProvider {
         'Content-Type': 'application/x-www-form-urlencoded'
       });
 
-      //console.log(JSON.stringify(data));
-      let body = [
-        {datos: data},
-        {cedula: cedula}
-      ];
+      let objCedula: any = {
+        cedula: cedula
+      };
+      //añadir objeto al data obtenido
+      data.push(objCedula);
+      console.log(data);
 
-      console.log(JSON.stringify(body) );
-
-      return this.http.post("http://192.168.1.4/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile/insert-data", body, {headers: headers})
+      return this.http.post(this.url+'/insert-data', JSON.stringify(data), {headers: headers})
         .subscribe(res => {
           console.log("Respuesta del servidor es ==> ");
           console.log(res);
