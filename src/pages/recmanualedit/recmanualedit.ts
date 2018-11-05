@@ -187,23 +187,168 @@ export class RecmanualeditPage {
 
     alert.addInput({
       type: 'radio',
-      label: 'El domicilio se encuentra desabitado hola mundo hola mundo hola mundo hola mundo hola mundo hola mundo',
-      value: 'El domicilio se encuentra desabitado hola mundo hola mundo hola mundo hola mundo hola mundo hola mundo',
+      label: 'Sin novedad',
+      value: 'Sin novedad',
       checked: false
     }).addInput({
       type: 'radio',
-      label: 'Perro Bravo',
-      value: 'Perro Bravo',
+      label: 'Domicilio cerrado',
+      value: 'Domicilio cerrado',
       checked: false
     }).addInput({
       type: 'radio',
-      label: 'Perro Bravo',
-      value: 'Perro Bravo',
+      label: 'Cliente no permite accion',
+      value: 'Cliente no permite accion',
       checked: false
     }).addInput({
       type: 'radio',
-      label: 'Perro Bravo',
-      value: 'Perro Bravo',
+      label: 'Guardia no permite ingreso',
+      value: 'Guardia no permite ingreso',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Armario con candado',
+      value: 'Armario con candado',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Coordenadas incorrectas',
+      value: 'Coordenadas incorrectas',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Servicio ya suspendido',
+      value: 'Servicio ya suspendido',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Sin medidor',
+      value: 'Sin medidor',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Tiene factura pagada',
+      value: 'Tiene factura pagada',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Tiene prorroga de pago',
+      value: 'Tiene prorroga de pago',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Datos no coinciden',
+      value: 'Datos no coinciden',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor abandonado',
+      value: 'Medidor abandonado',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor con contrabando',
+      value: 'Medidor con contrabando',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor con desperfecto o daño',
+      value: 'Medidor con desperfecto o daño',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor dentro de domicilio',
+      value: 'Medidor dentro de domicilio',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor muy alto',
+      value: 'Medidor muy alto',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor retirado por cliente',
+      value: 'Medidor retirado por cliente',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor retirado por empresa',
+      value: 'Medidor retirado por empresa',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor robado',
+      value: 'Medidor robado',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor sin breaker',
+      value: 'Medidor sin breaker',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Medidor sin tapa',
+      value: 'Medidor sin tapa',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Cristal sucio',
+      value: 'Cristal sucio',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Tornillo aislado / roto',
+      value: 'Tornillo aislado / roto',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Breaker dañado',
+      value: 'Breaker dañado',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Cliente se reconecto',
+      value: 'Cliente se reconecto',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Calamidad domestica abonado',
+      value: 'Calamidad domestica abonado',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Daño en acometida',
+      value: 'Daño en acometida',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Entidad oficial',
+      value: 'Entidad oficial',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Establecimiento interes social',
+      value: 'Establecimiento interes social',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Pago por bancos',
+      value: 'Pago por bancos',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Peticion de funcionario',
+      value: 'Peticion de funcionario',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Reclamo en tramite',
+      value: 'Reclamo en tramite',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Insumos perecibles/refrigerado',
+      value: 'Insumos perecibles/refrigerado',
       checked: false
     });
 
