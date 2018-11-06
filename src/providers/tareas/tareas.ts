@@ -86,7 +86,8 @@ export class TareasProvider {
             let index = 1;
             for (var i = 0; i < data.rows.length; i++) {
               //this.listaTareas[i] = data.rows.item(i).n9nomb;
-            if(data.rows.item(i).n9leco == '' || data.rows.item(i).n9leco == null ){
+            if(data.rows.item(i).n9leco == 0 || data.rows.item(i).n9leco == ''
+              || data.rows.item(i).n9leco == null ){
                 this.listaTareas.push({
                   index: index++,
                   id_tare: data.rows.item(i).id_tare,
@@ -226,9 +227,9 @@ export class TareasProvider {
                     [
                       dataJSON[i].id_act, dataJSON[i].n9cono, dataJSON[i].n9cocu,
                       dataJSON[i].n9cose, dataJSON[i].n9coru, dataJSON[i].n9meco,
-                      "", dataJSON[i].n9cocl, dataJSON[i].n9nomb,
+                      dataJSON[i].n9leco, dataJSON[i].n9cocl, dataJSON[i].n9nomb,
                       dataJSON[i].n9refe, dataJSON[i].cusecu, dataJSON[i].cucoon,
-                      dataJSON[i].foto, "", dataJSON[i].fecha,
+                      dataJSON[i].foto, dataJSON[i].observacion, dataJSON[i].fecha,
                       dataJSON[i].hora, dataJSON[i].estado, dataJSON[i].cedula_emp,
                       dataJSON[i].id_tecn,
                       dataJSON[i].n9plve, dataJSON[i].n9vaca, dataJSON[i].cucooe,
@@ -292,7 +293,7 @@ export class TareasProvider {
 
       //console.log(JSON.stringify(data));
 
-      return this.http.post("http://clientegestiondcyk.tecnosolutionscorp.com/api/mobile/update-activities", JSON.stringify(data), {headers: headers})
+      return this.http.post("http://192.168.1.4/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile/update-activities", JSON.stringify(data), {headers: headers})
         .subscribe(res => {
           console.log("Respuesta del servidor es ==> ");
           console.log(res);
@@ -353,21 +354,6 @@ export class TareasProvider {
           resolve(true);
         }).catch(error => {
           console.log(error);
-          reject(false);
-        });
-      });
-    });
-  }
-
-  validarBtnObtenerActividades(tipoAct1: string){
-    return new Promise((resolve, reject) =>{
-      return this.openDatabase().then((res) => {
-        return this.database.executeSql("SELECT COUNT(*) as 'cantidad' FROM tareas WHERE n9cono LIKE ? ",
-        [tipoAct1]).then((data) =>{
-          console.log("Total de ACTIVIDADES obtenidas");
-          console.log(data.rows.item(0).cantidad);
-          resolve(data.rows.item(0).cantidad);
-        }).catch(error =>{
           reject(false);
         });
       });

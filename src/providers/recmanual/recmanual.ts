@@ -11,7 +11,7 @@ export class RecmanualProvider {
 
   listaRecM;
 
-  url = 'http://clientegestiondcyk.tecnosolutionscorp.com/api/mobile';
+  url = 'http://192.168.1.4/AppIonicLaravel-Empresa/ServiceSistemaGestion/public/api/mobile';
 
   constructor(
     public http: HttpClient,
