@@ -47,7 +47,7 @@ export class UserProvider {
 
   }
 
-  public getUsers(){
+  getUsers(){
     return new Promise((resolve, reject)=>{
       return this.openDatabase().then((res) => {
         console.log("Respuesta de las promesas "+res);
@@ -86,8 +86,8 @@ export class UserProvider {
       if (data.valid){
         return this.openDatabase().then((res) =>{
           if(res){
-            return this.database.executeSql('INSERT INTO users ( cedula, nombres, apellidos) VALUES(?,?,?)',
-              [data.value.cedula,data.value.nombres,data.value.apellidos])
+            return this.database.executeSql('INSERT INTO users ( cedula, nombres, apellidos, estado) VALUES(?,?,?,?)',
+              [data.value.cedula,data.value.nombres,data.value.apellidos, ""])
               .then(response => {
                 console.log("Respuesta de insercion => "+response);
                 resolve(true);
@@ -162,5 +162,7 @@ export class UserProvider {
       });
     }
   }
+
+
 
 }

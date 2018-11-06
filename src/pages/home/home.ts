@@ -11,6 +11,7 @@ import { Toast } from '@ionic-native/toast';
 import 'rxjs/add/operator/toPromise';
 
 import { UserProvider } from '../../providers/user/user';
+import { TareasProvider } from '../../providers/tareas/tareas';
 
 @IonicPage()
 
@@ -30,7 +31,8 @@ export class HomePage {
     public http: Http,
     private alert: AlertController,
     public userDB: UserProvider,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public tareas: TareasProvider
   ) {
 
   }
@@ -69,6 +71,8 @@ export class HomePage {
   mostrarPerfil(){
     this.navCtrl.push('PerfilPage');
   }
+
+
 
 /*
   editarUsuario(todo){

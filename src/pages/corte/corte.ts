@@ -73,15 +73,18 @@ export class CortePage {
   getContarUsers(){
     this.userDB.getUsers().then((res) => {
 
-      //console.log(res[0]['estado']);
-      if(res[0]['estado'] == "Inactivo" || res[0]['estado'] == null){
-        //console.log('tecnico pasivo o null');
-        this.estadoTecnicoGet = true;
-      }
-      if(res[0]['estado'] == "Activo"){
-        //console.log('tecnico activo');
-        this.estadoTecnicoGet = false;
-      }
+      this.tareas.validarBtnObtenerActividades('%'+this.tipoActividad1)
+      .then(cantidad => {
+        //console.log(res[0]['estado']);
+        if( (res[0]['estado'] == "Inactivo" || res[0]['estado'] == "") && cantidad == 0 ) {
+          //console.log('tecnico pasivo o null');
+          this.estadoTecnicoGet = true;
+        }
+        if(res[0]['estado'] == "Activo" && cantidad > 0){
+          //console.log('tecnico activo');
+          this.estadoTecnicoGet = false;
+        }
+      });
 
       console.log("Respuesta de promise "+res);
       if(res == false){
@@ -94,6 +97,7 @@ export class CortePage {
   }
 
   guardarTareas(){
+    this.estadoTecnicoGet=false;
     //mostrar
     let loading = this.loadingCtrl.create({
       content: 'Espere por favor...'
