@@ -109,30 +109,35 @@ export class CortePage {
       .subscribe(
         (data)=> {
           console.log(data);
-          //data => contiene el archivo JSON obtenido desde el API web
-          this.tareas.saveDataJSON(data).then(response =>{
-            this.userDB.updateEstado('Activo', res[0]['id_user']).then(resAux =>{
-              if(resAux){
-                setTimeout(() => {
+          if(data != false){
+            //data => contiene el archivo JSON obtenido desde el API web
+            this.tareas.saveDataJSON(data).then(response =>{
+              this.userDB.updateEstado('Activo', res[0]['id_user']).then(resAux =>{
+                if(resAux){
+                  setTimeout(() => {
+                    loading.dismiss().then(r =>{
+                      this.estadoTecnicoGet=false;
+                      this.showToast('Técnico activo');
+                      this.ingresarItemsParaFiltrar();
+                    });
+                  }, 5000);
+                }  else {
                   loading.dismiss().then(r =>{
-                    this.estadoTecnicoGet=false;
-                    this.showToast('Técnico activo');
-                    this.ingresarItemsParaFiltrar();
+                    this.estadoTecnicoGet=true;
+                    this.showToast('Datos no obtenidos');
                   });
-                }, 5000);
-
-              }  else {
-                loading.dismiss().then(r =>{
-                  this.estadoTecnicoGet=true;
-                  this.showToast('Datos no obtenidos');
-                });
-              }
-            }).catch(e => {
-              loading.dismiss();
-              this.estadoTecnicoGet=true;
-              this.showToast('Error => '+ e);
+                }
+              }).catch(e => {
+                loading.dismiss();
+                this.estadoTecnicoGet=true;
+                this.showToast('Error => '+ e);
+              });
             });
-          });
+          } else {
+            loading.dismiss();
+            this.estadoTecnicoGet=true;
+            this.showToast('No se pudo obtener los datos, revise su cédula y contacte al operador');
+          }
         },
         (error)=> {
           console.log(error);
@@ -159,17 +164,6 @@ export class CortePage {
           });
         console.log("DATOS OBTENIDOS DE PROMISE");
         console.log(this.items);
-
-        /** PARA BUSCAR EN TODOS LOS ATRIBUTOS DEL JSON
-         * filterItems(searchTerm){
-            return this.items.filter((item) => {
-              return item.title.toLowerCase().
-              indexOf(searchTerm.toLowerCase()) > -1 ||
-                item.description.toLowerCase().
-                  indexOf(searchTerm.toLowerCase()) > -1;
-            });
-            }
-        */
       }
       this.infoActividadesHechasFaltantes();
     });
@@ -235,58 +229,61 @@ export class CortePage {
 
    }
 
-   generarGPX(){
-     //cargando
+  generarGPX(){
+    //cargando
     let loading = this.loadingCtrl.create({
       content: 'Creando ruta...'
     });
     loading.present();
 
-    this.fileName='coordenadas.gpx';
+    this.fileName='coordenadasCOR.gpx';
     this.dirName='coordenadasGPX';
 
     let result = this.file.createDir(this.file.externalRootDirectory, this.dirName, true);
     result.then(data => {
       this.dirPath = data.toURL();
       this.tareas.getCoordenadas(this.tipoActividad1, this.tipoActividad2).then(data =>{
-        let headerGPX = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
-                      +" <gpx 	version='1.1'"
-                      +" creator='OsmAnd' xmlns='http://www.topografix.com/GPX/1/1'"
-                      +" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'"
-                      +" xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>";
-      let bodyGPX = "";
         if(data.length > 0){
+          let xml = [];
+          xml.push("<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\n");
+          xml.push("<gpx version='1.1' creator='jms' xmlns='http://www.topografix.com/GPX/1/1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>\n");
+
+
           console.log(data[0]);
           for (let i = 0; i < data.length; i++) {
 
-            bodyGPX = bodyGPX + "<wpt lat='"+data[i]['latitud']+"' lon='"+data[i]['longitud']+"'>"
-                        +" <name>"+data[i]['n9meco']+"</name>"
-                        +" <extensions>"
-                        +" <color>#2196f3</color>"
-                        +" </extensions>"
-                        +" </wpt>";
+            xml.push("\t<wpt lat='"+data[i]['latitud']+"' lon='"+data[i]['longitud']+"'>\n");
+            xml.push("\t\t<ele>0.0</ele>\n");
+            xml.push("\t\t<name>"+data[i]['n9meco']+"</name>\n");
+            xml.push("\t\t<extensions>\n");
+            xml.push("\t\t\t<color>#ee8c0e</color>\n");
+            xml.push("\t\t</extensions>\n");
+            xml.push("\t\t<type>MEDIDORES</type>\n");
+            xml.push("\t</wpt>\n");
 
           }
+
+          xml.push("</gpx>");
+          //codificacion blob para crear XML
+          let blobXML = new Blob(xml, { type: 'application/xml' });
+          //console.log(gpxFile);
+          this.file.writeFile(this.dirPath, this.fileName, blobXML, {replace:true}).then(r =>{
+            setTimeout(() => {
+              loading.dismiss().then(res =>{
+                this.showToast('Ruta creada con éxito, revisar la carpeta coordenadasGPX');
+              });
+            }, 0);
+          });
+        } else {
+          loading.dismiss();
+          this.showToast('No existen datos para generar archivo de coordenadas');
         }
 
-      let footGPX="</gpx>";
-
-      let gpxFile = headerGPX+bodyGPX+footGPX;
-      //console.log(gpxFile);
-      this.file.writeFile(this.dirPath, this.fileName, gpxFile, {replace:true}).then(r =>{
-        setTimeout(() => {
-          loading.dismiss().then(res =>{
-            this.showToast('Ruta creada con éxito, revisar la carpeta coordenadaGPX');
-          });
-        }, 0);
-      });
 
       });
-
-
     });
 
-   }
+  }
 
    showToast(mensaje: any) {
     let toast = this.toastCtrl.create({

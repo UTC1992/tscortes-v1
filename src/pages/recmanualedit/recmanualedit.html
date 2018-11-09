@@ -52,7 +52,7 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <button ion-button type="button" small (click)="takePhoto()">
+            <button ion-button type="button" color="secondary" small (click)="takePhoto()">
               <ion-icon name="camera"></ion-icon>
             </button>
             <button *ngIf="myphoto" color="danger" ion-button type="button" small (click)="descartarFoto()">
@@ -89,7 +89,7 @@
           </ion-col>
         </ion-row>
 
-      <button ion-button block type="submit" [disabled]="!registerForm.valid||!myphoto||!valorObservacion">Guardar</button>
+      <button ion-button block type="submit" color="secondary" round [disabled]="!registerForm.valid||!myphoto||!valorObservacion">Guardar</button>
       </form>
       <!--formulario-->
     </ion-grid>

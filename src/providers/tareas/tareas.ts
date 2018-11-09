@@ -292,7 +292,7 @@ export class TareasProvider {
 
       //console.log(JSON.stringify(data));
 
-      return this.http.post("http://clientegestiondcyk.tecnosolutionscorp.com/api/mobile/update-activities", JSON.stringify(data), {headers: headers})
+      return this.http.post("http://gestiondcyk.tecnosolutionscorp.com/api/mobile/update-activities", JSON.stringify(data), {headers: headers})
         .subscribe(res => {
           console.log("Respuesta del servidor es ==> ");
           console.log(res);

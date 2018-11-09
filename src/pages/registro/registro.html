@@ -41,7 +41,7 @@
       <p color="danger" ion-text *ngIf="registerForm.get('apellidos').hasError('required')">Campo requerido</p>
       <p color="danger" ion-text *ngIf="registerForm.get('apellidos').hasError('maxlength')">Cantidad máxima de caracteres (60)</p>
     </ion-item>
-    <button ion-button type="submit" [disabled]="!registerForm.valid">Guardar</button>
+    <button ion-button type="submit" color="secondary" block round [disabled]="!registerForm.valid">Guardar</button>
   </form>
   <!--formulario-->
 </ion-content>

@@ -10,12 +10,12 @@
 <ion-content padding>
   <h4 >Técnico de DC&K</h4>
   <p>Datos informativos:</p>
-  <ion-label>Cedula: {{ user.cedula }}</ion-label>
+  <ion-label>Cédula: {{ user.cedula }}</ion-label>
   <ion-label>Nombres: {{ user.nombres }}</ion-label>
   <ion-label>Apellidos: {{ user.apellidos }}</ion-label>
 
 
-  <button ion-button block menuToggle round>Mostrar Menú </button>
+  <button color="secondary" ion-button block menuToggle round>Mostrar Menú </button>
 </ion-content>
 
 <!--
@@ -27,4 +27,18 @@ npm install --save @ionic-native/toast
 mejorar el rendimiento al crear apk y ios
 ionic cordova build ios --prod
 ionic cordova build android --release --prod
+
+versio para funcionar en android 4.4
+"cordova-plugin-ionic-webview": "^1.2.1",
+
+    para versiones api 19
+    <preference name="android-minSdkVersion" value="19" />
+    <preference name="android-targetSdkVersion" value="19" />
+
+    para todas la versiones
+    <preference name="target-device" value="universal" />
+    <preference name="android-minSdkVersion" value="16" />
+
+    NOTA: si se asigna la minimasdKVersion se debe modificar tambien en el androidManifest en
+    /platform/android/cordobaLib
 -->

@@ -77,6 +77,9 @@ export class RecmanualPage {
           });
         console.log("DATOS OBTENIDOS DE PROMISE");
         console.log(this.items);
+      } else {
+        console.log(data);
+        this.items = data;
       }
     });
 

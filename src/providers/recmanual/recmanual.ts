@@ -11,7 +11,7 @@ export class RecmanualProvider {
 
   listaRecM;
 
-  url = 'http://clientegestiondcyk.tecnosolutionscorp.com/api/mobile';
+  url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
 
   constructor(
     public http: HttpClient,

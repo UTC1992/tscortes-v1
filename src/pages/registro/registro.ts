@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 
-import { Toast } from '@ionic-native/toast';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UserProvider } from '../../providers/user/user';
 
@@ -17,10 +16,10 @@ export class RegistroPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private toast: Toast,
     public formBuilder: FormBuilder,
     private alert: AlertController,
-    private userService: UserProvider
+    private userService: UserProvider,
+    public toastCtrl: ToastController
   ) {
 
     //formulario para validacion
@@ -35,13 +34,25 @@ export class RegistroPage {
   enviarDatos(){
     let valor = this.userService.saveData(this.registerForm);
     if(valor){
-      this.toast.show('Registro exitoso.', '5000', 'center').subscribe(
-        toast => {
-          this.navCtrl.popToRoot();
-        }
-      );
+      this.showToast('Registro exitoso');
+      this.navCtrl.popToRoot();
+    } else {
+      this.showToast('No se pudo registrar');
     }
   }
 
+  showToast(mensaje: any) {
+    let toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 5000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
 
 }
