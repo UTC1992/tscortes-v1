@@ -206,7 +206,7 @@ export class NotificacionPage {
   });
   loading.present();
   loading.dismiss();
-  this.navCtrl.push('ActividadPage', {'datosActividad': item});
+  this.navCtrl.push('ActividadPage', {'datosActividad': item, 'Pagina':'NotificacionPage'});
   }
 
   enviarDatos(){

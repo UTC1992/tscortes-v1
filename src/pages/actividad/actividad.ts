@@ -33,6 +33,8 @@ export class ActividadPage {
   //observacion variables
   valorObservacion;
 
+  paginaInicial: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -44,6 +46,7 @@ export class ActividadPage {
     private tareaService: TareasProvider,
     public loadingCtrl: LoadingController
   ) {
+    this.paginaInicial = this.navParams.get('Pagina');
     this.dataActividad = this.navParams.get('datosActividad');
     console.log(this.dataActividad);
     this.valorObservacion = this.dataActividad['observacion'];
@@ -141,7 +144,7 @@ export class ActividadPage {
         .then((resUpdate) => {
           if(resUpdate){
             this.loading.dismiss();
-            this.navCtrl.setRoot('NotificacionPage');
+            this.navCtrl.setRoot(this.paginaInicial);
             this.showToast('Datos actualizados correctamente');
           } else {
             this.showToast('Error al actualizar los datos');

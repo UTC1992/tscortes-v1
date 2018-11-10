@@ -207,7 +207,7 @@ export class ReconexionPage {
     });
     loading.present();
     loading.dismiss();
-    this.navCtrl.push('ActividadPage', {'datosActividad': item});
+    this.navCtrl.push('ActividadPage', {'datosActividad': item, 'Pagina':'ReconexionPage'});
    }
 
    enviarDatos(){
