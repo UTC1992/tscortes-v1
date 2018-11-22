@@ -45,6 +45,9 @@ export class CortePage {
   actFaltantes: number;
   actHechas: number;
 
+  //mostrar todas las tareas
+  mostrarTareas: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -58,6 +61,8 @@ export class CortePage {
 
     this.searchControl = new FormControl();
     this.estadoTecnicoEnvio = true;
+
+    this.mostrarTareas = false;
   }
 
   ionViewDidLoad() {
@@ -75,18 +80,18 @@ export class CortePage {
 
       this.tareas.validarBtnObtenerActividades('%'+this.tipoActividad1)
       .then(cantidad => {
-        //console.log(res[0]['estado']);
+        ////console.log(res[0]['estado']);
         if( (res[0]['estado'] == "Inactivo" || res[0]['estado'] == "") && cantidad == 0 ) {
-          //console.log('tecnico pasivo o null');
+          ////console.log('tecnico pasivo o null');
           this.estadoTecnicoGet = true;
         }
         if(res[0]['estado'] == "Activo" && cantidad > 0){
-          //console.log('tecnico activo');
+          ////console.log('tecnico activo');
           this.estadoTecnicoGet = false;
         }
       });
 
-      console.log("Respuesta de promise "+res);
+      //console.log("Respuesta de promise "+res);
       if(res == false){
         this.navCtrl.push('RegistroPage');
         //obtener datos del URL
@@ -108,7 +113,7 @@ export class CortePage {
       this.peticion.obtenerDatos(res[0]['cedula'])
       .subscribe(
         (data)=> {
-          console.log(data);
+          //console.log(data);
           if(data != false){
             //data => contiene el archivo JSON obtenido desde el API web
             this.tareas.saveDataJSON(data).then(response =>{
@@ -140,7 +145,7 @@ export class CortePage {
           }
         },
         (error)=> {
-          console.log(error);
+          //console.log(error);
           loading.dismiss();
           this.estadoTecnicoGet=true;
           this.showToast('No se pudo obtener los datos');
@@ -151,23 +156,45 @@ export class CortePage {
   }
 
   ingresarItemsParaFiltrar() {
-    this.tareas.getListaTareas(this.tipoActividad1, this.tipoActividad2).then(data =>{
-      if(data.length > 0){
-        console.log(data);
-        this.items = data;
+    if(!this.mostrarTareas){
+      //console.log('Mostrar Tareas faltantes');
+      this.tareas.getListaTareas(this.tipoActividad1, this.tipoActividad2).then(data =>{
+        if(data.length > 0){
+          //console.log(data);
+          this.items = data;
+  
+          //filtrara y buscar datos de la lista
+          this.items = this.items.filter((item) => {
+            return item['n9meco'].toLowerCase().indexOf(
+              this.searchTerm.toLowerCase()) > -1;
+  
+            });
+          //console.log("DATOS OBTENIDOS DE PROMISE");
+          //console.log(this.items);
+        }
+        this.infoActividadesHechasFaltantes();
+      });
+    } else {
+      //console.log('Mostrar Todas las Tareas');
+      this.tareas.getListaTareasTotal(this.tipoActividad1, this.tipoActividad2).then(data =>{
+        if(data.length > 0){
+          //console.log(data);
+          this.items = data;
+  
+          //filtrara y buscar datos de la lista
+          this.items = this.items.filter((item) => {
+            return item['n9meco'].toLowerCase().indexOf(
+              this.searchTerm.toLowerCase()) > -1;
+  
+            });
+          //console.log("DATOS OBTENIDOS DE PROMISE");
+          //console.log(this.items);
 
-        //filtrara y buscar datos de la lista
-        this.items = this.items.filter((item) => {
-          return item['n9meco'].toLowerCase().indexOf(
-            this.searchTerm.toLowerCase()) > -1;
-
-          });
-        console.log("DATOS OBTENIDOS DE PROMISE");
-        console.log(this.items);
-      }
-      this.infoActividadesHechasFaltantes();
-    });
-
+        }
+        this.infoActividadesHechasFaltantes();
+      });
+    }
+    
   }
 
   infoActividadesHechasFaltantes(){
@@ -186,7 +213,7 @@ export class CortePage {
    }
 
    mostrarTareaNot(item: any){
-    //console.log(item);
+    ////console.log(item);
     let loading = this.loadingCtrl.create({
       content: 'Obtener datos...'
     });
@@ -249,7 +276,7 @@ export class CortePage {
           xml.push("<gpx version='1.1' creator='jms' xmlns='http://www.topografix.com/GPX/1/1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>\n");
 
 
-          console.log(data[0]);
+          //console.log(data[0]);
           for (let i = 0; i < data.length; i++) {
 
             xml.push("\t<wpt lat='"+data[i]['latitud']+"' lon='"+data[i]['longitud']+"'>\n");
@@ -266,7 +293,7 @@ export class CortePage {
           xml.push("</gpx>");
           //codificacion blob para crear XML
           let blobXML = new Blob(xml, { type: 'application/xml' });
-          //console.log(gpxFile);
+          ////console.log(gpxFile);
           this.file.writeFile(this.dirPath, this.fileName, blobXML, {replace:true}).then(r =>{
             setTimeout(() => {
               loading.dismiss().then(res =>{
@@ -293,11 +320,14 @@ export class CortePage {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      //console.log('Dismissed toast');
     });
 
     toast.present();
   }
 
+  mostrarTotalTareas(){
+    this.ingresarItemsParaFiltrar();
+  }
 
 }

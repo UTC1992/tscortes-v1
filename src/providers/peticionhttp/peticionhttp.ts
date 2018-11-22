@@ -11,7 +11,7 @@ export class PeticionhttpProvider {
   baseURLApi = 'http://gestiondcyk.tecnosolutionscorp.com/api'
 
   constructor(public http: HttpClient) {
-    console.log('Hello PeticionhttpProvider Provider');
+    //console.log('Hello PeticionhttpProvider Provider');
   }
 
   obtenerDatos(cedula: any){

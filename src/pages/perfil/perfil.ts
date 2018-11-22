@@ -45,12 +45,12 @@ export class PerfilPage {
 
   getContarUsers(){
     this.userDB.getUsers().then((res) => {
-      console.log("Respuesta de promise en PERFIL "+res);
+      //console.log("Respuesta de promise en PERFIL "+res);
       if(res == false){
         this.user = [];
         this.navCtrl.push('RegistroPage');
       }else{
-        console.log(res);
+        //console.log(res);
         this.user = res[0];
       }
     });
@@ -75,7 +75,7 @@ export class PerfilPage {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      //console.log('Dismissed toast');
     });
 
     toast.present();

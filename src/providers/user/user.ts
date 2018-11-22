@@ -15,7 +15,7 @@ export class UserProvider {
     public http: HttpClient,
     public sqlite: SQLite
   ) {
-    console.log('Hello USER Provider');
+    //console.log('Hello USER Provider');
   }
 
   public openDatabase(){
@@ -40,7 +40,7 @@ export class UserProvider {
         resolve(db);
       })
       .catch(error =>{
-        console.error(error);
+        //console.error(error);
         reject(false);
       });
     });
@@ -50,11 +50,11 @@ export class UserProvider {
   getUsers(){
     return new Promise((resolve, reject)=>{
       return this.openDatabase().then((res) => {
-        console.log("Respuesta de las promesas "+res);
+        //console.log("Respuesta de las promesas "+res);
         if(res){
           return this.database.executeSql('SELECT * FROM users ORDER BY id_user DESC', [])
           .then((data) => {
-            console.log("Consulta realizada a USERS");
+            //console.log("Consulta realizada a USERS");
             this.users = [];
             for (var i = 0; i < data.rows.length; i++) {
               this.users.push({
@@ -72,7 +72,7 @@ export class UserProvider {
             }
 
           }, (error) =>{
-            console.log("ERROR en consulta de susuarios: " + error);
+            //console.log("ERROR en consulta de susuarios: " + error);
 
             reject(false);
           });
@@ -89,16 +89,16 @@ export class UserProvider {
             return this.database.executeSql('INSERT INTO users ( cedula, nombres, apellidos, estado) VALUES(?,?,?,?)',
               [data.value.cedula,data.value.nombres,data.value.apellidos, ""])
               .then(response => {
-                console.log("Respuesta de insercion => "+response);
+                //console.log("Respuesta de insercion => "+response);
                 resolve(true);
               })
               .catch(e => {
-                console.log(e);
+                //console.log(e);
                 reject(false);
               });
           }
         }).catch(e => {
-          console.log(e);
+          //console.log(e);
           reject(false);
         });
       }
@@ -108,8 +108,8 @@ export class UserProvider {
   }
 
   actualizar(data: FormGroup, id: number){
-    console.log(data);
-    console.log(" ID usuario a actualizar ==>" + id);
+    //console.log(data);
+    //console.log(" ID usuario a actualizar ==>" + id);
     if(id > 0){
       return new Promise((resolve, reject) => {
         return this.openDatabase().then((res) =>{
@@ -118,18 +118,18 @@ export class UserProvider {
               'UPDATE users SET cedula=?, nombres=?, apellidos=? WHERE id_user=?'
               ,[data.value.cedula,data.value.nombres,data.value.apellidos, id])
             .then(response =>{
-              console.log("ACTUALIZAR PERFIL DE USUARIO");
-              console.log(response['rowsAffected']);
+              //console.log("ACTUALIZAR PERFIL DE USUARIO");
+              //console.log(response['rowsAffected']);
               resolve(true);
             })
             .catch(e =>{
-              console.log(e);
+              //console.log(e);
               reject(false);
             })
           }
         })
         .catch(e => {
-          console.log(e);
+          //console.log(e);
           reject(false);
         });
       });
@@ -146,17 +146,17 @@ export class UserProvider {
               'UPDATE users SET estado=? WHERE id_user=?'
               ,[estado,id])
             .then(response =>{
-              console.log("ESTADO ACTUALIZADO");
+              //console.log("ESTADO ACTUALIZADO");
               resolve(true);
             })
             .catch(e =>{
-              console.log(e);
+              //console.log(e);
               reject(false);
             })
           }
         })
         .catch(e => {
-          console.log(e);
+          //console.log(e);
           reject(false);
         });
       });

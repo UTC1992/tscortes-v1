@@ -53,7 +53,7 @@ export class RecmanualPage {
   getContarUsers(){
     this.userDB.getUsers().then((res) => {
       this.cedula = res[0]['cedula'];
-      console.log("Respuesta de promise "+res);
+      //console.log("Respuesta de promise "+res);
       if(res == false){
         this.navCtrl.push('RegistroPage');
         //obtener datos del URL
@@ -66,7 +66,7 @@ export class RecmanualPage {
   ingresarItemsParaFiltrar() {
     this.recmanualDB.getListaRecM().then(data =>{
       if(data.length > 0){
-        console.log(data);
+        //console.log(data);
         this.items = data;
 
         //filtrara y buscar datos de la lista
@@ -75,10 +75,10 @@ export class RecmanualPage {
             this.searchTerm.toLowerCase()) > -1;
 
           });
-        console.log("DATOS OBTENIDOS DE PROMISE");
-        console.log(this.items);
+        //console.log("DATOS OBTENIDOS DE PROMISE");
+        //console.log(this.items);
       } else {
-        console.log(data);
+        //console.log(data);
         this.items = data;
       }
     });
@@ -94,7 +94,7 @@ export class RecmanualPage {
   }
 
   mostrarRecManual(item: any){
-    //console.log(item);
+    ////console.log(item);
     let loading = this.loadingCtrl.create({
       content: 'Obtener datos...'
     });
@@ -111,13 +111,13 @@ export class RecmanualPage {
         {
           text: 'Cancelar',
           handler: () => {
-            console.log('Cancelar');
+            //console.log('Cancelar');
           }
         },
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Eliminar');
+            //console.log('Eliminar');
             this.recmanualDB.delete(item['id_recm']).then(r =>{
               if(r){
                 this.showToast('Datos eliminados correctamente');
@@ -142,7 +142,7 @@ export class RecmanualPage {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      //console.log('Dismissed toast');
     });
 
     toast.present();
@@ -156,10 +156,10 @@ export class RecmanualPage {
   });
   loading.present();
 
-  console.log(this.cedula);
+  //console.log(this.cedula);
 
   this.recmanualDB.enviarDatosHttp(this.cedula).then(res =>{
-    console.log('respuesta del envio de datos ==> ' + res);
+    //console.log('respuesta del envio de datos ==> ' + res);
     if(res){
       setTimeout(() => {
         loading.dismiss().then(r =>{

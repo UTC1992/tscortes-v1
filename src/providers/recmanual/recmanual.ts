@@ -17,7 +17,7 @@ export class RecmanualProvider {
     public http: HttpClient,
     public sqlite: SQLite
     ) {
-      console.log('Hello Recmanual Provider');
+      //console.log('Hello Recmanual Provider');
   }
 
   public openDatabase(){

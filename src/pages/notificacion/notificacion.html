@@ -21,6 +21,13 @@
             </button>
         </ion-col>
       </ion-row>
+      <ion-list>
+        <ion-item>
+          <ion-label>Mostrar todas las tareas </ion-label>
+          <ion-toggle [(ngModel)]="mostrarTareas" 
+          (ngModelChange)="mostrarTotalTareas()"></ion-toggle>
+        </ion-item>
+      </ion-list>
 
       <ion-row>
         <ion-col class="info">

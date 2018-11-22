@@ -54,8 +54,8 @@ export class RecmanualeditPage {
   ) {
 
     this.dataRecManual = this.navParams.get('datosRecManual');
-    console.log(this.dataRecManual['observacion']);
-    console.log(this.dataRecManual['rutaimg']);
+    //console.log(this.dataRecManual['observacion']);
+    //console.log(this.dataRecManual['rutaimg']);
     this.valorObservacion = this.dataRecManual['observacion'];
 
     //formulario para validacion
@@ -72,12 +72,12 @@ export class RecmanualeditPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RecmanualeditPage');
+    //console.log('ionViewDidLoad RecmanualeditPage');
   }
 
   getFoto(){
     this.file.readAsDataURL(this.dataRecManual['rutaimg'],this.dataRecManual['foto']).then(fotoBase64 => {
-      //console.log(fotoBase64);
+      ////console.log(fotoBase64);
       this.myphoto = fotoBase64;
     });
   }
@@ -96,11 +96,11 @@ export class RecmanualeditPage {
      // imageData is either a base64 encoded string or a file URI
      // If it's base64 (DATA_URL):
      this.myphoto = 'data:image/jpeg;base64,' + imageData;
-     console.log('data:image/jpeg;base64,' + imageData);
+     //console.log('data:image/jpeg;base64,' + imageData);
 
     //nombre de la foto
     this.fotoNombre = this.registerForm.value.medidor+".jpeg";
-    console.log(this.registerForm.value.medidor);
+    //console.log(this.registerForm.value.medidor);
 
      //this.crearCarpeta();
     }, (err) => {
@@ -129,8 +129,8 @@ export class RecmanualeditPage {
   }
 
   guardarFoto(){
-    console.log('Guardando fotos');
-    console.log(this.myphoto);
+    //console.log('Guardando fotos');
+    //console.log(this.myphoto);
 
     this.fotoNombre = this.registerForm.value.medidor+".jpeg";
     //creando directorio
@@ -145,7 +145,7 @@ export class RecmanualeditPage {
       let blob = this.b64toBlob(dataAux, 'image/jpeg');
       this.file.writeFile(data.toURL(), nombreFoto, blob ,{replace: true})
       .then(res => {
-        console.log("Foto guardada exitosamente");
+        //console.log("Foto guardada exitosamente");
         //this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
 
         this.recmanualDB.update(this.registerForm,this.dataRecManual['id_recm'],data.toURL(), this.valorObservacion)
@@ -356,7 +356,7 @@ export class RecmanualeditPage {
     alert.addButton({
       text: 'OK',
       handler: data => {
-        console.log(data);
+        //console.log(data);
         this.valorObservacion = data;
       }
     });
@@ -371,7 +371,7 @@ export class RecmanualeditPage {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      //console.log('Dismissed toast');
     });
 
     toast.present();

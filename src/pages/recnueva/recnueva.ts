@@ -56,7 +56,7 @@ export class RecnuevaPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RecnuevaPage');
+    //console.log('ionViewDidLoad RecnuevaPage');
   }
 
   takePhoto(){
@@ -73,11 +73,11 @@ export class RecnuevaPage {
      // imageData is either a base64 encoded string or a file URI
      // If it's base64 (DATA_URL):
      this.myphoto = 'data:image/jpeg;base64,' + imageData;
-     console.log('data:image/jpeg;base64,' + imageData);
+     //console.log('data:image/jpeg;base64,' + imageData);
 
     //nombre de la foto
     this.fotoNombre = this.registerForm.value.medidor+".jpeg";
-    console.log(this.registerForm.value.medidor);
+    //console.log(this.registerForm.value.medidor);
 
      //this.crearCarpeta();
     }, (err) => {
@@ -106,8 +106,8 @@ export class RecnuevaPage {
   }
 
   guardarFoto(){
-    console.log('Guardando fotos');
-    console.log(this.myphoto);
+    //console.log('Guardando fotos');
+    //console.log(this.myphoto);
 
     //nombre de foto
     this.fotoNombre = this.registerForm.value.medidor+".jpeg";
@@ -123,9 +123,9 @@ export class RecnuevaPage {
       let blob = this.b64toBlob(dataAux, 'image/jpeg');
       this.file.writeFile(data.toURL(), nombreFoto, blob ,{replace: true})
       .then(res => {
-        console.log("Foto guardada exitosamente");
+        //console.log("Foto guardada exitosamente");
         //this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
-        console.log(this.valorObservacion);
+        //console.log(this.valorObservacion);
           let valor = this.recmanualDB.insert(this.registerForm, data.toURL(), this.valorObservacion)
           .then((resUpdate) => {
 
@@ -336,7 +336,7 @@ export class RecnuevaPage {
     alert.addButton({
       text: 'OK',
       handler: data => {
-        console.log(data);
+        //console.log(data);
         this.valorObservacion = data;
       }
     });
@@ -351,7 +351,7 @@ export class RecnuevaPage {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      //console.log('Dismissed toast');
     });
 
     toast.present();

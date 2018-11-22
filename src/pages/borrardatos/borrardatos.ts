@@ -34,13 +34,13 @@ export class BorrardatosPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BorrardatosPage');
+    //console.log('ionViewDidLoad BorrardatosPage');
   }
 
   limpiarNot(){
     let codigoAct = '010';
     this.tareaDB.clearTables(codigoAct).then(res => {
-      console.log(res);
+      //console.log(res);
       if(res){
         this.userDB.getUsers().then((res) => {
           this.userDB.updateEstado('Inactivo', res[0]['id_user']).then(resAux =>{
@@ -136,7 +136,7 @@ export class BorrardatosPage {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      //console.log('Dismissed toast');
     });
 
     toast.present();
@@ -150,13 +150,13 @@ export class BorrardatosPage {
         {
           text: 'Cancelar',
           handler: () => {
-            console.log('Cancelar');
+            //console.log('Cancelar');
           }
         },
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Eliminar');
+            //console.log('Eliminar');
             this.limpiarNot();
           }
         }
@@ -174,13 +174,13 @@ export class BorrardatosPage {
         {
           text: 'Cancelar',
           handler: () => {
-            console.log('Cancelar');
+            //console.log('Cancelar');
           }
         },
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Eliminar');
+            //console.log('Eliminar');
             this.limpiarCor();
           }
         }
@@ -198,13 +198,13 @@ export class BorrardatosPage {
         {
           text: 'Cancelar',
           handler: () => {
-            console.log('Cancelar');
+            //console.log('Cancelar');
           }
         },
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Eliminar');
+            //console.log('Eliminar');
             this.limpiarRec();
           }
         }
@@ -222,13 +222,13 @@ export class BorrardatosPage {
         {
           text: 'Cancelar',
           handler: () => {
-            console.log('Cancelar');
+            //console.log('Cancelar');
           }
         },
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Eliminar');
+            //console.log('Eliminar');
             this.limpiarRecManual();
           }
         }
