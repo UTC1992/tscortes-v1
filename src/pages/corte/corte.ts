@@ -172,6 +172,10 @@ export class CortePage {
           //console.log("DATOS OBTENIDOS DE PROMISE");
           //console.log(this.items);
         }
+        if(data.length == 0){
+          //console.log(data);
+          this.items = data;
+        }
         this.infoActividadesHechasFaltantes();
       });
     } else {
@@ -190,6 +194,10 @@ export class CortePage {
           //console.log("DATOS OBTENIDOS DE PROMISE");
           //console.log(this.items);
 
+        }
+        if(data.length == 0){
+          //console.log(data);
+          this.items = data;
         }
         this.infoActividadesHechasFaltantes();
       });

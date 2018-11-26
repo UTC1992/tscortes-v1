@@ -43,11 +43,11 @@
 
     <ion-row>
       <ion-col>
-        <ion-searchbar [(ngModel)]="searchTerm" placeholder="Buscar Medidor"
+        <ion-searchbar style="padding: 0;"  [(ngModel)]="searchTerm" placeholder="Buscar Medidor"
          [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
         <ion-spinner *ngIf="searching" class="spinner-container"></ion-spinner>
 
-        <ion-scroll scrollY="true" style="height:230px;">
+        <ion-scroll scrollY="true" style="height:200px;">
           <ion-list inset>
             <ion-item ion-item *ngFor="let item of items "
              class="medidorItem" (click)="mostrarTareaNot(item)" icon-start>
