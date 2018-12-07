@@ -313,7 +313,7 @@ export class TareasProvider {
 
   }
 
-  update(data: FormGroup, id: number, rutaimg: any, observacion: any){
+  update(data: FormGroup, id: number, rutaimg: any, observacion: any, hora: any){
     return new Promise((resolve, reject) => {
       if (data.valid){
         //console.log(data.value.lectura);
@@ -321,8 +321,8 @@ export class TareasProvider {
         return this.openDatabase().then(res =>{
           if(res){
             return this.database.executeSql(
-              'UPDATE tareas SET n9leco=?, foto=?, observacion=?, estado=?, rutaimg=? WHERE id_tare=?'
-              ,[data.value.lectura,data.value.foto,observacion, 2, rutaimg, id])
+              'UPDATE tareas SET n9leco=?, foto=?, observacion=?, estado=?, rutaimg=?, hora=? WHERE id_tare=?'
+              ,[data.value.lectura,data.value.foto,observacion, 2, rutaimg, hora, id])
             .then(response =>{
               //console.log("ACTUALIZAR TAREA");
               //console.log(response['rowsAffected']);

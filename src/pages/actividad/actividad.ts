@@ -124,6 +124,9 @@ export class ActividadPage {
     var mes = fecha.getMonth() +1;
     var anio = fecha.getFullYear();
 
+    //obtener hora
+    var hora=fecha.getHours()+":"+fecha.getMinutes()+":"+fecha.getSeconds(); 
+
     //creando directorio
     var nombreCarpeta = "Fotos-"+dia+"-"+mes+"-"+anio;
     var nombreFoto = this.dataActividad['n9meco']+".jpeg";
@@ -138,9 +141,8 @@ export class ActividadPage {
       .then(res => {
         //console.log("RUTA DE IMAGEN ==> "+ data.toURL());
 
-        //console.log("Foto guardada exitosamente");
-        //this.toast.show('Actualización correcta.', '5000', 'center').subscribe();
-        let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],data.toURL(), this.valorObservacion)
+
+        let valor = this.tareaService.update(this.tareaForm, this.dataActividad['id_tare'],data.toURL(), this.valorObservacion, hora)
         .then((resUpdate) => {
           if(resUpdate){
             this.loading.dismiss();
