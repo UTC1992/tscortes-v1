@@ -23,6 +23,7 @@ export class MyApp {
       { title: 'Cortes', component: 'CortePage', icon: 'ios-list-box'  },
       { title: 'Reconexiones', component: 'ReconexionPage', icon: 'ios-list-box'  },
       { title: 'Reconexiones manuales', component: 'RecmanualPage', icon: 'ios-list-box'  },
+      { title: 'Retiro de medidores', component: 'RetiromedidorPage', icon: 'ios-list-box'  },
       { title: 'Limpiar datos', component: 'BorrardatosPage', icon: 'ios-trash'  },
       { title: 'Perfil', component: 'PerfilPage', icon: 'ios-contact'  }
 

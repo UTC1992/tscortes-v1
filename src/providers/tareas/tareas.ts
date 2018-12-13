@@ -10,6 +10,8 @@ import 'rxjs/add/operator/debounceTime';
 @Injectable()
 export class TareasProvider {
 
+  //url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
+  url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
   public database: SQLiteObject;
   tareas: any[] = [];
 
@@ -353,7 +355,7 @@ export class TareasProvider {
 
       ////console.log(JSON.stringify(data));
 
-      return this.http.post("http://pruebas.tiendanaturalecuador.online/api/mobile/update-activities", JSON.stringify(data), {headers: headers})
+      return this.http.post(this.url+"/update-activities", JSON.stringify(data), {headers: headers})
         .subscribe(res => {
           //console.log("Respuesta del servidor es ==> ");
           //console.log(res);
@@ -436,39 +438,3 @@ export class TareasProvider {
   }
 
 }
-
-/*
-      for (var i = 0; i < data.length; i++) {
-        //this.listaTareas[i] = data.rows.item(i).n9nomb;
-
-        tareasArray.push(new TareaModel(  data[i]['id_tare'],
-                                          data[i]['id_act'],
-                                          data[i]['n9cono'],
-                                          data[i]['n9cocu'],
-                                          data[i]['n9cose'],
-                                          data[i]['n9coru'],
-                                          data[i]['n9plve'],
-                                          data[i]['n9vaca'],
-                                          data[i]['n9meco'],
-                                          data[i]['n9leco'],
-                                          data[i]['n9cocl'],
-                                          data[i]['n9nomb'],
-                                          data[i]['n9refe'],
-                                          data[i]['cusecu'],
-                                          data[i]['cucoon'],
-                                          data[i]['cucooe'],
-                                          data[i]['foto'],
-                                          data[i]['rutaimg'],
-                                          data[i]['observacion'],
-                                          data[i]['fecha'],
-                                          data[i]['hora'],
-                                          data[i]['estado'],
-                                          data[i]['cedula_emp'],
-                                          data[i]['id_tecn']
-                                        ));
-
-
-      }
-    */
-    ////console.log(JSON.stringify(tareasArray));
-

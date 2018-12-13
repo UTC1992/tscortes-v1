@@ -8,14 +8,14 @@ import { map, filter } from 'rxjs/operators';
 @Injectable()
 export class PeticionhttpProvider {
 
-  baseURLApi = 'http://pruebas.tiendanaturalecuador.online/api'
-
+  //url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
+  url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
   constructor(public http: HttpClient) {
     //console.log('Hello PeticionhttpProvider Provider');
   }
 
   obtenerDatos(cedula: any){
-    return this.http.get(this.baseURLApi+'/mobile/get-data/'+cedula);
+    return this.http.get(this.url+'/get-data/'+cedula);
   }
 
 }

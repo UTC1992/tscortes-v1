@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Retiros de medidor</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+    <ion-grid>
+
+      <ion-row>
+        <ion-col>
+            <button [disabled]='!estadoTecnicoGet' color="secondary" ion-button block round (click)="guardarTareas()">
+              Obtener y Guardar Tareas
+            </button>
+            <button class="btnGpx" color="secondary" ion-button round (click)="generarGPX()">
+              Obtener Coordenadas
+            </button>
+        </ion-col>
+      </ion-row>
+      <ion-list>
+        <ion-item>
+          <ion-label>Mostrar todas las tareas </ion-label>
+          <ion-toggle [(ngModel)]="mostrarTareas" 
+          (ngModelChange)="mostrarTotalTareas()"></ion-toggle>
+        </ion-item>
+      </ion-list>
+
+      <ion-row>
+        <ion-col class="info">
+          <label>Info: </label>
+          <label>{{ actHechas }} Hechas</label>
+          <label>-</label>
+          <label>{{ actFaltantes }} Faltantes</label>
+        </ion-col>
+      </ion-row>
+
+      <!--<ion-searchbar [(ngModel)]="searchTerm" placeholder="Buscar Medidor"
+        (ionInput)="ingresarItemsParaFiltrar()"></ion-searchbar>-->
+
+      <ion-row>
+        <ion-col>
+          <ion-searchbar style="padding: 0;"  [(ngModel)]="searchTerm" placeholder="Buscar Medidor"
+           [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
+          <ion-spinner *ngIf="searching" class="spinner-container"></ion-spinner>
+
+          <ion-scroll scrollY="true" style="height:200px;">
+            <ion-list inset>
+              <ion-item ion-item *ngFor="let item of items "
+               class="medidorItem" (click)="mostrarTareaNot(item)" icon-start>
+                <ion-avatar item-start>
+                  <img src="assets/imgs/medidorluz.jpg">
+                </ion-avatar>
+                {{ item.index }} - {{ item.n9meco }}
+              </ion-item>
+            </ion-list>
+          </ion-scroll>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+            <button [disabled]='!estadoTecnicoEnvio' class="envio" ion-button block round (click)="enviarDatos()">
+              Enviar datos
+            </button>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+
+</ion-content>
