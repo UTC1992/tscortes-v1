@@ -11,7 +11,7 @@ export class RecmanualProvider {
 
   listaRecM;
 
-  url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
+  url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
 
   constructor(
     public http: HttpClient,

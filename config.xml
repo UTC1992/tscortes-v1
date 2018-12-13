@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>JMC - DCYK</name>
+<widget id="io.ionic.jmcdevelopersecuador0001" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Energy OS</name>
     <description>App que permita agilizar la gestión de grandes cantidades de actividades para empresas que diariamente se asigne tareas al personal y deseen registrar el rendimiento al final del día.</description>
-    <author email="omar.guanoluisa@gmail.com" href="#">JMC Developers - CEO</author>
+    <author email="omar.guanoluisa@gmail.com" href="#">JMC Developers Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -14,6 +14,7 @@
     <preference name="ScrollEnabled" value="false" />
     <preference name="target-device" value="universal" />
     <preference name="android-minSdkVersion" value="16" />
+    <preference name="android-targetSdkVersion" value="26" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="FadeSplashScreenDuration" value="300" />

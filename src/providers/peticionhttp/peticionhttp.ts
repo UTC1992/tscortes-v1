@@ -8,7 +8,7 @@ import { map, filter } from 'rxjs/operators';
 @Injectable()
 export class PeticionhttpProvider {
 
-  baseURLApi = 'http://gestiondcyk.tecnosolutionscorp.com/api'
+  baseURLApi = 'http://pruebas.tiendanaturalecuador.online/api'
 
   constructor(public http: HttpClient) {
     //console.log('Hello PeticionhttpProvider Provider');
