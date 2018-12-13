@@ -18,6 +18,7 @@ export class BorrardatosPage {
   corTotal;
   recTotal;
   recmaTotal;
+  retiroTotal;
 
   constructor(
                 public navCtrl: NavController,
@@ -108,7 +109,25 @@ export class BorrardatosPage {
       }
     });
   }
-
+  
+  eliminarRetiroMedidor(){
+    let codigoAct = '050';
+    this.tareaDB.clearTables(codigoAct).then(res => {
+      if(res){
+        this.userDB.getUsers().then((res) => {
+          this.userDB.updateEstado('Inactivo', res[0]['id_user']).then(resAux =>{
+            this.consultarTotales();
+            this.showToast('Datos eliminados correctamente');
+          }).catch(e => {
+            this.showToast('Error => '+ e);
+          });
+        });
+      } else {
+        this.showToast('No se pudo eliminar los datos');
+      }
+    });
+  }
+  
   consultarTotales(){
     this.tareaDB.getListaTareasParaEnviar('10', '010').then(data1 =>{
       this.notTotal = data1.length;
@@ -120,6 +139,10 @@ export class BorrardatosPage {
 
     this.tareaDB.getListaTareasParaEnviar('40', '040').then(data1 =>{
       this.recTotal = data1.length;
+    });
+
+    this.tareaDB.getListaTareasParaEnviar('50', '050').then(data1 =>{
+      this.retiroTotal = data1.length;
     });
 
     this.recmanualDB.contarRecManual().then(data1 =>{

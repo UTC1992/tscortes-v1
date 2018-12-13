@@ -45,6 +45,13 @@
         </button>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col>
+        <button color="secondary" round ion-button block (click)='eliminarRetiroMedidor()'>
+          Limpiar Retiro de medidores
+        </button>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 
   <ion-grid>
@@ -61,6 +68,9 @@
       <ion-col>
         REC manual
       </ion-col>
+      <ion-col>
+        RETIRO medidor
+      </ion-col>
     </ion-row>
     <ion-row>
         <ion-col>
@@ -74,6 +84,9 @@
         </ion-col>
         <ion-col>
           {{ recmaTotal }}
+        </ion-col>
+        <ion-col>
+          {{ retiroTotal }}
         </ion-col>
       </ion-row>
   </ion-grid>
