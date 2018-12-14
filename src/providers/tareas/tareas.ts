@@ -10,8 +10,8 @@ import 'rxjs/add/operator/debounceTime';
 @Injectable()
 export class TareasProvider {
 
-  //url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
-  url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
+  url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
+  //url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
   public database: SQLiteObject;
   tareas: any[] = [];
 

@@ -8,8 +8,9 @@ import { map, filter } from 'rxjs/operators';
 @Injectable()
 export class PeticionhttpProvider {
 
-  //url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
-  url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
+  url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
+  //url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
+  
   constructor(public http: HttpClient) {
     //console.log('Hello PeticionhttpProvider Provider');
   }

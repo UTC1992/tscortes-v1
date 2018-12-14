@@ -110,7 +110,7 @@ export class BorrardatosPage {
     });
   }
   
-  eliminarRetiroMedidor(){
+  eliminarRetiroMed(){
     let codigoAct = '050';
     this.tareaDB.clearTables(codigoAct).then(res => {
       if(res){
@@ -253,6 +253,30 @@ export class BorrardatosPage {
           handler: () => {
             //console.log('Eliminar');
             this.limpiarRecManual();
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+  }
+
+  eliminarRetiroMedidor(item: any){
+    let confirm = this.alertCtrl.create({
+      title: 'Desea eliminar los retiros de medidores?',
+      message: 'Al oprimir "Aceptar" se eliminaran todos los retiros permanentemente, desea hacerlo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            //console.log('Cancelar');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            //console.log('Eliminar');
+            this.eliminarRetiroMed();
           }
         }
       ]
