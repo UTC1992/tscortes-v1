@@ -78,7 +78,7 @@ export class ActividadPage {
 
   takePhoto(){
     const options: CameraOptions = {
-      quality: 100,
+      quality: 70,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
@@ -214,6 +214,11 @@ export class ActividadPage {
       type: 'radio',
       label: 'Coordenadas incorrectas',
       value: 'Coordenadas incorrectas',
+      checked: false
+    }).addInput({
+      type: 'radio',
+      label: 'Persona con discapacidad',
+      value: 'Persona con discapacidad',
       checked: false
     }).addInput({
       type: 'radio',

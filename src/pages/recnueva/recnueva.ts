@@ -63,7 +63,7 @@ export class RecnuevaPage {
 
     //mostrar camara para tomar la foto
     const options: CameraOptions = {
-      quality: 100,
+      quality: 70,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
