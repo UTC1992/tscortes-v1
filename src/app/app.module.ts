@@ -27,6 +27,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { RecmanualProvider } from '../providers/recmanual/recmanual';
 
+import { FCM } from '@ionic-native/fcm';
+
 @IonicPage()
 @NgModule({
   declarations: [
@@ -58,7 +60,7 @@ import { RecmanualProvider } from '../providers/recmanual/recmanual';
     Camera,
     File,
     RecmanualProvider,
-
+    FCM
   ]
 })
 export class AppModule {}

@@ -288,7 +288,6 @@ export class NotificacionPage {
 
           //console.log(data[0]);
           for (let i = 0; i < data.length; i++) {
-
             xml.push("\t<wpt lat='"+data[i]['latitud']+"' lon='"+data[i]['longitud']+"'>\n");
             xml.push("\t\t<ele>0.0</ele>\n");
             xml.push("\t\t<name>"+data[i]['n9meco']+"</name>\n");
@@ -297,8 +296,8 @@ export class NotificacionPage {
             xml.push("\t\t</extensions>\n");
             xml.push("\t\t<type>MEDIDORES</type>\n");
             xml.push("\t</wpt>\n");
-
           }
+          
           xml.push("</gpx>");
           //codificacion blob para crear XML
           let blobXML = new Blob(xml, { type: 'application/xml' });
