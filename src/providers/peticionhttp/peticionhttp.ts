@@ -1,16 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { map, filter } from 'rxjs/operators';
+import { Url } from '../../models/Url'
 
 @Injectable()
 export class PeticionhttpProvider {
+  urlBase: Url = new Url();
+  url = this.urlBase.baseMovil;
 
-  url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
-  //url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
-  
   constructor(public http: HttpClient) {
     //console.log('Hello PeticionhttpProvider Provider');
   }

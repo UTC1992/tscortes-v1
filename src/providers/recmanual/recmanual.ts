@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Url } from '../../models/Url';
 
 @Injectable()
 export class RecmanualProvider {
@@ -11,8 +11,8 @@ export class RecmanualProvider {
 
   listaRecM;
 
-  url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
-  //url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
+  urlBase: Url = new Url();
+  url = this.urlBase.baseMovil;
 
   constructor(
     public http: HttpClient,

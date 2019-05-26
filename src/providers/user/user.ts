@@ -54,7 +54,7 @@ export class UserProvider {
         if(res){
           return this.database.executeSql('SELECT * FROM users ORDER BY id_user DESC', [])
           .then((data) => {
-            //console.log("Consulta realizada a USERS");
+            console.log("Consulta realizada a USERS");
             this.users = [];
             for (var i = 0; i < data.rows.length; i++) {
               this.users.push({

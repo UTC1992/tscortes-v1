@@ -111,10 +111,11 @@ export class NotificacionPage {
     loading.present();
 
     this.userDB.getUsers().then((res) => {
+      console.log(res);
       this.peticion.obtenerDatos(res[0]['cedula'])
       .subscribe(
         (data)=> {
-          //console.log(data);
+          console.log(data);
           if(data != false){
             //data => contiene el archivo JSON obtenido desde el API web
             this.tareas.saveDataJSON(data).then(response =>{

@@ -19,7 +19,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { MyApp } from './app.component';
 
 import { PeticionhttpProvider } from '../providers/peticionhttp/peticionhttp';
-import { DatabaseProvider } from '../providers/database/database';
 import { UserProvider } from '../providers/user/user';
 import { TareasProvider } from '../providers/tareas/tareas';
 
@@ -52,7 +51,6 @@ import { RecmanualProvider } from '../providers/recmanual/recmanual';
     Toast,
     AlertController,
     PeticionhttpProvider,
-    DatabaseProvider,
     UserProvider,
     TareasProvider,
     Camera,

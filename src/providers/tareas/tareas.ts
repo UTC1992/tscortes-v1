@@ -1,17 +1,17 @@
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { TareaModel } from '../../models/tareamodel';
-
 import 'rxjs/add/operator/debounceTime';
+import { Url } from '../../models/Url';
 
 @Injectable()
 export class TareasProvider {
 
-  url = 'http://pruebas.tiendanaturalecuador.online/api/mobile';
-  //url = 'http://gestiondcyk.tecnosolutionscorp.com/api/mobile';
+  urlBase: Url = new Url();
+  url = this.urlBase.baseMovil;
+
   public database: SQLiteObject;
   tareas: any[] = [];
 
