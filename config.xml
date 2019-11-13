@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.jmcdevelopersecuador0001" version="1.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ionic.jmcdevelopersecuador0001" version="1.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Energy OS</name>
     <description>App que permita agilizar la gestión de grandes cantidades de actividades para empresas que diariamente se asigne tareas al personal y deseen registrar el rendimiento al final del día.</description>
     <author email="omar.guanoluisa@gmail.com" href="#">JMC Developers Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -91,5 +91,6 @@
     <allow-navigation href="http://192.168.1.4:8100" sessionid="c3b1f93e" />
     <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
     <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
-    <engine name="android" spec="7.1.1" />
+    <allow-navigation href="http://localhost:8100" sessionid="1af19459" />
+    <engine name="android" spec="8.0.0" />
 </widget>
