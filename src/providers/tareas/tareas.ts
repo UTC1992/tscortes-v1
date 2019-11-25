@@ -358,7 +358,7 @@ export class TareasProvider {
       return this.http.post(this.url+"/update-activities", JSON.stringify(data), {headers: headers})
         .subscribe(res => {
           //console.log("Respuesta del servidor es ==> ");
-          //console.log(res);
+          console.log(res);
           resolve(res);
         }, error => {
           //console.log(error);

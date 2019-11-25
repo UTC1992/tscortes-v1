@@ -13,6 +13,8 @@ import 'rxjs/add/operator/toPromise';
 import { UserProvider } from '../../providers/user/user';
 import { TareasProvider } from '../../providers/tareas/tareas';
 
+import { Camera, CameraOptions } from '@ionic-native/camera';
+
 @IonicPage()
 
 @Component({
@@ -24,15 +26,18 @@ export class HomePage {
   usuarios;
   user:any[] = [];
 
+  myphoto: string = null;
+
   constructor(
     public navCtrl: NavController,
     private sqlite: SQLite,
     private toast: Toast,
     public http: Http,
-    private alert: AlertController,
+    private alertCtrl: AlertController,
     public userDB: UserProvider,
     public toastCtrl: ToastController,
-    public tareas: TareasProvider
+    public tareas: TareasProvider,
+    private camera: Camera,
   ) {
 
   }
@@ -62,14 +67,52 @@ export class HomePage {
       if(res == false){
         this.user = [];
       }else{
-        //console.log(res[0]);
         this.user = res[0];
+        this.myphoto = this.user['foto'];
+        console.log(this.user);
       }
     });
   }
 
   mostrarPerfil(){
     this.navCtrl.push('PerfilPage');
+  }
+
+  takePhoto(){
+    //console.log("foto perfil");
+    const options: CameraOptions = {
+      quality: 70,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+     // imageData is either a base64 encoded string or a file URI
+     // If it's base64 (DATA_URL):
+     this.myphoto = 'data:image/jpeg;base64,' + imageData;
+     //console.log('data:image/jpeg;base64,' + imageData);
+      this.userDB.updateFoto(this.myphoto, this.user['id_user']).then(res => {
+        if(res){
+          this.showMensaje('Éxito !', 'Tu foto de perfil fue actualizada.');
+          this.mostrarDatosPersonales();
+        } else {
+          this.showMensaje('Alerta!', 'Tu foto de perfil no se actualizó.');
+        }
+      });
+     //this.crearCarpeta();
+    }, (err) => {
+     // Handle error
+    });
+  }
+
+  showMensaje(titulo, mensaje){
+      const alert = this.alertCtrl.create({
+        title: titulo,
+        subTitle: mensaje,
+        buttons: ['OK']
+      });
+      alert.present();
   }
 
 }

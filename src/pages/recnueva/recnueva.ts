@@ -132,9 +132,9 @@ export class RecnuevaPage {
             if(resUpdate){
               this.loading.dismiss();
               this.navCtrl.setRoot('RecmanualPage');
-              this.showToast('Datos guardados correctamente');
+              this.showMensaje('Éxito !','Datos guardados correctamente');
             } else {
-              this.showToast('Error al guardar los datos');
+              this.showMensaje('Alerta !','Error al guardar los datos');
             }
           });
 
@@ -355,6 +355,16 @@ export class RecnuevaPage {
     });
 
     toast.present();
+  }
+
+  showMensaje(titulo, mensaje){
+    const alert = this.alertCtrl.create({
+      title: titulo,
+      subTitle: mensaje,
+      enableBackdropDismiss: false,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 }

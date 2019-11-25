@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "478671882943",
+    "firebase_url": "https://app-cortes.firebaseio.com",
+    "project_id": "app-cortes",
+    "storage_bucket": "app-cortes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478671882943:android:12d3560a51465bc0",
+        "android_client_info": {
+          "package_name": "io.ionic.jmcdevelopersecuador0001"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478671882943-qm1gm2tvdh3tk8emc4bbm7emh88qhfhp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOihW1CqXjxuDcCIAT51uvzUMO_fARNmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478671882943-qm1gm2tvdh3tk8emc4bbm7emh88qhfhp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

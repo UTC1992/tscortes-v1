@@ -3,7 +3,7 @@
     <name>Energy OS</name>
     <description>App que permita agilizar la gestión de grandes cantidades de actividades para empresas que diariamente se asigne tareas al personal y deseen registrar el rendimiento al final del día.</description>
     <author email="omar.guanoluisa@gmail.com" href="#">JMC Developers Team</author>
-    <content original-src="index.html" src="http://localhost:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -91,6 +91,12 @@
     <allow-navigation href="http://192.168.1.4:8100" sessionid="c3b1f93e" />
     <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
     <plugin name="cordova.plugins.diagnostic" spec="^4.0.10" />
-    <allow-navigation href="http://localhost:8100" sessionid="1af19459" />
+    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
+    <allow-navigation href="http://localhost:8100" sessionid="1fc4163e" />
+    <plugin name="phonegap-plugin-push" spec="^2.3.0">
+        <variable name="SENDER_ID" value="478671882943" />
+        <variable name="ANDROID_SUPPORT_V13_VERSION" value="27.+" />
+        <variable name="FCM_VERSION" value="17.0.+" />
+    </plugin>
     <engine name="android" spec="8.0.0" />
 </widget>

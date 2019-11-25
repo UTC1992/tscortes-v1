@@ -8,13 +8,18 @@
 </ion-header>
 
 <ion-content padding>
-  <h4>Perfil</h4>
+  <p style="display: inline; display: block; text-align: center;">Foto de Perfil</p>
+  <ion-avatar item-start>
+    <img *ngIf="myphoto==null" src="assets/imgs/camara1.png" (click)="takePhoto()" class="imagen-camara" >
+    <img [src]="myphoto" *ngIf="myphoto" (click)="takePhoto()" class="foto-perfil">
+  </ion-avatar>
+  
   <p>Datos informativos:</p>
   <ion-label>Cédula: {{ user.cedula }}</ion-label>
   <ion-label>Nombres: {{ user.nombres }}</ion-label>
   <ion-label>Apellidos: {{ user.apellidos }}</ion-label>
   <ion-label>Cargo: Técnico Eléctrico</ion-label>
-
+  
   <button color="secondary" ion-button block menuToggle round>Mostrar Menú </button>
 </ion-content>
 

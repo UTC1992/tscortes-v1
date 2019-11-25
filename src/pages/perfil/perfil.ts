@@ -8,6 +8,11 @@ import { Toast } from '@ionic-native/toast';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { UserProvider } from '../../providers/user/user';
 
+// Implementamos la librería de notificaciones Push.
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
+
+import { PeticionhttpProvider } from '../../providers/peticionhttp/peticionhttp';
+
 @IonicPage()
 @Component({
   selector: 'page-perfil',
@@ -26,7 +31,9 @@ export class PerfilPage {
     public formBuilder: FormBuilder,
     private alert: AlertController,
     private userDB: UserProvider,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    private push: Push,
+    private peticionHttp: PeticionhttpProvider
   ) {
 
     //formulario para validacion
@@ -57,14 +64,19 @@ export class PerfilPage {
   }
 
   updatePerfil(){
-    let valor = this.userDB.actualizar(this.registerForm, this.user['id_user']).then((res) =>{
-      if(valor){
+    
+    this.userDB.actualizar(this.registerForm, this.user['id_user']).then((res) =>{
+      if(res){
+        //update token FCM
+        let cedula = this.registerForm.value.cedula;
+        this.mostrarNotificacionPush(cedula);
         this.showToast('Perfil actualizado correctamente');
       }
-      if(!valor){
+      if(!res){
         this.showToast('Error al actualizar el perfil');
       }
     });
+    
   }
 
   showToast(mensaje: any) {
@@ -79,6 +91,46 @@ export class PerfilPage {
     });
 
     toast.present();
+  }
+
+  mostrarNotificacionPush(cedula: string){
+    const options: PushOptions = {
+       android: {
+          // Añadimos el sender ID para Android.
+          senderID: '478671882943',
+          sound: 'true',
+          vibrate: true,
+          forceShow: "1",
+       },
+       ios: {
+           alert: 'true',
+           badge: true,
+           sound: 'false'
+       },
+    };
+ 
+    const pushObject: PushObject = this.push.init(options);
+ 
+    pushObject.on('registration').subscribe((registration: any) => {
+      console.log('Device registered', registration);
+
+      //actualizacion de token
+      let data: any[] = [];
+      data.push({
+        'cedula': cedula,
+        'actividad': 'cortes',
+        'token': registration.registrationId,
+      });
+
+      this.peticionHttp.updateTokenFCM(data).subscribe(res => {
+        console.log(res);
+      });
+
+    });
+    pushObject.on('error').subscribe(error => {
+      console.error('Error with Push plugin', error)
+    });
+
   }
 
 }

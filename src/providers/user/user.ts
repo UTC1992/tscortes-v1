@@ -30,7 +30,8 @@ export class UserProvider {
                     +" cedula TEXT,"
                     +" nombres TEXT,"
                     +" apellidos TEXT,"
-                    +" estado TEXT"
+                    +" estado TEXT,"
+                    +" foto TEXT"
                     + ");"
                     , [])
         .then(() => console.log('Tabla Users Creada'))
@@ -62,7 +63,8 @@ export class UserProvider {
                                   cedula: data.rows.item(i).cedula,
                                   nombres: data.rows.item(i).nombres,
                                   apellidos: data.rows.item(i).apellidos,
-                                  estado: data.rows.item(i).estado
+                                  estado: data.rows.item(i).estado,
+                                  foto: data.rows.item(i).foto
                                 })
             }
             if(this.users.length > 0){
@@ -161,6 +163,31 @@ export class UserProvider {
         });
       });
     }
+  }
+
+  updateFoto(foto: any, id: number){
+      return new Promise((resolve, reject) => {
+        return this.openDatabase().then((res) =>{
+          if(res){
+            return this.database.executeSql(
+              'UPDATE users SET foto=? WHERE id_user=?'
+              ,[foto, id])
+            .then(response =>{
+              //console.log("ESTADO ACTUALIZADO");
+              resolve(true);
+            })
+            .catch(e =>{
+              //console.log(e);
+              reject(false);
+            })
+          }
+        })
+        .catch(e => {
+          //console.log(e);
+          reject(false);
+        });
+      });
+    
   }
 
 

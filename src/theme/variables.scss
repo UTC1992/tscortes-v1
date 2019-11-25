@@ -57,7 +57,8 @@ $colors: (
   secondary:  #1697ee,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  envio:      #e06513,
 );
 
 // App iOS Variables
@@ -106,9 +107,9 @@ $colors: (
 @import "noto-sans";
 
 
-$toast-ios-background:(#32db64);
-$toast-md-background:(#32db64);
-$toast-wp-background:(#32db64);
+$toast-ios-background:(#1B1C1C);
+$toast-md-background:(#1B1C1C);
+$toast-wp-background:(#1B1C1C);
 $alert-md-message-text-color:red;
 
 $toggle-md-active-color:(#32db64);

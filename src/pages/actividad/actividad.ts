@@ -147,9 +147,9 @@ export class ActividadPage {
           if(resUpdate){
             this.loading.dismiss();
             this.navCtrl.setRoot(this.paginaInicial);
-            this.showToast('Datos actualizados correctamente');
+            this.showMensaje('Éxito !','Datos actualizados correctamente');
           } else {
-            this.showToast('Error al actualizar los datos');
+            this.showMensaje('Alerta !','Error al actualizar los datos');
           }
 
         });
@@ -380,6 +380,15 @@ export class ActividadPage {
     });
 
     toast.present();
+  }
+
+  showMensaje(titulo, mensaje){
+    const alert = this.alertCtrl.create({
+      title: titulo,
+      subTitle: mensaje,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 }

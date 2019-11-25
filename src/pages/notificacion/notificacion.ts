@@ -55,6 +55,7 @@ export class NotificacionPage {
     public tareas: TareasProvider,
     public loadingCtrl: LoadingController,
     public file: File,
+    private alertCtrl: AlertController,
   ) {
 
     this.searchControl = new FormControl();
@@ -103,7 +104,7 @@ export class NotificacionPage {
   }
 
   guardarTareas(){
-    this.estadoTecnicoGet=false;
+    //this.estadoTecnicoGet=false;
     //mostrar
     let loading = this.loadingCtrl.create({
       content: 'Espere por favor...'
@@ -124,14 +125,14 @@ export class NotificacionPage {
                   setTimeout(() => {
                     loading.dismiss().then(r =>{
                       this.estadoTecnicoGet=false;
-                      this.showToast('Datos obtenidos y Técnico activo');
+                      this.showMensaje("Éxito !",'Datos obtenidos y Técnico activo.');
                       this.ingresarItemsParaFiltrar();
                     });
                   }, 5000);
                 } else {
                   loading.dismiss().then(r =>{
                     this.estadoTecnicoGet=true;
-                    this.showToast('Datos no obtenidos');
+                    this.showMensaje('Alerta !','Datos no obtenidos.');
                   });
                 }
               }).catch(e => {
@@ -143,7 +144,7 @@ export class NotificacionPage {
           } else {
             loading.dismiss();
             this.estadoTecnicoGet=true;
-            this.showToast('No se pudo obtener los datos, revise su cédula y contacte al operador');
+            this.showMensaje('Alerta !','No se pudo obtener los datos, revise su cédula y contacte al operador.');
           }
 
         },
@@ -242,11 +243,13 @@ export class NotificacionPage {
   loading.present();
 
   this.tareas.enviarDatosHttp(this.tipoActividad1, this.tipoActividad2).then(res =>{
+    console.log(res);
     if(res){
       setTimeout(() => {
         loading.dismiss().then(r =>{
           this.estadoTecnicoEnvio = true;
-          this.showToast('Éxito al eviar los datos');
+          this.showMensaje('Datos Enviados !','Los datos se enviaron con éxito para su revisión.');
+          
         });
       }, 0);
 
@@ -254,7 +257,7 @@ export class NotificacionPage {
       setTimeout(() => {
         loading.dismiss().then(r =>{
           this.estadoTecnicoEnvio = true;
-          this.showToast('Nó se enviaron los datos');
+          this.showMensaje('Alerta !','Nó se enviaron los datos.');
         });
       }, 0);
     }
@@ -307,14 +310,14 @@ export class NotificacionPage {
           this.file.writeFile(this.dirPath, this.fileName, blobXML, {replace:true}).then(r =>{
             setTimeout(() => {
               loading.dismiss().then(res =>{
-                this.showToast('Ruta creada con éxito, revisar la carpeta coordenadasGPX');
+                this.showMensaje('Ruta generada !','Ruta creada con éxito, revisar la carpeta coordenadasGPX.');
               });
             }, 0);
           });
 
         } else {
           loading.dismiss();
-          this.showToast('No existen datos para generar archivo de coordenadas');
+          this.showMensaje('Alerta !','No existen datos para generar el archivo de coordenadas.');
         }
 
       });
@@ -342,6 +345,16 @@ export class NotificacionPage {
 
   mostrarTotalTareas(){
     this.ingresarItemsParaFiltrar();
+  }
+
+  showMensaje(titulo, mensaje){
+    const alert = this.alertCtrl.create({
+      title: titulo,
+      subTitle: mensaje,
+      enableBackdropDismiss: false,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 }

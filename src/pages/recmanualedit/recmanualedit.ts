@@ -153,10 +153,10 @@ export class RecmanualeditPage {
           if(resUpdate){
             this.loading.dismiss();
             this.navCtrl.setRoot('RecmanualPage');
-            this.showToast('Datos actualizados correctamente');
-          } else {
-            this.showToast('Error al actualizar los datos');
-          }
+            this.showMensaje('Éxito !','Datos actualizados correctamente');
+            } else {
+              this.showMensaje('Alerta !','Error al actualizar los datos');
+            }
 
         });
 
@@ -375,6 +375,16 @@ export class RecmanualeditPage {
     });
 
     toast.present();
+  }
+
+  showMensaje(titulo, mensaje){
+    const alert = this.alertCtrl.create({
+      title: titulo,
+      subTitle: mensaje,
+      enableBackdropDismiss: false,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 

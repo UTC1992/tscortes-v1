@@ -2,7 +2,6 @@ page-notificacion {
   .spinner-container {
     width: 100%;
     text-align: center;
-    padding: 10px;
     }
 
   .envio{
@@ -22,6 +21,10 @@ page-notificacion {
 
   .btnGpx{
     background: #033447c0;
+  }
+
+  .scrollLista{
+    padding: 0; width: 100%; height: 100%; border: 1px #BBBEC0 solid;
   }
 
 }

@@ -5,30 +5,26 @@
     </button>
     <ion-title>Cortes</ion-title>
   </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-  <ion-grid>
-
-    <ion-row>
-      <ion-col>
-          <button [disabled]='!estadoTecnicoGet' color="secondary" ion-button block round (click)="guardarTareas()">
-            Obtener y Guardar Tareas
-          </button>
-          <button class="" color="secondary" ion-button round (click)="generarGPX()">
-            Obtener Coordenadas
-          </button>
-      </ion-col>
-    </ion-row>
-    <ion-list >
+  <ion-list style="padding: 0;">
       <ion-item>
         <ion-label>Mostrar todas las tareas </ion-label>
         <ion-toggle [(ngModel)]="mostrarTareas" 
         (ngModelChange)="mostrarTotalTareas()"></ion-toggle>
       </ion-item>
     </ion-list>
+  <ion-searchbar style="padding: 0;"  [(ngModel)]="searchTerm" placeholder="Buscar Medidor"
+            [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
+</ion-header>
 
-    <ion-row>
+<ion-content padding>
+  <ion-fab center top *ngIf="searching">
+    <button ion-fab color="light">
+        <ion-spinner *ngIf="searching" class="spinner-container"></ion-spinner> 
+    </button>
+  </ion-fab> 
+
+  <ion-grid style="padding: 0;">
+    <ion-row style="padding: 0;">
       <ion-col class="info">
         <label>Info: </label>
         <label>{{ actHechas }} Hechas</label>
@@ -36,37 +32,33 @@
         <label>{{ actFaltantes }} Faltantes</label>
       </ion-col>
     </ion-row>
-
-    <!--<ion-searchbar [(ngModel)]="searchTerm" placeholder="Buscar Medidor"
-      (ionInput)="ingresarItemsParaFiltrar()"></ion-searchbar>-->
-
-    <ion-row>
-      <ion-col>
-        <ion-searchbar style="padding: 0;" [(ngModel)]="searchTerm" placeholder="Buscar Medidor"
-         [formControl]="searchControl" (ionInput)="onSearchInput()"></ion-searchbar>
-        <ion-spinner *ngIf="searching" class="spinner-container"></ion-spinner>
-
-        <ion-scroll scrollY="true" style="height:200px;">
-          <ion-list inset>
-            <ion-item ion-item *ngFor="let item of items "
-             class="medidorItem" (click)="mostrarTareaNot(item)" icon-start>
-              <ion-avatar item-start>
-                <img src="assets/imgs/medidorluz.jpg">
-              </ion-avatar>
-              {{ item.index }} - {{ item.n9meco }}
-            </ion-item>
-          </ion-list>
-        </ion-scroll>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-          <button [disabled]='!estadoTecnicoEnvio' class="envio" ion-button block round (click)="enviarDatos()">
-            Enviar datos
-          </button>
-      </ion-col>
-    </ion-row>
-
   </ion-grid>
+
+  <ion-scroll scrollY="true" class="scrollLista">
+      <ion-list >
+        <ion-item ion-item *ngFor="let item of items "
+         class="medidorItem" (click)="mostrarTareaNot(item)" icon-start>
+          <ion-avatar item-start>
+            <img src="assets/imgs/medidorluz.jpg">
+          </ion-avatar>
+          {{ item.index }} - {{ item.n9meco }}
+        </ion-item>
+      </ion-list>
+    </ion-scroll>
+
+  <ion-fab right bottom>
+    <button ion-fab class="envio"><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+        <button [disabled]='!estadoTecnicoEnvio' (click)="enviarDatos()" color="envio" ion-fab >
+            <ion-icon name="md-send"></ion-icon>
+        </button>
+        <button class="" color="secondary" ion-fab (click)="generarGPX()">
+          <ion-icon name="md-pin"></ion-icon>
+        </button>
+        <button *ngIf='estadoTecnicoGet' color="secondary" ion-fab  (click)="guardarTareas()">
+          <ion-icon name="md-list-box"></ion-icon>
+        </button>
+    </ion-fab-list>
+  </ion-fab>
+
 </ion-content>

@@ -164,7 +164,7 @@ export class RecmanualPage {
       setTimeout(() => {
         loading.dismiss().then(r =>{
           this.estadoTecnicoEnvio = true;
-          this.showToast('Éxito al eviar los datos');
+          this.showMensaje('Datos Enviados !','Los datos se enviaron con éxito para su revisión.');
         });
       }, 0);
 
@@ -172,7 +172,7 @@ export class RecmanualPage {
       setTimeout(() => {
         loading.dismiss().then(r =>{
           this.estadoTecnicoEnvio = true;
-          this.showToast('Nó se enviaron los datos');
+          this.showMensaje('Alerta !','Nó se enviaron los datos.');
         });
       }, 0);
     }
@@ -183,6 +183,16 @@ export class RecmanualPage {
 
   });
 
+  }
+
+  showMensaje(titulo, mensaje){
+    const alert = this.alertCtrl.create({
+      title: titulo,
+      subTitle: mensaje,
+      enableBackdropDismiss: false,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 }

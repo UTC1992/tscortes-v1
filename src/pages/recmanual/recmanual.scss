@@ -3,7 +3,7 @@
 .wp {
 
   .toast-bottom{
-    background: #56cc6a;
+    background: #1B1C1C;
     font-weight: bold;
   }
 }
@@ -12,7 +12,6 @@ page-recmanual {
   .spinner-container {
     width: 100%;
     text-align: center;
-    padding: 10px;
     }
 
   .medidorItem{
@@ -26,7 +25,9 @@ page-recmanual {
 
   }
 
-
+  .scrollLista{
+    padding: 0; width: 100%; height: 100%; border: 1px #BBBEC0 solid;
+  }
 
 
 }
